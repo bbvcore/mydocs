@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 6
 title: Interfaz de Usuario 
 ---
 
@@ -20,7 +20,7 @@ Permite disponer de opciones más avanzadas en el etiquetado de las alertas.
 - **Activar opciones avanzadas** de la interfaz.
 - **Activar refrescos automáticos** de **alerts** y ajustar el intervalo.
 
-:::warning[]
+:::warning[Opciones]
 Hay que tener cuidado con las opciones marcadas, porque si se marcan todas no se muestra la misma información que si se selecciona solo algunas. Sobretodo ser consciente de esto si se activa la opción **Escalated**.
 :::
 
@@ -172,7 +172,7 @@ Para poder añadir nuevas cuentas para **Kibaba** estas han de llevarse a cabo a
 
 Los ajustes de configuración de **Kibana** suelen estar en la propia **Kibana** no obstante a veces hay algún ajuste que hay que realizar en la subsección **Configuration** de la sección **Administración"
 
-:::tip[]
+:::tip[Logs]
 - **Logs de Kibana**: */opt/so/log/kibana/kibana.log*
 - **Logs** de Kibana en **Docker**: "sudo docker logs so-kibana"
 :::
@@ -277,7 +277,7 @@ De esta forma el nodo actualizará de forma completa todos los estados de Salt.
 sudo so-checkin
 ```
 
-:::tip[]
+:::tip[Proyecto Salt]
 - **+ info**: <a href="https://docs.saltproject.io/en/latest/topics/about-salt.project.html-salt">Salt project</a>
 :::
 

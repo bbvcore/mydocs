@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 title: IDS/IPS
 ---
 
@@ -22,7 +22,7 @@ Estos sistemas poseen una ventaja en el entorno **OT** sobre el entorno **IT** y
 
 Esta arquitectura está basada en la norma **IEC 62443**. Presenta una segmentación mediante cortafuegos para separar las zonas de control y corporativa, con 2 **DMZ** para el intercambio de información entre ambas zonas.
 
-!["Imagen del esquema Base IEC 62443 para una arquitectura de control"](./../Img/esquema-arquitectura-red-cibersegura-fig1.png)
+!["Imagen del esquema Base IEC 62443 para una arquitectura de control"](./../Img/ids-ips/esquema-arquitectura-red-cibersegura-fig1.png)
 
 ## Arquitecturas seguridad para sistemas de control :beginner:
 En esta arquitectura todo el tráfico que pasa por los routers/switches se lleva al **IDS** a través de los puertos espejo, además de añadir una sonda para recibir información del cortafuegos para poder controlar el tráfico intercambiado con la red empresarial **(IT)**.
@@ -31,7 +31,7 @@ En esta arquitectura todo el tráfico que pasa por los routers/switches se lleva
 El **IDS** debe de estar configurado con las alertas oportunas para mostrar al administrador.
 :::
 
-!["Imagen del esquema Base IEC 62443 para una arquitectura de control"](../Img/esquema-arquitectura-IDS-fig2.png)
+!["Imagen del esquema Base IEC 62443 para una arquitectura de control"](../Img/ids-ips/esquema-arquitectura-IDS-fig2.png)
 
 <!-- En desarrollo>
 ## Arquitectura de seguridad con IDS
