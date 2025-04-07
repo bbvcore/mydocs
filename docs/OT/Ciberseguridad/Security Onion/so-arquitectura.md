@@ -78,8 +78,14 @@ sudo docker logs "containerName/id"
 ```
 
 
-### Salt
+### Salt :sake:
 La infraestructura de **SaltStack** se basa en una arquitectura cliente/servidor para la **administración remota** que actua como el backbone de **Security Onion** para la interacción entre los diferentes **nodos** de una **arquitectura distribuida**, de esta forma, mediante **Salt** se pueden utilizar diferentes nodos sin necesitar de intervención manual en cada máquina.
+
+:::warning[Importante]
+Gestiona **TODOS** los **procesos** en **Security Onion**. En un sistema distribuido el nodo del gestor controla al resto de nodos a través de Salt, a estos nodos no gestores se les denomina **Salt Minions**.
+:::
+
+Para que los **Minions** de **Salt** se puedan conectar al nodo gestor es necesario que se pueda acceder a los puertos **TCP** número **4505** y **4506**.
 
 #### Estructura de la arquitectura
 Como se ha comentado, basa su funcionamiento en una arquitectura Cliente / Servidor con una nomenclarura propia.
@@ -162,6 +168,45 @@ sudo salta '*?' state.apply suricata
 ```
 sudo salt '*' cmd.run 'systemctl restart suricata'
 ```
+
+- **Verificar estado**
+```
+sudo salt \* test.ping
+```
+- **Ejecución remota**
+Para poder ejecutar un comando en todos los nodos, en este ejemplo el comando **df** a través de **cmd.run**
+```
+sudo salt \* cmd.run 'df'
+```
+- **Forzar un nodo a una actualización completa**
+De esta forma el nodo actualizará de forma completa todos los estados de Salt.
+```
+sudo so-checkin
+```
+
+:::tip[Proyecto Salt]
+- **+ info**: <a href="https://docs.saltproject.io/en/latest/topics/about-salt.project.html-salt">Salt project</a>
+:::
+
+Otros ajustes de configuración que se quieran llevar a cabo en **Salt** se pueden realizar desde **Administration** -> **Configuration**. Si se necesita realizar un diagnóstico se puede acceder a la siguiente ruta.
+```
+/opt/so/log/salt
+```
+
+
+## Otros conceptos reseñables :ballot_box_with_check:
+### Logstash
+Es una herramienta de procesamiento de **logs** perteneciente a la pila de **Elastic** utilizada para la recolección, tratamiento y transporte de datos.
+
+### Kratos :key:
+Se trata de una herramienta que se utiliza para proporcionar **gestión de las credenciales** de los usuarios dentro de la plataforma. Se puede integrar con otros sistemas de autenticación como **Ldap** o **OAuth** para permitir una **SSO** *(Inicio de sesión único)*.
+
+
+
+
+
+
+
 
 
 

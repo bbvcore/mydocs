@@ -10,8 +10,22 @@ Dentro del amplio conjunto de instalaciones que ofrece **Security Onion** abarca
 - Repositorio de Security Onion: <a href="https://github.com/facebook/docusaurus">GitHub</a>
 :::
 
+<details>
+<summary>
+Requisitos de Virtual Box para instalar SO
+</summary>
+
+!["Requisitos de Vbox para SOC"a](../Img/so/configuracion-mv-security-onion.png)
+
+</details>
+
 ## Opciones de instalación
 Existen varias opciones de instalación como ya se vió en la entrada de **pasos previos**, entre ellas destacan las siguientes.
+
+- **Standalone**
+- **Eval**
+- **Desktop**
+- **IDH**
 
 ## Menú inicial
 Desde este menú de arranque de la distribución se pueden escoger las diferentes instalaciones a realizar en función de la funcionalidad necesaria de implementar.
@@ -69,8 +83,11 @@ No obstante si se escoge directamente la opción instalación la configuración 
 !["Escoger versión de instalación eval"](../Img/so/so-install-select-eval.png)
 
 1. Establecer un **nombre** para el **Servidor**
+![](../Img/so/so-name-server.png)
 
 2. Escoger una interfaz que será la encargada de las labores de gestión y administración.
+
+!["Seleccionar NIC"](../Img/so/so-select-net-nic.png)
 
 3. Asignar si la configuración de red dependerá de un servidor **DHCP** o será **estática**.
 
@@ -115,13 +132,16 @@ Una vez se comprueba que la interfaz de gestión está correctamente configurada
 
 9. Se escoge la versión de **Security Onion** a instalar, dado que este proceso descrito se ajusta a **Standalone** y **Eval** se recomienda escoger una de estas dos.
 
+!["Escoger la versión de SO"](../Img/so/so-select-version-so.png)
+
+
 10. Se muestra por pantalla la **aceptación de la licencia**, hay que escribir *"agree"*.
 
 !["Imagen sobre la aceptación de la licencia"](../Img/so/so-license-agree.png)
 
 11. Se ha de escoger entra la opción de instalación **Standard** *(con acceso a internet)* y **Airgap** *(sin acceso a internet)*.
 
-![](../Img/so/so-install-standard-internet.png)
+!["Opción instalación con / sin internet"](../Img/so/so-install-standard-internet.png)
 
 :::warning[Conexión a red]
 Si la conexión es buena se puede proceder a realizar la instalación **Standard** no obstante si se escoge **Airgap** la instalación quedaría completamente funcional simplemente usando el contenido de la **ISO**. 
@@ -134,9 +154,14 @@ Si la conexión es buena se puede proceder a realizar la instalación **Standard
 
 12. Se establece si la conexión se realizará de forma **directa** o a través de un **proxy**.
 
-13. Se procede a crear una cuenta de acceso para la **interfaz gráfica** accesible mediante la barra del navegador web para realizar la administración del grid. Se ha de **introducir** una **dirección de email**. Esta dirección de email *no tiene porque ser real*, solo se usa para establecer un usuario para realizar el login.
 
-!["Configurar acceso a la interfaz gráfica"](../Img/so/so-access-to-iu-web.png)
+13. Se procede a crear una cuenta de acceso para la **interfaz gráfica** accesible mediante la barra del navegador web para realizar la administración del grid. Se ha de **introducir** una **dirección de email**.
+
+!["Añadir un email de administrador"](../Img/so/so-admin-email.png)
+
+Esta dirección de email *no tiene porque ser real*, solo se usa para establecer un usuario para realizar el login.
+
+
 
 :::tip[Obtener la @]
 - El teclado en este punto está en Inglés y no en Español, el simbolo de la **@** se puede obtener con la tecla **shift** en vez de con **alt gr**.
@@ -145,6 +170,8 @@ Si la conexión es buena se puede proceder a realizar la instalación **Standard
 14. Asignar una contraseña a la cuenta creada para acceder a la interfaz web, ha de tener **8 caracteres mínimo**.
 
 15. Establecer el modo de acceso a la interfaz gráfica web, que pude ser mediante **IP**, mediante nombre de **host** u otra.
+
+!["Configurar acceso a la interfaz gráfica"](../Img/so/so-access-to-iu-web.png)
 
 16. Permitir el acceso via web a la interfaz de **Security Onion**.
 
@@ -161,7 +188,7 @@ Si la conexión es buena se puede proceder a realizar la instalación **Standard
 
 20. A continuación se lleva a cabo la **instalación**, que en *función del hardware*, del *modo escogido* o de la *necesidad de contar con internet* puede oscilar bastante.
 
-:::note[Finalización de la instalación]
+:::info[Finalización de la instalación]
 21. En este momento la instalación pasa a realizarse, completamente desatendida hasta su finalización. El tiempo esperado puedes oscilar entre 30 minutos a un par de horas, en función de modalidad escogida, conexión a internet y hardware del host.
 :::
 
@@ -186,3 +213,11 @@ Resumen de los pasos seguidos durante el procedamiento.
 - Aceptar/Denegar la **telemetría**.
 
 </details>
+
+
+### mirad donde ubicar esto
+Mantener docker range
+![](../Img/so/so-docker-ip.png)
+
+NIC monitor
+![](../Img/so/so-nic-monitor.png)
