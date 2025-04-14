@@ -24,15 +24,44 @@ sudo apt install apt-transport-https ca-certificates curl software-properties-co
 :::
 
 
-:::
 3. Añadir GPG
+
+**GPG** es una herramienta de firma y cifrado basada en OpenGPG para verificar los datos como seguros.
+
+:::note[Parámetros Curl]
+- f: fallo silencioso, no muestra la respuesta del error.
+- s: modo silencioso, no muestra información descarga.
+- S: muestra errores si suceden en el proceso y esta activado el modo silencioso.
+- L: sigue redireciones de ficheros.
+:::
+
+Se descarga la clave de docker.gpg y se almacena en un directorio temporal.
 ```
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add 
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg > /tmp/docker.gpg 
 ```
+
+:::note[apt-key]
+apt-key sirve para añadir, eliminar, explortar, listar y otras operaciones sobre claves.
+:::
+```
+sudo apt-key add /tmp/docker.gpg
+```
+
+
 4. Añadir repositorio
+
+Con el comando **add-apt-repository** se añade el repositorio como un fichero del directorio **/etc/apt/sources.list.d/**. De esta forma no se toca, como antaño, el fichero **sources.list**, sino que se genera uno específico por cada aplicación con el formato *"aplicacion.list"* y se almacena en el directorio **sources.list.d.**
+
 ```
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 ```
+:::tip[Linux Standard Base]
+- El comando lsb_release muestra información específica sobre la versión de la distribución GNU/Linux en la que se está.
+```
+lsb_release --help
+```
+:::
+
 5. Actualizar
 ```
 sudo apt update

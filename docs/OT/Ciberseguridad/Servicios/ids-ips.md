@@ -4,35 +4,66 @@ title: IDS/IPS
 ---
 
 # IDS/IPS :globe_with_meridians:
-Para intentar paliar las vulnerabilidades a las que se enfrenta un sistema **IT** surgen los sistemas **IDS** para detectar anomalías y usos indebidos.
+En un intento de **disminuir** las **vulnerabilidades** a las que se enfrenta un sistema **IT** surgen los sistemas **IDS** para detectar anomalías y usos indebidos.
 
-Actualmente debido a las dificultades a las que se enfrentan se desarrollaron los **IPS**, que hoy en día se usan indistintamente **IDS/IPS** dado que los equipamientos son idénticos, cambiando el modo de funcionamiento en función del despliegue y de unos pocos parámetros de configuración.
-
-Ante las amenazas que se enfrentan en **OT** se implementan estas herramientas en redes indsutriales examinando los protocolos y transmisiones que circulan por la red.
+Debido a la dificultad de disminuir dichas vulnerabildiades surgen los **IPS**, hoy en día se usan indistintamente **IDS/IPS**, dado que los equipamientos son idénticos, y las diferencias solo se aprecian en el despliegue y en algunos de los parámetros de configuración.
 
 
 ## SIEM :pager:
-Estos sistemas permiten centralizar la información y son capaces de relacionar eventos de diferentes fuentes para generar alertas personalizadas además de incorporar inteligencia para reducir paulatinamente los falsos positivos.
+Son **sistemas** que permiten **centralizar la información** relacionando eventos de diferentes fuentes **y** *de esta forma* **generar alertas personalizadas**.
 
 :::tip[Ventaja entorno OT]
-Estos sistemas poseen una ventaja en el entorno **OT** sobre el entorno **IT** ya que suelen presentar menor variabilidad y con ello un número menor de falsos positivos.
+Estos sistemas poseen una ventaja en **OT** sobre **IT**, y es la variabilidad, reduciendo con ello el número de falsos positivos.
 :::
 
-## Arquitectura base de sistema de control :pushpin:
+## Arquitectura base :pushpin:
 
-Esta arquitectura está basada en la norma **IEC 62443**. Presenta una segmentación mediante cortafuegos para separar las zonas de control y corporativa, con 2 **DMZ** para el intercambio de información entre ambas zonas.
+Basada en la norma **IEC 62443**, norma de ciberseguirdad para sistemas industriales.
+
+<details>
+<summary>
+Características de la norma 62443
+</summary>
+
+- <b>Segmentación de la red</b>: división en zonas dependiendo de su nivel crítico. Utilizar: routers y switches gestionados.
+
+- <b>Defensa</b>: diversificar, no confiar solo en un punto de seguridad. Utilizar: Autenticación, Firewalls...
+
+- <b>Niveles de madurez de seguridad</b>: de SL1 (protección contra errores consecuencia de accidentes) hasta SL4 (protección contra ataques organizados).
+
+- <b>Control de acceso mediante roles</b>: solo las personas autorizadas pueden operar ciertos sistemas.
+
+- <b>Gestionar el ciclo de vida</b>: mantener y controlar los sistemas desde su instalación hasta el presente día.
 
 
+</details>
 
-## Arquitecturas seguridad para sistemas de control :beginner:
-En esta arquitectura todo el tráfico que pasa por los routers/switches se lleva al **IDS** a través de los puertos espejo, además de añadir una sonda para recibir información del cortafuegos para poder controlar el tráfico intercambiado con la red empresarial **(IT)**.
 
-:::tip[]
-El **IDS** debe de estar configurado con las alertas oportunas para mostrar al administrador.
+## Arquitectura para sistemas de control :beginner:
+Todo el tráfico que pasa por los **routers/switches** se lleva al **IDS** haciendo uso de los **puertos espejo** para recibir información y así poder controlar el tráfico intercambiado con la red **(IT)**.
+
+:::note[Port Mirroring]
+Los puertos espejo permiten clonar el tráfico de un puerto determinado a otro, el cual esta controlado por un sistema de análisis (SIEM, IDS, Analizador de tráfico)
 :::
+
+
+El **IDS** debe de estar correctamente configurado y contar con las alertas necesarias para mostrar al administrador.
+
 
 ## Arquitectura de seguridad con IDS
-La evolución del IDS pasa por bloquear el tráfico por ello los sensores pasen a estar en medio del tráfico en vez de estar escuchando los puertos espejos.
+El **IDS** ha de ser capaz de poder bloquear el tráfico, así los los sensores se ubican en medio del tráfico.
+
+Los **sensores** son dispositivos,físicos o virtuales, que permiten capturar, monitorear y analizar el tráfico de la red de forma pasiva.
+
+Se suelen ubicar en puertos espejo, en DMZ o en zonas críticas para alertar de comportamientos anómalos.
+
+:::tip[Herramientas comunes]
+- Wireshark
+- Zeek, Suricata, Snort
+- Nozomi Networks, Claroty, Dragos
+:::
+
+
 
 
 
