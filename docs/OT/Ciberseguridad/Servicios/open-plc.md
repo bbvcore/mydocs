@@ -1,6 +1,6 @@
 ---
-sidebar_position: 1
-title: OpenPLC
+sidebar_position: 3
+title: Open PLC
 ---
 # Open PLC
 Es una plataforma de automatización industrial **Open Source** que permite programar PLCs. 
