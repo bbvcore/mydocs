@@ -1,3 +1,9 @@
+---
+sidebar_position: 1
+title: Ip
+---
+
+# Ip
 ## Anexo redes [comando ip]
 ### Comprobaciones de namespaces (espacios de red)
 Obtener el UUID con el parámetro **netns** que sirve para averiguar un **network namespace** *(espacio de red aislado, como en la contenerización)*, entonces desde un host se puede interaccionar con estos espacios.

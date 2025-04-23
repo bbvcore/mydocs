@@ -181,6 +181,11 @@ rule-files:
   - smtp-events.rules
 ```
 
+
+:::warning[Comprobar la ruta en suricata.yaml]
+Comprobar en el fichero de configuración **suricata.yaml** la ruta por defecto de las reglas, ya que puede no ser **/etc/suricata/rules**. La variable a buscar en el fichero es **default-rule-path**.
+:::
+
 A continuación se reinicia **Suricata**
 ```
 sudo systemctl restart suricata
@@ -276,6 +281,107 @@ Fichero principal que genera Suricata en formato JSON, en este fichero se pueden
 jq . /var/log/suricata/eve.json | less
 ```
 Este fichero **eve.json** es la base de **Suricata** para trabajar con varios sistemas como **ELK** o **Grafana**.
+
+
+
+## Crear reglas propias en Suricata
+### Reglas HTTP
+Las reglas en suricata siguen una estructura determinada que es la siguiente:
+```
+acción protocolo src_ip src_port -> dst_ip dst_port (opciones)
+```
+:::tip[Parámetros de las reglas]
+- **acción**: detectar un evento *(alert, drop o reject)*
+- **protocolo**: el protocolo correspondiente *(http, udp, icmp)*
+- **src_ip**: ip de origen
+- **src_port**: puerto de origen
+- **dst_ip**: ip de destino
+- **dst_port**: puerto de destino
+- **opciones**: opciones varias como mensajes, información adicional, etc...
+:::
+
+En HTTP las características más utilizadas en la parte de opciones son:
+- "msg:text" texto del mensaje 
+- "sid: number": ID único de las reglas, para personalizadas superior a 1000000.
+- "classtype:type": tipo aplicación
+- "rev:value" versión de la regla, incrementa con las ediciones
+- "flow: to_server, established": paquete hacía el servidor, conexión establecida
+- "flow: to_client, established": paquete hacía el cliente, conexión establecida
+- "flow: established", solo conexiones establecidas
+- "http.method": método 
+- "http.uri": ruta del recurso
+- "http.host": nombre del dominio
+- "http.user_agent": el agente (curl, mozilla)
+- "http.request_line": línea de la petición (VerboHTTP /url HTTP/version)
+- "content:cadena": una cadena literal a buscar:
+1. 'nocase': no case sensitive
+2. 'offset:x;': rangos de búsqueda
+3. 'depth:y;': rangos de búsqueda
+- 'pcre:"/expr/" : expresiones regulares tipo PCRE
+- 'threshold:type limit, track by_src, count number, seconds number' alerta por IP cada X tiempo.
+
+
+
+#### Regla para peticiones HTTP
+Establecimiento de una regla propia básica de Suricata para comprobar cualquier tipo de petición HTTP que se produzca.
+```
+alert http any any -> any any (msg:"HTTP GET Request Detected"; flow:to_server,established; http.method; content:"GET"; classtype:web-application-activity; sid:1000001; rev:1;)
+```
+<details>
+<summary>
+Explicación de la estrutura de la regla aplicada
+</summary>
+
+```
+- Tipo de acción: alert, se notifica una alerta
+- Protocolo: http.
+- any: cualquier IP origen
+- any: cualquier PORT origen
+- any: cualquier IP destino
+- any: cualquier PORT destino
+- (): incluye las opciones. Condiciones ESTRICTAS para que la alerta se dispare.
+```
+</details>
+
+
+Explicación de las opciones:
+- msg: mensaje que aparecerá en el LOG cuando la regla se dispare.
+- flow: to_server, stablished: flujo de datos, paquete de cliente a servidor  y conexión establecida.
+- http.method: se indica la búsqueda en el campo http.method.
+- content:"get", busca GET en la cabecera HTTP
+- classtype:web-application-activity: clasifica la alerta en la categoría correspondiente.
+- SID: idnetificador único de la regla
+- rev1: versión de la regla, cada vez que se cambié la regla se debe de incrementar.
+
+##### Comprobación del funcionamiento de la regla
+```
+sudo tail -f /var/log/suricata/fast.log 
+04/16/2025-09:35:55.545375  [**] [1:1000001:1] HTTP GET Request Detected [**] [Classification: access to a potentially vulnerable web application] [Priority: 2] {TCP} 10.0.2.15:52994 -> 193.110.128.199:80
+```
+
+#### Regla para respuestas HTTP
+```
+alert http any any -> any any (msg:"HTTP 200 OK Response Detected"; flow:to_client,established; http.response_line; content:"200 OK"; classtype:successful-user; sid:1000002; rev:1;)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
