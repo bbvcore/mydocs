@@ -175,7 +175,7 @@ Kibana configured successfully
 
 :::tip[Ubicación Kibana]
  - /usr/share/kibana 
- :::
+:::
  
 5. Acceder via web
 ```
@@ -211,8 +211,8 @@ sudo nano /etc/elasticsearch/elasticsearch.yml
 
     cluster.name: my-elastic-cluster  # Nombre del cluster
     node.name: my-parrot-node        # Nombre del nodo
-    network.host: 0.0.0.0            # Escuchar en todas las interfaces (ajusta según necesidad)
-    discovery.type: single-node      # Modo single-node (si es solo 1 servidor)
+    network.host: 0.0.0.0            # Escuchar en todas las interfaces (ajustar según necesidades)
+    discovery.type: single-node      # Modo single-node (Solo 1 servidor)
 ```
 
 2.  Problemas de activación de la aplicación

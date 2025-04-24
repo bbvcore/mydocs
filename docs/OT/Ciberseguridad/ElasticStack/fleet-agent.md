@@ -4,7 +4,7 @@ title: Fleet y Elastic Agent
 ---
 # Fleet y Elastic Agent
 ## Información Elastic Agent
-Los **Elastic Agents** son agentes ligeros en el **Stack de Elastic** que sustituyen a Beat.
+Los **Elastic Agents** son agentes ligeros en el **Stack de Elastic** que sustituyen a los **Beats**.
 
 :::info[Funciones principales]
 - **Recolectar datos** *(logs, métricas, eventos de seguridad)*.
@@ -14,6 +14,7 @@ Los **Elastic Agents** son agentes ligeros en el **Stack de Elastic** que sustit
 
 ## Información Fleet
 Es una **herramienta centralizada** de *Kibana* para gestionar agentes *(Elastic Agents)* que recolectan datos.
+
 :::info[Funciones]
 - Administrar múltiples agentes de forma centralizada.
 - Establecer las políticas de recolección de datos.
@@ -100,6 +101,8 @@ sudo ./elastic-agent install \
 ```
 
 ## Acceso al agente instalado
+!["Agentes instalados"](../Img/despliegues/fleet-2-agentes.png)
+
 Una vez se ha instalado el agente de forma satisfactoría se puede acceder a el en la sección **Fleet > Agents**.
 <details>
 <summary>
@@ -118,6 +121,9 @@ Información relevante sobre el agente
 
 
 ## Integraciones
+
+!["Imagen con ejemplo de integraciones"](../Img/despliegues/fleet-server-policy-details.png)
+
 Una vez establecida correctamente la instalación y configuración del agente, en la sección **Fleet** de **Kibana** se puede comprobar el **host** y su correspondiente **status** *(Healthy es el estado deseable)*.
 
 En este caso se procede a las integraciones, por defecto es necesario tener la integración de **Fleet Server** y luego ya el resto de integraciones van en consonancia con la funcionalidad requerida y el objetivo trazado. Existen integraciones para Suricata, Nginx, MySQL, AWS, Azure, etc...

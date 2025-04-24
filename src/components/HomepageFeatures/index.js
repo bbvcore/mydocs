@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 
+// Editar las 3 capas de la página inicial
 const FeatureList = [
   {
     title: 'Easy to Use',

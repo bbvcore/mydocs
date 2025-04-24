@@ -10,7 +10,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'My docs',
+  title: 'MyDocs',
   tagline: 'bbvcore',
   favicon: 'img/favicon.ico',
 
@@ -76,7 +76,7 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'Home',
+        title: '', // Título anexo al logo
         logo: {
           alt: 'BBV',
           src: 'img/logo.png', // Imagen logotipo en el header
