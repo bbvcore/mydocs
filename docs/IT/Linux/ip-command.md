@@ -7,11 +7,11 @@ title: Ip
 ## Anexo redes [comando ip]
 ### Comprobaciones de namespaces (espacios de red)
 Obtener el UUID con el parámetro **netns** que sirve para averiguar un **network namespace** *(espacio de red aislado, como en la contenerización)*, entonces desde un host se puede interaccionar con estos espacios.
-```
+```bash
 ip netns list
 ```
 Ver información de ese de **UUID**.
-```
+```bash
 ip netns exec netns-35c7edf0-709c-0cb3-7bd1-216a73b9a29e ip a
 ```
 
@@ -26,7 +26,7 @@ ip netns exec netns-35c7edf0-709c-0cb3-7bd1-216a73b9a29e ip a
 Resultado de la consulta
 </summary>
 
-```
+```bash
 ┌─[trabajo@parrot]─[/etc/suricata]
 └──╼ $sudo ip netns exec netns-35c7edf0-709c-0cb3-7bd1-216a73b9a29e ip a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
