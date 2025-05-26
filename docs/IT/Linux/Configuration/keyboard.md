@@ -19,16 +19,16 @@ Y se debería de ajustar el idioma, en este caso Español, en el siguiente fiche
 ```
 
 :::tip[LocaleCTL]
-- Más información de localectl en la ayuda del OS
+- Más información de **localectl** en la ayuda del **OS**
 ```
 man localectl
 ```
 :::
-Pero esta solución solo aplica a la interfaz gráfica, para la terminal es necesario acceder al fichero
+Esta solución se aplica a la interfaz gráfica y a la terminal, pero a veces es necesario acceder también al siguiente fichero.
 ```
 sudo nano /etc/default/keyboard
 ```
-Con el contenido siguiente
+Donde se obtiene el siguiente contenido.
 ```
 XKBMODEL="pc105"
 XKBLAYOUT="es"

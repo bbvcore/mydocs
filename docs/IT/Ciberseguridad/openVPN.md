@@ -138,12 +138,12 @@ Recapitulando los ficheros necesarios son:
 - ca.crt, en /pki/ca.crt, resultante de ejecutar la creación de la CA
 - clientN.crt, en /pki/issued/clientN.crt, resultante de ejecutar sign-req
 - clientN.key, en /pki/private/clientN.key, resultante de ejecutar gen-req clientN nopass
-- ta.key, en <path>, resultante de ejecutar openvpn --genkey secret ta.key
+- ta.key, resultante de ejecutar openvpn --genkey secret ta.key
 
 <details>
 <summary>
 Plantilla para la creación del fichero ovpn embebiendo los datos generados
-
+</summary>
 ```
 cat > clientN.ovpn <<EOF
 client
@@ -177,6 +177,7 @@ auth SHA256
 verb 3
 EOF
 ```
+
 </details>
 
 

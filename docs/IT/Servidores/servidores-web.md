@@ -4,6 +4,7 @@
 ## Requisitos previos
 ### Certificado autofirmado
 Se ha de haber creado un certificado autofirmado y una clave privada, que ambos se almacenarán en sus correspondientes directorios en el sistema operativo.
+
 ```bash
 /etc/ssl/certs
 /etc/ssl/private
@@ -47,7 +48,7 @@ Contenido del servidor virtual
 </VirtualHost>
 ```
 
-</detail>
+</details>
 
 Una vez creado el fichero se procede a activarlo
 ```
@@ -62,17 +63,23 @@ Buscar el virtualhost que escucha el puerto 80 y proceder a realizar un redirecc
 
 
 #### Comandos básicos
-a2enmod
-a2ensite
-a2dismod
-a2dissite
-a2enconf
-a2disconf
+
+- **a2enmod**:
+- **a2ensite**:
+- **a2dismod**:
+- **a2dissite**:
+- **a2enconf**:
+- **a2disconf**:
 
 
-Los ficheros de conf se suelen solo activar o desactivar, no editar, son extras para configurar y complementar apache2.conf
+Los ficheros de conf se suelen solo activar o desactivar, no editar, son extras para configurar y complementar **apache2.conf**.
+
 Los comandos para los módulos se usan solo en GNU/Linux, en Windows se activan comentando o descomentando los módulos porque se usan líneas LoadModule.
-Los virtual host en windows se suelen configurar en el fichero principal en \conf\httpd.conf o en \conf\extra\httpd-vhosts.conf
+
+
+:::warning[Virtual Hosts]
+Los **virtual host** en windows se suelen configurar en el fichero principal, que está ubicado en **\conf\httpd.conf**, o también en el fichero **\conf\extra\httpd-vhosts.conf**
+:::
 
 
 ## Configuración Nginx
@@ -111,10 +118,9 @@ server{
     location / {
         try_files $uri $uri/=404; # $uri busca file o dir, sino 404
     }
- 
 }
-
 ```
+
 Habilitar el servicio
 ```
 sudo ln -s /etc/nginx/sites-available/tu_dominio /etc/nginx/sites-enabled/
@@ -124,7 +130,7 @@ sudo nginx -t # Valida el fichero de configuración sin reiniciar nginx
 
 
 
-```
+
 
 
 

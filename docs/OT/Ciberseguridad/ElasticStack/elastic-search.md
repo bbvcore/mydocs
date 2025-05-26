@@ -1,9 +1,9 @@
 ---
 sidebar_position: 1
-title: Elastic Serch y Kibana
+title: Elastic Serch 
 ---
-# ElasticSearch y Kibana
-Para comenzar a trabajar con el **Stack de Elastic** es necesario seguir una secuencia de instalación correcta, por ello se ha de comenzar con **Elasticsearch** y luego continuar con **Kibana**.
+# ElasticSearch 
+Para comenzar a trabajar con el **Stack de Elastic** es necesario seguir una secuencia de instalación correcta, por ello se ha de comenzar con **Elasticsearch**.
 
 ## ElasticSearch
 
@@ -31,6 +31,14 @@ echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://arti
 ### Instalación de elasticsearch
 
 Una vez configurados los repositorios se procede a **actualizar el OS** y a realizar la instalación de **elasticsearch**.
+
+:::warning[Path de instalación]
+Es importante instalar en la siguiente ruta.
+```
+/opt/elastic/agent/data/
+```
+:::
+
 ```
 sudo apt update 
 sudo apt install elasticsearch -y
@@ -128,84 +136,17 @@ configuración a través de Certificados SSL*, el uso de credenciales
 *kibana.yml*.
 
 Los problemas que pueden surgir para establecer la conexión utilizando
-estos enrollment tokens son los siguientes:
+estos **enrollment tokens** son los siguientes:
 
 - Token expirado
-- Seguridad activa de elastic search pero Kibana no
+- Seguridad activa de **elastic search** pero Kibana no
 - Problema para reconocer certificados auto generados, para ello se usa
   **--insecure** o **-k** con curl.
 
-## Kibana
+  
+### Soluciones de problemas
 
-### Token para instalar Kibana
-
-Generar un token justo antes de instalar Kibana, justo antes porque posee un tiempo útil de 30 minutos.
-```
-sudo /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
-```
-Si se produce un error tipo **"exit 69"** o **"problemas de cluster"** hay que comprobar que **elasticsearch** está correctamente habilitado y activo.
-```
-sudo systemctl status elasticsearch
-sudo systemctl enable elasticsearch
-sudo systemctl start elasticsearch
-```
-### Instalar Kibana
-1.  Ejecutar **setup** de *Kibana*. Previamente se **actualiza** también el *OS*.
-```
-sudo apt update && sudo apt install kibana
-```
-
-2.  Una vez instalado se obtiene una **KeyStore**.
-```
-Kibana KeyStore en /etc/kibana/kibana.keystore
-```
-
-3.  Ahora se configura **Kibana** con el token previamente obtenido.
-```
-sudo /usr/share/kibana/bin/kibana-setup --enrollment-token "pegar token"
-```
-
-4.  Si el proceso ha resultado satisfactorio se obtiene un mensaje de éxito.
-
-```
-Kibana configured successfully
-    To start Kibana run:
-    bin/kibana
-```
-
-:::tip[Ubicación Kibana]
- - /usr/share/kibana 
-:::
- 
-5. Acceder via web
-```
-    localhost:5601
-```
-6.  Credenciales
-```
-    User: elastic
-    Password: Generada en la instalación
-```
-
-## Posibles problemas durante el procedimiento
-En todo proceso pueden suceder algunos problemas, los más destacados relacionados con este software son los siguientes.
-
-### Kibana
-1.  Si falla el acceso a kibana comprobar que está activo
-```
-    enable kibana
-    start kibana
-```
-
-2.  Si falla reiniciar Kibana y revisar logs
-```
-sudo sistemctl restart kibana
-sudo journalctl -u kibana -f
-```
-
-### ElasticSearch
-
-1.  Obtener información sobre la instalación
+#### Obtener información sobre la instalación
 ```
 sudo nano /etc/elasticsearch/elasticsearch.yml
 
@@ -215,28 +156,28 @@ sudo nano /etc/elasticsearch/elasticsearch.yml
     discovery.type: single-node      # Modo single-node (Solo 1 servidor)
 ```
 
-2.  Problemas de activación de la aplicación
+#### Problemas de activación de la aplicación
 ```
 sudo systemctl enable elasticsearch
 sudo systemctl start elasticsearch
 ```
-3.  Problemas con password de inicio
+####  Problemas con password de inicio
 ```
 sudo cat /var/lib/elasticsearch initial_master_nodes.password
 ```
-4.  Comprobar acceso Comprobar el acceso desde la terminal y conseguir
+####  Comprobar acceso Comprobar el acceso desde la terminal y conseguir
     de retorno el JSON con la información
 ```
 curl -u elastic:TUPASSWORD -X GET "https://localhost:9200" --insecure
 ```
 
-5.  Cambiar contraseña (opcional)
+####  Cambiar contraseña (opcional)
 
 ```
 curl -u elastic:TUPASSWORD -X POST "https://localhost:9200/_security/user/elastic/_password?pretty" -H "Content-Type: application/json" -d '{"password": "nuevopassword"}' --insecure
 ```
 
-6.  Certificados y confianza
+#### Certificados y confianza
 Los certificados autogenerados **TLS** sealmacenan en el **path** de elasticsearch.
 
 ```
@@ -251,7 +192,7 @@ solución temporal consiste en **desactivar** en *elasticsearch.yml* la
 xpack.security.enabled: false
 ```
 
-7.  Problemas con el **cortafuegos** en **GNU/Linux**.
+####  Problemas con el **cortafuegos** en **GNU/Linux**.
 ```
 sudo ufw allow 9200/tcp
 sudo ufw allow 9300/tcp
@@ -259,17 +200,17 @@ sudo ufw reload
 sudo ufw allow 9200 # problemas ufw
 ```
 
-8.  Comprobación de los **logs** en tiempo real
+####  Comprobación de los **logs** en tiempo real
 ```
 sudo journalctl -u elasticsearch -f
 ```
 
-9.  Comprobar el **estado de salud** de *elastic*
+####  Comprobar el **estado de salud** de *elastic*
 ```
 curl -u elastic:TUPASSWORD -X GET "https://localhost:9200/_cluster/health?pretty" --insecure
 ```
 
-10. Ajustar la memoria
+#### Ajustar la memoria
 ```
 sudo nano /etc/elasticsearch/jvm.options 
 ```

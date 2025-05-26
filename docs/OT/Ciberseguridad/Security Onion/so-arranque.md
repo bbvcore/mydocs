@@ -9,7 +9,6 @@ El **Grub** del arranque de **Security Onion** posibilita iniciarlizar **Securit
 !["Menú de arranque de Security Onion"](../Img/so/so-security-onion-standalone.png)
 
 
-
 Una vez finaliza el arranque del sistema se realiza login para y el **OS** muestra la **IP** de administración para acceso web.
 
 !["Estado previo"](../Img/so/so-standalone-previo.png)

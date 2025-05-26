@@ -48,8 +48,8 @@ compiled with LibHTP v0.5.42, linked against LibHTP v0.5.42
 </details>
 
 ## Ficheros importantes
-Una vez instalado Suricata hay una serie de ficheros a tener en cuenta:
-- **suricata.yaml**: es el archivo principal de configuración
+### Suricata.yaml
+Es el archivo principal de configuración
 ```
 /etc/suricata/suricata.yaml
 ```
@@ -82,8 +82,8 @@ vars:
 ```
 </details>
 
-
-- **Logs**: Suricata tiene sus propios logs dentro del directorio habitual en GNU/Linux.
+### Logs
+Suricata tiene sus propios logs dentro del directorio habitual en GNU/Linux.
 ```
 /var/log/suricata
 ```
@@ -94,7 +94,8 @@ vars:
 - suricata.log
 :::
 
-- **Reglas**: conjunto de reglas locales
+### Reglas
+El conjunto de reglas locales
 ```
 /etc/suricata/rules
 ```
@@ -129,7 +130,12 @@ alert modbus any any -> any any (msg:"SURICATA Modbus Request flood detected"; f
 ```
 </details>
 
-- **suricata-update**: fichero de configuración para **suricata-update**
+:::warning[SID]
+Las reglas personalizadas añadidas han de tener un SID > 1.000.000
+:::
+
+### Suricata-update
+Es el fichero de configuración para **suricata-update**
 ```
 /etc/suricata/update.yaml
 ```
@@ -158,6 +164,10 @@ Existen reglas pero no las cargó **Suricata** por ello se ha de revisar la conf
 
 Entonces en la sección mencionada se añaden todas las reglas que existan en el directorio **/etc/suricata/rules**
 
+<details>
+<summary>
+Contenido de la sección de rule-files
+</summary>
 ```
 rule-files:
   - app-layer-events.rules
@@ -180,7 +190,7 @@ rule-files:
   - mqtt-events.rules
   - smtp-events.rules
 ```
-
+</details>
 
 :::warning[Comprobar la ruta en suricata.yaml]
 Comprobar en el fichero de configuración **suricata.yaml** la ruta por defecto de las reglas, ya que puede no ser **/etc/suricata/rules**. La variable a buscar en el fichero es **default-rule-path**.
@@ -191,8 +201,9 @@ A continuación se reinicia **Suricata**
 sudo systemctl restart suricata
 ```
 :::warning[]
-Por defecto los módulos http2, modbus y dnp3 vienen como "enable:no" y hay que ponerlos a "enable:yes" para que **Suricata** arranque bien.
+Por defecto los módulos **http2**, **modbus** y **dnp3** vienen como *"enable:no"* y hay que ponerlos a *"enable:yes"* para que **Suricata** arranque bien.
 :::
+
 ### Test de funcionamiento
 ```
 ┌─[✗]─[borjao@parrot]─[/etc/suricata/rules]
@@ -203,6 +214,7 @@ Por defecto los módulos http2, modbus y dnp3 vienen como "enable:no" y hay que 
 14/4/2025 -- 12:23:23 - <Notice> - Configuration provided was successfully loaded. Exiting.
 
 ```
+
 ### Funcionamiento correcto
 ```
 ┌─[borja@parrot]─[/etc/suricata/rules]
@@ -215,7 +227,7 @@ Por defecto los módulos http2, modbus y dnp3 vienen como "enable:no" y hay que 
 
 
 ## Regas Emerging Threats
-Un conjunto de reglas rápidas de añadir a Suricata desarrolladas por la comunidad de Emerging Threats,
+Un conjunto de reglas rápidas de añadir a Suricata desarrolladas por la comunidad de **Emerging Threats**.
 ```
 sudo apt install suricata-update
 sudo suricata-update
@@ -224,6 +236,7 @@ sudo suricata-update
 ```
 sudo tail -f /var/log/suricata/fast.log
 ```
+
 ## Comprobaciones
 ### Ejecución en primer plano
 ```
@@ -233,6 +246,7 @@ sudo suricata -c /etc/suricata/suricata.yaml -i eth10 --init-errors-fatal
 - **c**: indica el path del fichero de configuración
 - **i**: configura la interfaz en la que va a escuchar
 - **--init-errors-fatal**: muestra los errores fatales en el lanzamiento de Suricata.
+
 ### Simular tráfico malicioso
 ```
 curl http://testmyids.com
@@ -300,7 +314,13 @@ acción protocolo src_ip src_port -> dst_ip dst_port (opciones)
 - **opciones**: opciones varias como mensajes, información adicional, etc...
 :::
 
-En HTTP las características más utilizadas en la parte de opciones son:
+
+<details>
+<summary>
+Listado de características más utilizadas en <b>HTTP</b>
+</summary>
+
+```
 - "msg:text" texto del mensaje 
 - "sid: number": ID único de las reglas, para personalizadas superior a 1000000.
 - "classtype:type": tipo aplicación
@@ -319,6 +339,8 @@ En HTTP las características más utilizadas en la parte de opciones son:
 3. 'depth:y;': rangos de búsqueda
 - 'pcre:"/expr/" : expresiones regulares tipo PCRE
 - 'threshold:type limit, track by_src, count number, seconds number' alerta por IP cada X tiempo.
+```
+</details>
 
 
 
@@ -329,29 +351,35 @@ alert http any any -> any any (msg:"HTTP GET Request Detected"; flow:to_server,e
 ```
 <details>
 <summary>
-Explicación de la estrutura de la regla aplicada
+Explicación de la estrutura de la regla aplicada.
 </summary>
 
 ```
-- Tipo de acción: alert, se notifica una alerta
-- Protocolo: http.
-- any: cualquier IP origen
-- any: cualquier PORT origen
-- any: cualquier IP destino
-- any: cualquier PORT destino
-- (): incluye las opciones. Condiciones ESTRICTAS para que la alerta se dispare.
+- <b>Tipo de acción</b>: alert, se notifica una alerta
+- <b>Protocolo</b>: http.
+- <b>any</b>: cualquier IP origen
+- <b>any</b>: cualquier PORT origen
+- <b>any</b>: cualquier IP destino
+- <b>any</b>: cualquier PORT destino
+- <b>()</b>: incluye las opciones. Condiciones ESTRICTAS para que la alerta se dispare.
 ```
 </details>
 
+<details>
+<summary>
+Explicación de las opciones.
+</summary>
 
-Explicación de las opciones:
-- msg: mensaje que aparecerá en el LOG cuando la regla se dispare.
-- flow: to_server, stablished: flujo de datos, paquete de cliente a servidor  y conexión establecida.
-- http.method: se indica la búsqueda en el campo http.method.
-- content:"get", busca GET en la cabecera HTTP
-- classtype:web-application-activity: clasifica la alerta en la categoría correspondiente.
-- SID: idnetificador único de la regla
-- rev1: versión de la regla, cada vez que se cambié la regla se debe de incrementar.
+```
+- <b>msg</b>: mensaje que aparecerá en el LOG cuando la regla se dispare.
+- <b>flow</b>: to_server, stablished: flujo de datos, paquete de cliente a servidor  y conexión establecida.
+- <b>http.method</b>: se indica la búsqueda en el campo http.method.
+- <b>content</b>:"get", busca GET en la cabecera HTTP
+- <b>classtype</b>:web-application-activity: clasifica la alerta en la categoría correspondiente.
+- <b>SID</b>: idnetificador único de la regla
+- <b>rev1</b>: versión de la regla, cada vez que se cambié la regla se debe de incrementar.
+```
+</details>
 
 ##### Comprobación del funcionamiento de la regla
 ```
@@ -364,6 +392,11 @@ sudo tail -f /var/log/suricata/fast.log
 alert http any any -> any any (msg:"HTTP 200 OK Response Detected"; flow:to_client,established; http.response_line; content:"200 OK"; classtype:successful-user; sid:1000002; rev:1;)
 ```
 
+
+<!--
+// Perndiente de instalar y trabajar con el, vigilar HTTP y HTTPS
+## Evebox
+-->
 
 
 
@@ -387,7 +420,7 @@ alert http any any -> any any (msg:"HTTP 200 OK Response Detected"; flow:to_clie
 
 ## Anexo redes [comando ip]
 ### Comprobaciones de namespaces (espacios de red)
-Obtener el UUID con el parámetro **netns** que sirve para averiguar un **network namespace** *(espacio de red aislado, como en la contenerización)*, entonces desde un host se puede interaccionar con estos espacios.
+Obtener el **UUID** con el parámetro **netns** que sirve para averiguar un **network namespace** *(espacio de red aislado, como en la contenerización)*, entonces desde un host se puede interaccionar con estos espacios.
 
 ```
 ip netns list
