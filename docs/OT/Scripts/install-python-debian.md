@@ -7,6 +7,7 @@ title: Install python
 
 <details>
 <summary>
+Script de configuración de python en entornos de OT para PLCs
 </summary>
 
 ```bash
