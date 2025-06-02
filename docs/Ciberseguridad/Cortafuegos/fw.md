@@ -1,8 +1,8 @@
 ---
 sidebar_position: 1
-title: Firewall
+title: Firewall Windows Defender
 ---
-# :dart: Firewall 
+# :dart: Firewall Windows Defender
 
 ## Básico
 ### :unlock: Desactivar Firewall

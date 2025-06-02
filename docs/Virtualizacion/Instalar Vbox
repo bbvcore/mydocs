@@ -1,0 +1,18 @@
+1. Instalar dependencias
+sudo apt install -y dkms build-essential linux-headers-$(uname -r)
+
+2. Descarga clave pública
+wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O /tmp/oracle_vbox.asc
+sudo cp /tmp/oracle_vbox.asc /etc/apt/trusted.gpg.d/
+
+
+3. Agregar repo
+echo "deb http://download.virtualbox.org/virtualbox/debian $(lsb_release -c | awk '{print $2}') contrib" | sudo tee -a /etc/apt/sources.list
+
+4. Actualizar e instalar 
+sudo apt update
+sudo apt install virtualbox-6.1
+
+Problemas:
+recompilar vboxconfig: sudo /sbin/vboxconfig
+

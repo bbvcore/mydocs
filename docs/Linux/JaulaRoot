@@ -1,0 +1,17 @@
+sudo mkdir -p /home/jaula/bin
+sudo cp /bin/bash /home/jaula/bin/ => Copiar los ejecutables que se quiera, mínimo la shell
+sudo chroot /home/jaula /bin/bash
+
+
+deshabilitar root: sudo passwd -l root
+habilitarlo:  sudo passwd -u root
+
+
+// Compilar
+./configure
+make
+make install
+
+Si algo falla y se vuelve a empezar
+make clean
+

@@ -1,0 +1,19 @@
+
+// Teclado para SystemD
+// Comprobar configuration
+localectl
+
+// En español, consola
+localectl set-keymap es
+
+// En entorno gráfico
+sudo localectl set-x11-keymap es
+
+
+// VIM
+insert/esc
+:wq
+:q!
+
+// Instalar nano
+sudo dnf install nano
