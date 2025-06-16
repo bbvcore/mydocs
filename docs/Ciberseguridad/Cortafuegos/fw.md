@@ -3,6 +3,7 @@ sidebar_position: 1
 title: Firewall Windows Defender
 ---
 # :dart: Firewall Windows Defender
+Se trata del cortafuegos de Windows para el control del tráfico entrante y saliente en Windows, forma parte de Windows Defender Security Center.
 
 ## Básico
 ### :unlock: Desactivar Firewall
@@ -41,8 +42,6 @@ netsh advfirewall firewall add rule name="Bloquear HTTPS de salida" dir=out acti
 netsh advfirewall firewall add rule name="Bloquear HTTP de entrada" dir=in action=block protocol=TCP remoteport=80
 netsh advfirewall firewall add rule name="Bloquear HTTPS de entrada" dir=in action=block protocol=TCP remoteport=443
 ```
-
-
 
 ### Verificar las reglas
 ```batch
@@ -100,6 +99,23 @@ Aceptar
 ```
 
 </details>
+
+:::warning
+Las reglas para la gestión del cortafuegos de Windows se están llevando a cabo con **netsh** para que sea más compatible con Windows al poder ejecutarse desde cualquier versión de Windows al ser ejecutables desde **CMD** y no hacer falta la **Power Shell**
+:::
+
+#### Anexo: Power Shell
+El cortafuegos puede gestionarse desde la **Power Shell** con comandos básicos como los siguientes.
+```powershell
+New-NetFirewallRule -DisplayName "Nombre regla" -Direction "" -Protocol "" -LocalPort -Action
+Remove-NetFirewallRule -DisplayName "Nombre regla"
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled True
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+```
+:::tip[Resetear reglas en PowerShell]
+Curiosamente para resetear las reglas, es necesario usar **netsh**, no existe un CMD-LET para tal fin
+:::
+
 
 ### Borrar las reglas, perfiles o propiedades
 ```batch

@@ -216,7 +216,7 @@ sudo a2enmod ssl
 #### Nginx
 La configuración de **Nginx** es más sencilla que con **Apache** aunque conceptualmente es bastante similar.
 
-```
+```bash
 server {
     listen 443 ssl; # Activar SSL en el puerto por defecto 443
     server_name example.local;

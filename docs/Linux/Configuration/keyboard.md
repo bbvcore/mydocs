@@ -10,7 +10,9 @@ No obstante hay distribuciones en las que la configuración con localectl no fun
 
 ## Localectl
 Para configurar el teclado en el idioma escogido, en este caso español, se requiere de la ejecución del comando siguiente.
+
 ```
+localectl set-keymap es
 localectl set-x11-keymap es
 ```
 Y se debería de ajustar el idioma, en este caso Español, en el siguiente fichero
@@ -55,3 +57,6 @@ La configuración anterior sirve para salir del paso, pero al reiniciar el equip
 setxkbmap es
 ```
 Una vez añadido el comando, se guarda el fichero, se reinicia el equipo y el teclado ya estará correctamente configurado en el idioma escogido.
+
+
+

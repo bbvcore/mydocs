@@ -1,10 +1,28 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 title: Git
 ---
 
 # Git 
 Git es un software open source que realiza las funciones de controlador de versiones.
+
+
+## Creación de un repositorio local de un repositorio remoto
+```bash
+git init
+git branch -m main
+git add .
+git commit -m "Primer commit"
+# Haciendo uso de HTTPS
+git remote add origin <URL_DEL_REPO>
+# Haciendo uso de SSH
+git remote add origin git@github.com:bbvcore/mydocs.git
+# Comprobar el repositorio remoto
+git remote -v
+## Subir los ficheros 
+git push -u origin main # A veces es necesario usar --force
+```
+
 
 ## Métodos de subida (Push)
 ### Uso de Key SSH

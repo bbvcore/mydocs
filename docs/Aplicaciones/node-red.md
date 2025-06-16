@@ -4,6 +4,7 @@ title: Node-red
 ---
 
 # Node-red
+Se trata de un software basado en flujos, mediante componentes JSON, para trabajar con diferentes tecnologías como APIs, hardware o servicios basado en NodeJS y ampliamente popular en IoT.
 
 ## Instalación
 ### Actualización del sistema
@@ -41,7 +42,7 @@ Una vez guardado se accede al fichero settings, en mi caso este fichero está en
 
 Una vez abierto hay que buscar la sección de **adminAuth** y en la propiedad **password** del objeto pegar el hash previamente generado.
 
-```bash
+```javascript
    adminAuth: {
         type: "credentials",
         users: [{

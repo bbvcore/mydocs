@@ -1,37 +1,45 @@
-Calcular la dirección de red y dirección de broadcasting (difusión) de las máquinas con 
-las siguientes direcciones IP y máscaras de subred, decir de q clase son y si son publicas o privadas: 
+---
+sibebar_position: 1
+title: Calcular direcciones IP
+---
+
+# Calculo de direcciones IP
+## Direcciones de Red y de Broadcast
+
+Calcular la direcciï¿½n de red y direcciï¿½n de broadcasting (difusiï¿½n) de las mï¿½quinas con 
+las siguientes direcciones IP y mï¿½scaras de subred, decir de q clase son y si son publicas o privadas: 
 
 1.- 196.34.109.133 / 255.255.255.128: red 196.34.109.128, broadcasting 196.34.109.255
 
 
 Direccion de Red: And
-Dirección de Broadcast Or + Not
+Direcciï¿½n de Broadcast Or + Not
  
 196.34.109.133 ---> 11000100.00100010.01101101.10000101
 255.255.255.128---> 11111111.11111111.11111111.10000000
                     ___________________________________
 
-                    11000100.00100010.01101101.10000000 (Dirección Red)
+                    11000100.00100010.01101101.10000000 (Direcciï¿½n Red)
 
 196.34.109.133 ---> 11000100.00100010.01101101.10000101
 255.255.255.128(OR)>00000000.00000000.00000000.01111111
 		    ___________________________________
 
-		    11000100.00100010.01101101.11111111 (Dirección Broadcast)	
+		    11000100.00100010.01101101.11111111 (Direcciï¿½n Broadcast)	
 
-Clase C, Red Pública.
+Clase C, Red Pï¿½blica.
 
 
 2.- 192.168.20.29 / 255.255.255.240: red 192.168.20.16, broadcasting 192.168.20.31
 
 Direccion de Red: And
-Dirección de Broadcast Or + Not
+Direcciï¿½n de Broadcast Or + Not
 
 192.168.20.29 ---> 11000100.10101000.00010100.00011101
 255.255.255.240 -> 11111111.11111111.11111111.11110000
                    ___________________________________
 
-                   11000100.10101000.00010100.00010000 (Dirección Red)
+                   11000100.10101000.00010100.00010000 (Direcciï¿½n Red)
 
 
 
@@ -51,13 +59,13 @@ Clase C, Red Privada.
 255.255.255.224 ---> 11111111.11111111.11111111.11100000
                      ___________________________________
 
-                     11000100.10101000.00010100.00000000 (Dirección Red)
+                     11000100.10101000.00010100.00000000 (Direcciï¿½n Red)
 
 192.168.20.12 -----> 11000100.10101000.00010100.00001100
 255.255.255.224 ---> 11111111.11111111.11111111.00011111
                      ___________________________________
 
-                     11000100.10101000.00010100.00011111 (Dirección Broadcast)
+                     11000100.10101000.00010100.00011111 (Direcciï¿½n Broadcast)
 
 Clase C, Red Privada.
 
@@ -69,14 +77,14 @@ Clase C, Red Privada.
 255.255.255.192 ---> 11111111.11111111.11111111.11000000
 		     ___________________________________
 
-                     11000100.10101000.00010100.01000000 (Dirección Red)
+                     11000100.10101000.00010100.01000000 (Direcciï¿½n Red)
 
 
 192.168.20.74 -----> 11000100.10101000.00010100.01001010	
 255.255.255.192 ---> 00000000.00000000.00000000.00111111
                      ___________________________________
 
-		     11000100.10101000.00010100.01111111 (Dirección Broadcast)	
+		     11000100.10101000.00010100.01111111 (Direcciï¿½n Broadcast)	
 
 
  
