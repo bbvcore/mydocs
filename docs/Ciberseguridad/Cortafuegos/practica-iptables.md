@@ -168,16 +168,25 @@ service apache2 status (comprobar ejecución servicio)
 browser -> localhost (ver fichero index.html de apache en browser)
 
 ### Suricata
+```bash
 sudo apt install suricata
 suricata --build-info (comprobar instalación)
 /etc/suricata/suricata.yaml (fichero de configuración)
-Monitorizar una interfaz: etiqueta "af-packet" o "pcap", modos de captura pueden ser "pfring, af-packet y pcap", aunque pueden usarse
-la misma interfaz para todos los modos, mejor usar interfaces diferentes
-Actualizar suricata: sudo suricata-update
+```
+
+#### Monitorizar una interfaz
+Se puede usar la etiqueta "af-packet" o "pcap", los modos de captura pueden ser "pfring, af-packet y pcap" y aunque pueden usarse la misma interfaz para todos los modos es mejor usar interfaces diferentes.
+
+#### Actualizar suricata
+```bash
+sudo suricata-update
+```
 
 #### Uso de Suricata
+```bash
 sudo suricata -c /etc/suricata/suricata.yaml -i (interface configurada)
 (previamente se ha de configurar suricata.yaml)
+```
 
 #### Datos de suricata
 Localizados los datos recopilados por suricata en los siguientes ficheros.
