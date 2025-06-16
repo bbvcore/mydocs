@@ -1,3 +1,9 @@
+---
+title: Manejo de Arrays en Shell
+---
+
+# Udo de arrays en Shell
+```bash
 #!/bin/bash
 
 # Definimos un array
@@ -14,4 +20,5 @@ echo "Usando \$*:"
 for file in $*; do
   echo "Archivo: $file"
 done
+```
 

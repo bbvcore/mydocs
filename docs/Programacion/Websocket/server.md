@@ -1,3 +1,10 @@
+---
+title: Websocket Server 
+---
+
+# WebSocket Server 
+
+```javascript
 const WebSocket = require('ws');
 
 // Crear un servidor WebSocket en el puerto 8080
@@ -24,4 +31,4 @@ wss.on('connection', (ws) => {
 });
 
 console.log('Servidor WebSocket escuchando en ws://localhost:8080');
-
+```

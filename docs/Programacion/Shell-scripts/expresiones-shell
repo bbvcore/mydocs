@@ -1,5 +1,0 @@
-Método	Sintaxis	Tipo de operación	Rendimiento	Ejemplo
-expr	$(expr 5 + 3)	Operaciones aritméticas	Lento (proceso externo)	resultado=$(expr 5 + 3)
-$() (Sustitución)	$(comando)	Captura salida de comandos	Depende del comando	resultado=$(ls)
-(( )) (Aritmética)	((resultado = 5 + 3))	Operaciones aritméticas	Rápido (interno)	((resultado = 5 + 3))
-

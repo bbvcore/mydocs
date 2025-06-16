@@ -1,3 +1,10 @@
+---
+title: Websocket Cliente
+---
+
+# Websocket
+
+```bash
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -50,4 +57,4 @@
     </script>
 </body>
 </html>
-
+```

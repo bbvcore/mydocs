@@ -74,7 +74,7 @@ La instalación permite varias opciones depende del entorno donde vaya a operar.
 #### Acceso web
 El **PLC** tiene una interfaz de operativilidad accesible en el puerto **8080**.
 
-!["Interfaz web Open PLC"](../Img/open-plc/openplc-web-access.png)
+<!-- !["Interfaz web Open PLC"](../Img/open-plc/openplc-web-access.png)-->
 
 ```
 http://localhost:8080
@@ -87,10 +87,10 @@ openplc/openplc
 ### Varias imágenes en funcionamiento
 
 #### Sección Dashboard
-!["Dashboard"](../Img/open-plc/openplc-dashboard.png)
+<!-- !["Dashboard"](../Img/open-plc/openplc-dashboard.png) -->
 
 #### Sección Programs
-!["Programs"](../Img/open-plc/open-plc-programs.png)
+<!-- !["Programs"](../Img/open-plc/open-plc-programs.png) -->
 
 
 

@@ -1,9 +1,9 @@
 ---
 sidebar_position: 1
-title: Docusaurus
+title: Docusaurus 
 ---
 
-# &#129429; Docusaurus
+# &#129429; Docusaurus 
 Docusaurus es una aplicación para la creación de sitios web estáticos para la generación de documentación usando markdown y también es compatible con HTML. Creado por Facebook y basado en React.
 
 

@@ -1,6 +1,6 @@
 ---
 sidebar_position : 1
-title : certificados
+title : Certificados
 ---
 # Certificados
 Están basados en el estándar x.509 y sirven para validar la identidad de un usuario. 
@@ -23,12 +23,12 @@ Estructura básica de un certificado
 
 
 ## Firma
-Pueden ser autofirmados *(donde el issuer y subject coinciden)* o puede ser firmado por una CA (autoridad certificadora), donde se genera una CSR (certificate signing request) con la clave privada, que se manda a un CA (letsscript, DigiCert) y se devuelve un .crt firmado por esa CA. Se validan mediante la clave pública presente en el certificado.
+Pueden ser autofirmados *(donde el issuer y subject coinciden)* o puede ser firmado por una **CA** *(autoridad certificadora)*, donde se genera una **CSR** *(certificate signing request)* con la clave privada, que se manda a un **CA** *(LetsScript, DigiCert)* y se devuelve un **.crt** firmado por esa **CA**. Se validan mediante la clave pública presente en el certificado.
 
 Sus principales usos son para:
-- Proporcionar autentidad, constatar el firmante.
-- Mantener la integridad, evitar que el contenido sea adulterado.
-- Evitar el No Repudio, no se puede negar la autoría.
+- **Proporcionar autentidad**, constatar el firmante.
+- **Mantener la integridad**, evitar que el contenido sea adulterado.
+- **Evitar el No Repudio**, no se puede negar la autoría.
 
 ### ¿Quién firma los certificados? 
 - Autofirmado, como por ejemplo el propio servidor, mediante su propia clave privada. Estos certificados NO son confiables por defecto. Su uso está destinado a entornos de prueba o entornos locales y privados.
