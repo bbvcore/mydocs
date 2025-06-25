@@ -25,6 +25,7 @@ Lista de imágenes disponibles para la descarga
 
  </details>
 
+## Características del hardware
 <table>
   <thead>
     <tr>
@@ -54,35 +55,56 @@ Lista de imágenes disponibles para la descarga
   </tbody>
 </table>
 
-## Descarga de la Imagen
+## Generación de la imagen
+### Descarga de la Imagen
 La imagen usada es la imagen de example, que ocupa unos **600 MB** y descomprimida unos **3.5GB**. Para su descompresión pueden surgir problemas ya que esta comprimida con **deflate-64** que otorga una gran compresión pero no todos los descompresores lo soportan. En **GNU/Linux** hace falta instalar **dtrx**
 
 ```bash
 sudo apt install dtrx # Descarga
 dtrx file.zip # Uso
 ```
-## Comprobar la imagen
+### Comprobar la imagen
 ```bash
 fdisk from util-linux 2.38.1
 lsblk -f iot2000-image-v3.1.17.wic
 file iot2000-image-v3.1.17.wic
-
 ```
-## Instalación en la SD
+### Instalación en la SD
 ```bash
 sudo dd if=iot2000-image-v3.1.17.wic of=/dev/sdX bs=4M status=progress conv=fsync
 ```
-También se puede usar win32disk, rufus.io o balenaEtcher
+También se puede usar win32disk, rufus.io o balenaEtcher, de hecho la opción finalmente utilizada fue balenaEtcher.
 
 ## Acceso al dispositivo IOT Siemens 2040
 ```bash
 ssh root@192.168.200.1
 ```
 
-## Interfaces de red
+### Interfaces de red
+```bash
 eth0: 192.168.200.1
 eht1: down
 sit0NONE: down
+```
+
+### Comando de configuración
+Para poder realizar ajustes en la configuración se realizan ejecutando el comando
+```bash
+iot2000setup
+```
+<details>
+<summary>
+Lista con las opciones de configuración disponibles
+</summary>
+
+- **OS Settings**: para ajustes del OS como el idioma.
+- **Networking**: configurar la IP de las interfaces de red, por defecto la eth0 viene con la IP 192.168.200.1 y la eth1 con dhcp.
+- **Manage packages**: permite añadir un host, escoger paquetes para remover (galileo-target, nodejs, tcf-agent)
+- **Autostart services**: escoger los servicios para iniciar con el arranque, tales como node-red, ssh-server, galileo arduino runtime o TFC debugger agent.
+- **Peripherals**: configuración externa de los puertos COM, mostrar la configuración I/O, activar I2C (pin A4 y A5), activar SPI (pin D10-D13), activar UART (pin D0 y D1)
+
+</details>
+
 
 
 
