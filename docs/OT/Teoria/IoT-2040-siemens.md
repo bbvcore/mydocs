@@ -54,4 +54,35 @@ Lista de imágenes disponibles para la descarga
   </tbody>
 </table>
 
+## Descarga de la Imagen
+La imagen usada es la imagen de example, que ocupa unos **600 MB** y descomprimida unos **3.5GB**. Para su descompresión pueden surgir problemas ya que esta comprimida con **deflate-64** que otorga una gran compresión pero no todos los descompresores lo soportan. En **GNU/Linux** hace falta instalar **dtrx**
+
+```bash
+sudo apt install dtrx # Descarga
+dtrx file.zip # Uso
+```
+## Comprobar la imagen
+```bash
+fdisk from util-linux 2.38.1
+lsblk -f iot2000-image-v3.1.17.wic
+file iot2000-image-v3.1.17.wic
+
+```
+## Instalación en la SD
+```bash
+sudo dd if=iot2000-image-v3.1.17.wic of=/dev/sdX bs=4M status=progress conv=fsync
+```
+También se puede usar win32disk, rufus.io o balenaEtcher
+
+## Acceso al dispositivo IOT Siemens 2040
+```bash
+ssh root@192.168.200.1
+```
+
+## Interfaces de red
+eth0: 192.168.200.1
+eht1: down
+sit0NONE: down
+
+
 
