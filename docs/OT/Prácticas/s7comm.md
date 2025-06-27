@@ -117,7 +117,8 @@ Antes de instalar comprobar tener estas librerías en /home/root
 python3 -c "import snap7; import opcua; print('El estado de las librerías en el sistema es el correcto')"
 ```
 
-```oot@iot2000:~# rm cryptography-45.0.4-cp311-abi3-manylinux_2_34_x86_64.whl 
+```bash
+oot@iot2000:~# rm cryptography-45.0.4-cp311-abi3-manylinux_2_34_x86_64.whl 
 root@iot2000:~# python3 -m pip install --user --no-index --find-links=/home/root/ six-*.whl python_dateutil-*.whl  pytz-*.whl   opcua-0.98.12-py3-none-any.whl
 Looking in links: /home/root/
 Processing ./six-1.16.0-py2.py3-none-any.whl
@@ -129,9 +130,23 @@ Installing collected packages: six, python-dateutil, pytz, opcua
   WARNING: The scripts uabrowse, uacall, uaclient, uadiscover, uahistoryread, uals, uaread, uaserver, uasubscribe and uawrite are installed in '/home/root/.local/bin' which is not on PATH.
   Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
 Successfully installed opcua-0.98.12 python-dateutil-2.8.2 pytz-2023.3 six-1.16.0
-
-
-
-
-
 ```
+
+### Solucionar el Warning
+```bash
+echo 'export PATH=$PATH:/home/root/.local/bin' >> /home/root/.profile
+```
+
+
+
+
+## Comprobaciones
+```bash 
+root@iot2000:~# python3 -c "import opcua; print('ok')"
+cryptography is not installed, use of crypto disabled
+cryptography is not installed, use of crypto disabled
+ok
+root@iot2000:~# python3 -c "import snap7; print('ok')"
+ok
+```
+
