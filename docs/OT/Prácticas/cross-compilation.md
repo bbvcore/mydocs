@@ -2,17 +2,21 @@
 title: Cross Compilation
 sidebar_id: 1
 ---
-# Cross compilation
-Muy importante el OS que se use, con Ubuntu sufrí más problemas que con Mint Debian, por lo visto, Ubuntu incorpora más flags de compilación modernos (como -fcf-protection) que genera más incompatibilidades con i586.
+# &#9881; Cross compilation
+Es muy importante tener en cuenta el **OS** que se va a usar, con Ubuntu sufrí más problemas que con **Mint Debian**, esto es debido a que **Ubuntu** incorpora más **flags de compilación modernos** *(como -fcf-protection)* que genera más incompatibilidades con i586, por ello recomiendo usar una distribución **Debian/RHEL**.
 
 :::tips
 Para arquitecturas antiguas es importante aplicar los siguientes criterios:
-- Usar --no-binary para paquetes con extensiones C
-- Simplificar los flags en las arquitecturas antiguas (-m32 -march=i586 -Os)
+- Usar **--no-binary** para paquetes con extensiones C
+- Simplificar los flags en las arquitecturas antiguas *(-m32 -march=i586 -Os)*
 :::
 
 
-## Situación previa
+## &#8618;Situación previa
+:::warning
+La situación previa se puede consultar en esta <a href="s7comm.md">entrada</a>.
+:::
+
 Previamente se habían descargado dependencias puras que no necesitaban compilación
 ```bash
 pip download --only-binary=:all: --platform manylinux1_i586 --python-version 38 python-dateutil==2.8.2 pytz==2023.3 six==1.16.0
@@ -31,8 +35,8 @@ sudo apt update && sudo apt install -y \
     zlib1g-dev \
     libssl-dev
 ```
-## Librerías para cross-compilar
-### Librería lxml
+## &#128193; Librerías para cross-compilar
+### &#8594; Librería lxml
 #### Descarga
 ```bash
 pip download --no-binary lxml lxml==4.9.3`
@@ -48,7 +52,7 @@ python3 setup.py bdist_wheel --plat-name=linux_i586
 #### Fichero generado
 Accesible desde **/dist** con la extensión *.whl, entonces se procede a copiarlo para el sistema destino.
 
-### Librería cryptography
+### &#8594; Librería cryptography
 ```bash
 pip download --no-binary cryptography cryptography==3.4.8 
 ```
@@ -80,19 +84,19 @@ pip wheel cryptography --no-binary cryptography -w ./wheels
 </details>
 
 
-## Instalación de todas las librerías
+## &#128736; Instalación de todas las librerías
 ```bash
 python3 -m pip install --user --no-index --find-links=/home/root/ six-*.whl python_dateutil-*.whl  pytz-*.whl lxml-*.whl cryptography-*.whl opcua-0.98.12-py3-none-any.whl
 ```
 
-## Anexo
-Tuve un problema con la librería lxml debido a que no era adecuada para la versión python 3.8 que es la que usa el Yocto en el Siemens IoT, entonces procedo a conseguir de nuevo esa librería adecuada esta vez para el dispositivo OT.
+## &#128206;Anexo
+Tuve un problema con la librería lxml debido a que no era adecuada para la **versión python 3.8** que es la que usa el **Yocto en el Siemens IoT**, entonces procedo a conseguir de nuevo esa librería adecuada esta vez para el dispositivo OT.
 
-### Opción 1: Intentar encontrar directamente la librería
+### &#10004; Opción 1: Intentar encontrar directamente la librería
 ```bash
 pip download lxml==4.9.3 --platform manylinux1_i586 --python-version 38 --only-binary=:all:
 ```
-### Opción 2: Compilar la librería
+### &#10004; Opción 2: Compilar la librería
 Hay varias opciones, como me daba problemas con la versión de python, voy a probar una solución limpia que es usar docker.
 ```bash
 sudo apt install docker.io
@@ -108,7 +112,7 @@ docker run --platform linux/386 -it --rm \
 -rm: Elimina el contenedor al terminar (pero no los ficheros).
 :::ls
 
-#### Copiar la librería
+#### &#9989; Copiar la librería
 ```bash
 scp *.whl root@192.168.200.1:/home/root
 ```

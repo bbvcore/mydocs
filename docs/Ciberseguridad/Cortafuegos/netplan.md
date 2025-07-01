@@ -3,12 +3,12 @@ sidebar_position: 2
 title: Netplan
 ---
 
-# Netplan
-## Creación de un fichero yaml
+# &#127760; Netplan
+## &#128190; Creación de un fichero yaml
 ```bash
 /etc/netplan/ fichero yaml
 ```
-## Configuración del fichero yaml
+## &#128225; Configuración del fichero yaml
 
 ```bash
 network:
@@ -27,7 +27,7 @@ network:
           - 8.8.4.4
 ```
 
-## Activación de la interfaz configurada
+## &#128737; Activación de la interfaz configurada
 ```bash
 sudo netplan apply
 ```

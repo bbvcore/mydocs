@@ -3,15 +3,15 @@ sidebar_position: 4
 title: Suricata
 ---
 
-## Instalación
+## &#128229;Instalación
 La instalación, como muchas veces pasa, se puede realizar de diferentes formas, aquí se muestran las dos más habituales.
 
-### Desde los repositorios de las distros Debian/Ubuntu
+### &#128230; Desde los repositorios de las distros Debian/Ubuntu
 ```
 sudo apt install suricata -y
 ```
 
-### Desde el repositorio propio de Suricata
+### &#128230; Desde el repositorio propio de Suricata
 ```
 sudo add-apt-repository ppa:oisf/suricata-stable
 sudo apt update
@@ -22,7 +22,7 @@ Si no se dispone de **add-apt-repository** en la distribución se puede instalar
 sudo apt install software-properties-common
 ```
 
-### Verificar el resultado de la instalación
+### &#10004; Verificar el resultado de la instalación
 ```
 suricata --build-info
 ```
@@ -47,8 +47,8 @@ compiled with LibHTP v0.5.42, linked against LibHTP v0.5.42
 ```
 </details>
 
-## Ficheros importantes
-### Suricata.yaml
+## &#128194; Ficheros importantes
+### &#128196; Suricata.yaml
 Es el archivo principal de configuración
 ```
 /etc/suricata/suricata.yaml
@@ -82,7 +82,7 @@ vars:
 ```
 </details>
 
-### Logs
+### &#128220; Logs
 Suricata tiene sus propios logs dentro del directorio habitual en GNU/Linux.
 ```
 /var/log/suricata
@@ -94,7 +94,7 @@ Suricata tiene sus propios logs dentro del directorio habitual en GNU/Linux.
 - suricata.log
 :::
 
-### Reglas
+### &#128214; Reglas
 El conjunto de reglas locales
 ```
 /etc/suricata/rules
@@ -134,12 +134,12 @@ alert modbus any any -> any any (msg:"SURICATA Modbus Request flood detected"; f
 Las reglas personalizadas añadidas han de tener un SID > 1.000.000
 :::
 
-### Suricata-update
+### &#128257; Suricata-update
 Es el fichero de configuración para **suricata-update**
 ```
 /etc/suricata/update.yaml
 ```
-## Ejecución como IDS
+## &#128737; Ejecución como IDS
 Remplazar la interfaz por el nombre correspondiente de la interfaz escogida.
 ```
 sudo suricata -c /etc/suricata/suricata.yaml -i eth0
@@ -204,7 +204,7 @@ sudo systemctl restart suricata
 Por defecto los módulos **http2**, **modbus** y **dnp3** vienen como *"enable:no"* y hay que ponerlos a *"enable:yes"* para que **Suricata** arranque bien.
 :::
 
-### Test de funcionamiento
+### &#8594; Test de funcionamiento
 ```
 ┌─[✗]─[borjao@parrot]─[/etc/suricata/rules]
 └──╼ $sudo suricata -T -c /etc/suricata/suricata.yaml
@@ -215,7 +215,7 @@ Por defecto los módulos **http2**, **modbus** y **dnp3** vienen como *"enable:n
 
 ```
 
-### Funcionamiento correcto
+### &#8594; Funcionamiento correcto
 ```
 ┌─[borja@parrot]─[/etc/suricata/rules]
 └──╼ $sudo suricata -c /etc/suricata/suricata.yaml -i wlx3c52a1c35918
@@ -226,19 +226,19 @@ Por defecto los módulos **http2**, **modbus** y **dnp3** vienen como *"enable:n
 ```
 
 
-## Regas Emerging Threats
+## &#128221; Regas Emerging Threats
 Un conjunto de reglas rápidas de añadir a Suricata desarrolladas por la comunidad de **Emerging Threats**.
 ```
 sudo apt install suricata-update
 sudo suricata-update
 ```
-## Ver alertas
+## &#128276; Ver alertas
 ```
 sudo tail -f /var/log/suricata/fast.log
 ```
 
-## Comprobaciones
-### Ejecución en primer plano
+## &#9989; Comprobaciones
+### &#8594; Ejecución en primer plano
 ```
 sudo suricata -c /etc/suricata/suricata.yaml -i eth10 --init-errors-fatal
 ```
@@ -247,7 +247,7 @@ sudo suricata -c /etc/suricata/suricata.yaml -i eth10 --init-errors-fatal
 - **i**: configura la interfaz en la que va a escuchar
 - **--init-errors-fatal**: muestra los errores fatales en el lanzamiento de Suricata.
 
-### Simular tráfico malicioso
+### &#8594; Simular tráfico malicioso
 ```
 curl http://testmyids.com
 ```
@@ -255,7 +255,7 @@ curl http://testmyids.com
 La **URL** *testmyids.com* sirve para probar si el IDS/IPS está bien configurado, en este caso simula respuesta del comando "id" con lo cuál parece haber tenido éxito una vulnerabilidad y debería de mostrar una alerta el IDS/IPS.
 :::
 
-### Leer logs 
+### &#8594; Leer logs 
 ```
 tail -f /var/log/suricata/fast.log
 ```
@@ -263,8 +263,8 @@ tail -f /var/log/suricata/fast.log
 - **f**: sigue al descriptor del fichero, aunque se renombre el fichero.
 :::
 
-### Inspeccionar eve.json
-#### JQ
+### &#128269; Inspeccionar eve.json
+#### &#128297; JQ
 **JQ** sirve para procesar JSON y llevar a cabo varias operaciones, como el embellecimiento de los datos.
 
 :::tip[Embellece tu JSON]
@@ -281,7 +281,7 @@ cat eve.json # Se verá un stream de datos dificilmente seguible
 jq . eve.json # Se mostrará una sucesión de objetos JSON legibles
 ```
 
-#### Eve.JSON
+#### &#128278; Eve.JSON
 Fichero principal que genera Suricata en formato JSON, en este fichero se pueden consultar los siguientes eventos:
 
 - **Alertas**: consultando el tipo de evento de alerta, **"event_type":"alert"**.
@@ -298,8 +298,8 @@ Este fichero **eve.json** es la base de **Suricata** para trabajar con varios si
 
 
 
-## Crear reglas propias en Suricata
-### Reglas HTTP
+## &#128295; Crear reglas propias en Suricata
+### &#128208; Reglas HTTP
 Las reglas en suricata siguen una estructura determinada que es la siguiente:
 ```
 acción protocolo src_ip src_port -> dst_ip dst_port (opciones)
@@ -344,7 +344,7 @@ Listado de características más utilizadas en <b>HTTP</b>
 
 
 
-#### Regla para peticiones HTTP
+#### &#8594; Regla para peticiones HTTP
 Establecimiento de una regla propia básica de Suricata para comprobar cualquier tipo de petición HTTP que se produzca.
 ```
 alert http any any -> any any (msg:"HTTP GET Request Detected"; flow:to_server,established; http.method; content:"GET"; classtype:web-application-activity; sid:1000001; rev:1;)
@@ -381,13 +381,13 @@ Explicación de las opciones.
 ```
 </details>
 
-##### Comprobación del funcionamiento de la regla
+#### &#8594; Comprobación del funcionamiento de la regla
 ```
 sudo tail -f /var/log/suricata/fast.log 
 04/16/2025-09:35:55.545375  [**] [1:1000001:1] HTTP GET Request Detected [**] [Classification: access to a potentially vulnerable web application] [Priority: 2] {TCP} 10.0.2.15:52994 -> 193.110.128.199:80
 ```
 
-#### Regla para respuestas HTTP
+#### &#8594; Regla para respuestas HTTP
 ```
 alert http any any -> any any (msg:"HTTP 200 OK Response Detected"; flow:to_client,established; http.response_line; content:"200 OK"; classtype:successful-user; sid:1000002; rev:1;)
 ```
@@ -418,8 +418,8 @@ alert http any any -> any any (msg:"HTTP 200 OK Response Detected"; flow:to_clie
 
 
 
-## Anexo redes [comando ip]
-### Comprobaciones de namespaces (espacios de red)
+## &#127760; Anexo redes [comando ip]
+### &#9989; Comprobaciones de namespaces (espacios de red)
 Obtener el **UUID** con el parámetro **netns** que sirve para averiguar un **network namespace** *(espacio de red aislado, como en la contenerización)*, entonces desde un host se puede interaccionar con estos espacios.
 
 ```

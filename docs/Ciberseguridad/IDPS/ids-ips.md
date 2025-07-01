@@ -3,20 +3,20 @@ sidebar_position: 1
 title: IDS/IPS
 ---
 
-# IDS/IPS :globe_with_meridians:
+# :globe_with_meridians:IDS/IPS 
 En un intento de **disminuir** las **vulnerabilidades** a las que se enfrenta un sistema **IT** surgen los sistemas **IDS** para detectar anomalías y usos indebidos.
 
 Debido a la dificultad de disminuir dichas vulnerabildiades surgen los **IPS**, hoy en día se usan indistintamente **IDS/IPS**, dado que los equipamientos son idénticos, y las diferencias solo se aprecian en el despliegue y en algunos de los parámetros de configuración.
 
 
-## SIEM :pager:
+## :pager: SIEM 
 Son **sistemas** que permiten **centralizar la información** relacionando eventos de diferentes fuentes **y** *de esta forma* **generar alertas personalizadas**.
 
 :::tip[Ventaja entorno OT]
 Estos sistemas poseen una ventaja en **OT** sobre **IT**, y es la variabilidad, reduciendo con ello el número de falsos positivos.
 :::
 
-## Arquitectura base :pushpin:
+## :pushpin: Arquitectura base 
 
 Basada en la norma **IEC 62443**, norma de ciberseguirdad para sistemas industriales.
 
@@ -39,7 +39,7 @@ Características de la norma 62443
 </details>
 
 
-## Arquitectura para sistemas de control :beginner:
+## :beginner: Arquitectura para sistemas de control 
 Todo el tráfico que pasa por los **routers/switches** se lleva al **IDS** haciendo uso de los **puertos espejo** para recibir información y así poder controlar el tráfico intercambiado con la red **(IT)**.
 
 :::note[Port Mirroring]
@@ -50,7 +50,7 @@ Los puertos espejo permiten clonar el tráfico de un puerto determinado a otro, 
 El **IDS** debe de estar correctamente configurado y contar con las alertas necesarias para mostrar al administrador.
 
 
-## Arquitectura de seguridad con IDS
+## &#128272; Arquitectura de seguridad con IDS
 El **IDS** ha de ser capaz de poder bloquear el tráfico, así los los sensores se ubican en medio del tráfico.
 
 Los **sensores** son dispositivos,físicos o virtuales, que permiten capturar, monitorear y analizar el tráfico de la red de forma pasiva.

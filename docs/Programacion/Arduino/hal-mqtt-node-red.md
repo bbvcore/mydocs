@@ -1,3 +1,15 @@
+---
+title: ESP32 + HAL adaptado a Node-red
+---
+
+# &#128736;  ESP32 + HAL adaptado a Node-red
+
+<details>
+<summary>
+Código fuente para implementar en el ESP32
+</summary>
+
+```c++
 //*******************************************
 //      MODIFICADO PARA NODE-RED
 //*******************************************
@@ -90,3 +102,6 @@ void loop(){
         setTemperature();
         delay(30000);
     }*/
+```
+
+</details>

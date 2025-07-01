@@ -1,3 +1,16 @@
+---
+title: Petición POST en Node-red
+---
+
+# &#128736;  Petición POST a Node-red
+
+<details>
+<summary>
+Código fuente para implementar en el ESP32
+</summary>
+
+
+```c++
 //******************************************************
 //      PARA SOLICITUD POST CON NODE-RED 
 //******************************************************
@@ -82,3 +95,4 @@ void loop() {
     temperatureToServer();  // Enviar la temperatura al servidor en bucle
     delay(30000);  // Esperar 30 segundos antes de enviar la siguiente lectura
 }
+```

@@ -1,3 +1,17 @@
+---
+title: Flujo Aedes - Hal
+---
+
+# &#128736; Flujo Node-Red Aedes
+Flujo de node-red para poder trabajar con un ESP32 
+y transmitir su temperatura a través de un broker Aedes.
+
+<details>
+<summary>
+Obtener el <b>JSON</b> del flujo para usar en <b>Node-red</b>
+</summary>
+
+```json
 [
     {
         "id": "d2d7d69d8ec676de",
@@ -246,3 +260,5 @@
         "wires": []
     }
 ]
+```
+</details>

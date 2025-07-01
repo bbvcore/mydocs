@@ -3,10 +3,10 @@ sidebar_position: 3
 title: IPtables
 ---
 
-# Práctica IPtables
-## Pasos previos
-### Configuración de VirtualBox
-#### Creación de las máquinas virtuales
+# &#9881; Práctica IPtables
+## &#128221; Pasos previos
+### &#128736; Configuración de VirtualBox
+#### &#128421; Creación de las máquinas virtuales
 Crear 4 máquinas virtuales con Ubuntu Server para que sea más liviano el entorno de pruebas.
 
 <details>
@@ -21,8 +21,8 @@ Configuración del laboratorio de pruebas
 </details>
 
 
-### Máquina Router
-#### Habilitar el Ip Forwarding
+### &#128421; Máquina Router
+#### &#8594; Habilitar el Ip Forwarding
 
 Editar el archivo /etc/sysctl.conf y permitir el  reenvío de paquetes
 ```bash
@@ -37,7 +37,7 @@ Aplicar los cambios
 sudo sysctl -p
 ```
 
-#### Configuración de las IPs
+#### &#8594; Configuración de las IPs
 La interfaz en modo NAT usará DHCP, la interfaz de la red interna tendrá una IP estática.
 
 ```bash
@@ -57,9 +57,9 @@ network:
 sudo netplan apply
 ```
 
-### Reglas
+### &#128214; Reglas
 
-#### Reglas NAT
+#### &#128221; Reglas NAT
 
 ```bash
 sudo iptables -t nat -A POSTROUTING -o enp0s3 -j MASQUERADE
@@ -68,16 +68,16 @@ sudo iptables -A FORWARD -i enp0s3 -o enp0s8 -m state --state RELATED,ESTABLISHE
 ```
 
 
-### Máquina atacante
+### &#128421; Máquina atacante
 Acceso a la red externa en la que está la interfaz externa del Router y que recibe la dirección IP por DHCP.
 
-#### Preparación de herramientas
+#### &#8594; Preparación de herramientas
 ```bash
 sudo apt install nmap hping3 netcat -y
 ```
 
-### Máquina Web Server
-#### IP estática dentro de la LAN
+### &#128421; Máquina Web Server
+#### &#8594; IP estática dentro de la LAN
 ```bash
 sudo nano /etc/netplan/01-netcfg.yaml
 ```
@@ -101,18 +101,18 @@ sudo netplan apply
 sudo apt install apache2 -y
 ```
 
-### Monitorizador
-#### Herramientas de monitorización
+###  &#128421;Monitorizador
+#### &#8594; Herramientas de monitorización
 Instalar herramientas como tcpdump, iftop, nagios, zabbix.
 
 
 
-## Enrutamiento interno con IPtables
-### Bloquear Fordward
+## &#128257; Enrutamiento interno con IPtables
+### &#8594; Bloquear Fordward
 ```bash
 sudo iptables -P FORWARD DROP
 ```
-### Redirección NAT a Servidor Web
+### &#8594; Redirección NAT a Servidor Web
 Se procede a redirigir al puerto 80 del servidor el tráfico antes de enrutarse.
 
 ```bash
@@ -125,19 +125,19 @@ caso es la IP del Router del ISP por DHCP (red externa a las MVs),
 curl http://192.168.1.77:80
 :::
 
-### Permitir tráfico entre interfaces misma máquina
+### &#8594; Permitir tráfico entre interfaces misma máquina
 ```bash
 sudo iptables -A FORWARD -i enp0s8 -o enp0s3 -j ACCEPT - funciona
 sudo iptables -A FORWARD -i enp0s3 -o enp0s8 -j ACCEPT - funciona
 ```
 
-### Reenvió en las reglas de forwarding
+### &#8594; Reenvió en las reglas de forwarding
 El sistema reenvía el tráfico actuando como  **router** al haber previamente **bloqueado** todo tráfico con **forward drop** es decir se accede desde WAN al server.
 ```bash
 sudo iptables -A FORWARD -p tcp -d 192.168.2.3 --dport 80 -j ACCEPT 
 ```
 
-### Duplicar paquetes para Suricata
+### &#8594; Duplicar paquetes para Suricata
 ```bash
 sudo iptables -t mangle -A PREROUTING -i enp0s3 -p tcp --dport 80 -j TEE --gateway IP_suricata - Funciona
 ```
@@ -150,45 +150,45 @@ sudo modprobe xt_TEE
 :::
 
 
-### Cambiar IP de origen de los paquetes de salida
+### &#8594; Cambiar IP de origen de los paquetes de salida
 Para que los paquetes salgan con la IP del Router
 ```bash
 sudo iptables -t nat -A POSTROUTING -o enp0s8 (wan) -p tcp --sport 80  -j SNAT --to-source <IP WAN / IP pública router ".77"> 
 ```
 
 ## Resumen Final
-### Máquinas virtuales
+### &#128421; Máquinas virtuales
 ubuntu server: 192.168.2.1(red interna borja) y una interfaz NAT
 ubuntu apache: 192.168.2.3 y de gw la 192.168.2.1 (red interna borja)
 ubuntu suricata: 192.168.2.2 y de gw la 192.168.2.1 (red interna borja)
 
-### Apache
+### &#10004;Apache
 sudo apt install apache 2
 service apache2 status (comprobar ejecución servicio)
 browser -> localhost (ver fichero index.html de apache en browser)
 
-### Suricata
+### &#10004; Suricata
 ```bash
 sudo apt install suricata
 suricata --build-info (comprobar instalación)
 /etc/suricata/suricata.yaml (fichero de configuración)
 ```
 
-#### Monitorizar una interfaz
+#### &#8594; Monitorizar una interfaz
 Se puede usar la etiqueta "af-packet" o "pcap", los modos de captura pueden ser "pfring, af-packet y pcap" y aunque pueden usarse la misma interfaz para todos los modos es mejor usar interfaces diferentes.
 
-#### Actualizar suricata
+#### &#8594; Actualizar suricata
 ```bash
 sudo suricata-update
 ```
 
-#### Uso de Suricata
+#### &#8594; Uso de Suricata
 ```bash
 sudo suricata -c /etc/suricata/suricata.yaml -i (interface configurada)
 (previamente se ha de configurar suricata.yaml)
 ```
 
-#### Datos de suricata
+#### &#8594; Datos de suricata
 Localizados los datos recopilados por suricata en los siguientes ficheros.
 ```bash
 eve.json

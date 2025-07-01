@@ -18,32 +18,32 @@ netsh advfirewall set allprofiles state on
 ```batch
 netsh advfirewall reset
 ```
-## Reglas
-### Bloquear tráfico entrante a servidor local
+## &#128221; Reglas
+### &#10003; Bloquear tráfico entrante a servidor local
 ```batch
 netsh advfirewall firewall add rule name="Bloquear HTTP de entrada" dir=in action=block protocol=TCP localport=80
 netsh advfirewall firewall add rule name="Bloquear HTTPS de entrada" dir=in action=block protocol=TCP localport=443
 ```
 
-### Bloquear tráfico entrante del navegador
+### &#10003; Bloquear tráfico entrante del navegador
 ```batch
 netsh advfirewall firewall add rule name="Bloquear HTTP de entrada" dir=in action=block protocol=TCP remoteport=80
 netsh advfirewall firewall add rule name="Bloquear HTTPS de entrada" dir=in action=block protocol=TCP remoteport=443
 ```
 
-### Bloquear tráfico saliente a servidor local
+### &#10003; Bloquear tráfico saliente a servidor local
 ```batch
 netsh advfirewall firewall add rule name="Bloquear HTTP de salida" dir=out action=block protocol=TCP localport=80
 netsh advfirewall firewall add rule name="Bloquear HTTPS de salida" dir=out action=block protocol=TCP localport=443
 ```
 
-### Bloquear tráfico de entrada al servidor local
+### &#10003; Bloquear tráfico de entrada al servidor local
 ```batch
 netsh advfirewall firewall add rule name="Bloquear HTTP de entrada" dir=in action=block protocol=TCP remoteport=80
 netsh advfirewall firewall add rule name="Bloquear HTTPS de entrada" dir=in action=block protocol=TCP remoteport=443
 ```
 
-### Verificar las reglas
+### &#10003; Verificar las reglas
 ```batch
 netsh advfirewall firewall show rule name="Bloquear HTTP de entrada"
 ```
@@ -104,7 +104,7 @@ Aceptar
 Las reglas para la gestión del cortafuegos de Windows se están llevando a cabo con **netsh** para que sea más compatible con Windows al poder ejecutarse desde cualquier versión de Windows al ser ejecutables desde **CMD** y no hacer falta la **Power Shell**
 :::
 
-#### Anexo: Power Shell
+#### &#9881; Anexo: Power Shell
 El cortafuegos puede gestionarse desde la **Power Shell** con comandos básicos como los siguientes.
 ```powershell
 New-NetFirewallRule -DisplayName "Nombre regla" -Direction "" -Protocol "" -LocalPort -Action
@@ -117,7 +117,7 @@ Curiosamente para resetear las reglas, es necesario usar **netsh**, no existe un
 :::
 
 
-### Borrar las reglas, perfiles o propiedades
+### &#128221; Borrar las reglas, perfiles o propiedades
 ```batch
 netsh advfirewall firewall delete rule name="<nombre regla>"
 ```

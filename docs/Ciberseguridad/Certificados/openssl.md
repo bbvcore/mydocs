@@ -1,14 +1,14 @@
 
 # OpenSSL
 
-## Conceptos teóricos
-## Pasos para la obtención de un certificado
-### Solicitud de firma de certificado (CSR)
+## :books: Conceptos teóricos
+## &#128196; Pasos para la obtención de un certificado
+### &#128229; Solicitud de firma de certificado (CSR)
 Contiene **información relevante** e *importante* del **dominio**, **organización** y **clave pública**. Es el primer paso a la hora de generar un certificado **SSL/TLS**.
 
 El **CSR** se envía a una **CA** *(Autoridad de Certificación)*, la cual se encarga de **crear** el **certificado digital real**. 
 
-### Funcionamiento de la solicitud CSR
+### &#128737; Funcionamiento de la solicitud CSR
 Toda la solicitud se basa en la infraestructura **PKI** *(Clave Pública)* y compete una serie de procedimientos.
 
 <details>
@@ -43,44 +43,48 @@ Listado de pasos a realizar para completar la solicitud
 8. Clave Pública
 </details>
 
-### Generación de un CSR
-#### Desde la terminal
+### &#128451; Generación de un CSR
+#### &#128421; Desde la terminal
 Se realiza a través de los parámetros de SSL
-```
+```bash
 openssl req -new -newkey rsa:2048 -nodes -keyout domain.key -out domain.csr
 ```
 Y con esta ejecución se obtienen 2 ficheros:
-- Clave privada 
+- Clave privada
 - Solicitud de certificado (CSR)
 
 :::info[Leyenda del comando]
-- req: solicitud de certificados
-- new: nueva petición
-- newkey rsa:2048: una clave RSA de 2048 bits, clave asimétrica (privada y pública). de 2048 a 4096 a día de hoy es la longitud más habitual para la clave.
-- nodes: opcional para no cifrar la clave privada, no pide contraseña.
-- keyout: fichero de salida de la clave privada
-- out: archivo de salida CSR
+- **req**: solicitud de certificados
+- **new**: nueva petición
+- **newkey rsa:2048**: una clave RSA de 2048 bits, clave asimétrica (privada y pública). de 2048 a 4096 a día de hoy es la longitud más habitual para la clave.
+- **nodes**: opcional para no cifrar la clave privada, no pide contraseña.
+- **keyout**: fichero de salida de la clave privada
+- **out**: archivo de salida CSR
 :::
 
 
-#### Desde servidores de hosting
+#### &#128421; Desde servidores de hosting
 Tanto en servidores GNU/Linux como Windows se suele ofrecer la posibilidad de solicitar CSR con opciones como "Generar un nuevo CSR" o "Crear una solicitud de certificado" y entonces se deben de rellenar una serie de campos en un formulario web para obtener la solicitud.
 
 
 
 
 
-## Instalación
-### Desde la terminal y los repositorios
+## &#128221; Instalación
+###  &#128194; Desde la terminal y los repositorios
+```bash
 sudo apt update
 sudo apt install openssl
+```
 
-### Dede github
+### &#128295; Desde github
+:::tip
 https://github.com/openssl/openssl
+:::
 
-## Uso habitual
+## &#128736;Uso habitual
 
-### 1. Generar clave privada
+### Generar clave privada
 Para generar la clave privada se puede realizar de dos formas, utilizando genpkey o genrsa.
 :::tip
 La clave privada se utiliza dentro de la encriptación asimétrica en varias situaciones como pueden ser: generar un CSR, realizar firma digital o la configuración de servidores.
@@ -121,7 +125,7 @@ Recomendable asignar el nombre de la clave pública el mismo que tenía la clave
 
 Con el comando cat podemos ver el contenido de las claves generadas.
 
-### 2. Crear un CSR
+### Crear un CSR
 Un CSR es una solicitud de firma de certificado.
 ```bash
 opensssl req -new -key name.key -out name.csr
@@ -133,7 +137,7 @@ opensssl req -new -key name.key -out name.csr
 - out: la salida del csr creado
 :::
 
-### 3. Certificado autofirmado
+### Certificado autofirmado
 De esta forma se obtiene un **certificado autofirmado** como si proviniera de una entidad de confianza, aunque esto solo funciona realmente bien en entornos de desarollo.
 ```bash
 openssl x509 -req -in name.csr -signkey name.key -out name.crt -days 365
@@ -146,21 +150,21 @@ openssl x509 -req -in name.csr -signkey name.key -out name.crt -days 365
 - opcional: se puede añadir la clave pública
 :::
 
-## Anexo
-### Comprobaciones
-#### Comprobar contenido clave
+## &#128221; Anexo
+### &#9989; Comprobaciones
+#### &#8594; Comprobar contenido clave
 ```bash
 cat name.ley
 ```
-#### Ver la clave privada
+#### &#8594; Ver la clave privada
 ```bash
 openssl rsa -text in <clave.key> -noout
 ```
-#### Comprobar la información CSR
+#### &#8594; Comprobar la información CSR
 ```bash
 openssl req -text -in <solicitud.csr> -noout -verify
 ```
-#### Crear una CA (local)
+#### &#8594; Crear una CA (local)
 
 Para crear un certificado autofirmado se usa el siguiente comando
 ```bash
@@ -176,7 +180,7 @@ openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out c
 - **CAcreateserial**: archivo con número de serie *(ca.srl)*.
 :::
 
-### Formatos de extensiones
+### &#128736; Formatos de extensiones
 <details>
 <summary>
 Listado de las principales siglas utilizadas
@@ -194,8 +198,8 @@ Listado de las principales siglas utilizadas
 
 </details>
 
-### Uso en Servidores
-#### Apache
+### &#128421; Uso en Servidores
+#### &#8594; Apache
 Añadir a la configuración de virtual host **SSL Engine on**
 ```bash
 # Activar SSL
@@ -213,7 +217,7 @@ A continuación se activa el módulo **SSL** de **apache** con el siguiente coma
 sudo a2enmod ssl
 ```
 
-#### Nginx
+#### &#8594; Nginx
 La configuración de **Nginx** es más sencilla que con **Apache** aunque conceptualmente es bastante similar.
 
 ```bash

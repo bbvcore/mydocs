@@ -1,3 +1,9 @@
+---
+title: Iteraciones con Pyhton
+---
+
+# Iteraciones con Python
+```python
 # Iterar Listas (Array) o Tuplas
 array = [0,1,2,3,4,5,6]
 for i in array:
@@ -25,3 +31,4 @@ for i in range(10):
 print("Range de 3 en 3")
 for i in range(0,12,3):
 	print(i)
+```

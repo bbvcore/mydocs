@@ -3,7 +3,7 @@ title: Liberías en Siemens IoT2040
 sidebar_position: 1
 ---
 
-# S7 comm y OPCua en Siemens IoT 2040
+# &#128214; S7 comm y OPCua en Siemens IoT 2040
 Lo primero de todo, es que es necesario tener **Python** instalado en el equipo, en este caso se comprueba su disponibilidad una vez se accede por **SSH** al dispositivo de Siemens.
 
 ```bash
@@ -11,7 +11,7 @@ python3 --version
 ```
 Se comrpueba positivamente que Python viene instalado de serie en la imagen y es la versión **3.18.13**, no viene instalado **pip/pip3** y sumado a que la versión de Yocto generada para el despliegue no dispone de gestor de dependencias toca descargar en otro equipo las librerías necesarias.
 
-## Descarga de librerías necesarias
+## &#128206; Descarga de librerías necesarias
 En este caso toca recurrir a la búsqueda de las mismas en el dominio siguiente.
 
 ```bash
@@ -30,9 +30,9 @@ sudo apt update
 sudo apt install -y build-essential python3-dev python3-pip python3-wheel libssl-dev
 ```
 
-## Compilación para i386/i586
-### Generación de un .whl compatible
-#### Snap7
+## &#128194; Compilación para i386/i586
+### &#9881; Generación de un .whl compatible
+#### &#8594; Snap7
 Se específica la arquitectura accediendo al directorio descomprimido y ejecutando, dentro de python-snap7-1.0.
 
 :::tip[Cross-compilation]
@@ -43,7 +43,7 @@ CFLAGS="-march=i586" python3 setup.py bdist_wheel --plat-name=linux_i586
 
 Se obtiene en /dist un fichero whl para exportar al siemens IoT.
 
-#### OPCua
+#### &#8594; OPCua
 En este caso se genera directamente una vez se está dentro del directorio descomprimido con el comando.
 ```bash
 pithon3 setup.py bdist_wheel
@@ -51,19 +51,19 @@ pithon3 setup.py bdist_wheel
 Y dentro del directorio /dist se genera la libería whl.
 
 
-### Copia de las librerías descargadas
+### &#128195; Copia de las librerías descargadas
 ```bash
 scp *.whl root@192.168.200.1:/home/root
 ```
 
-### Instalar las librerías descargadas
-#### Python3-snap7
+### &#128202; Instalar las librerías descargadas
+#### &#9654; Python3-snap7
 Instalación de la librería para S7.
 ```bash
 python3 -m pip install --user --no-index --find-links=/home/root python3_snap7-1.0-pyp3-none-linux_i586.whl
 ```
 
-#### OPCUA
+#### &#9654; OPCUA
 Para opcua hacen falta dependencias como pytz o python-dateutil, que se han de descargar de la siguiente forma y luego pasarlas por ssh con scp al dispositivo IoT de Siemens.
 ```bash
 pip download pytz --platform manylinux1_i586 --python-version 38 --only-binary=:all:
@@ -93,7 +93,7 @@ Las descargas de las librerias y su posterior compilación, una vez se descargar
 pip download lxml --no-binary=lxml
 CFLAGS="-march=i586 -mtune=generic" python3 setup.py bdist_wheel --plat-name=linux_i586
 ```
-Como da varios problemas, al final toca llevar a cabo una cross-compilation total mediante el uso de docker.
+Como la gestión de las dependencias y de las librerías se va volviendo complicada, creo una entrada independiente para este cometido.
 
 :::warning[Acceso al cross-compilation]
 <a href="cross-compilation.md">Guía de cross-compilation</a>
@@ -101,7 +101,7 @@ Como da varios problemas, al final toca llevar a cabo una cross-compilation tota
 
 
 
-#### Comando de instalación
+#### &#128229; Comando de instalación
 Antes de instalar comprobar tener estas librerías en /home/root
 ```bash
 - six-1.16.0-py2.py3-none-any.whl
@@ -112,7 +112,8 @@ Antes de instalar comprobar tener estas librerías en /home/root
 - opcua-0.98.12-py3-none-any.whl
 ```
 
-## Verificación de la instalación
+## &#128269; Comprobaciones
+### &#9989; Verificación
 ```bash
 python3 -c "import snap7; import opcua; print('El estado de las librerías en el sistema es el correcto')"
 ```
@@ -132,7 +133,7 @@ Installing collected packages: six, python-dateutil, pytz, opcua
 Successfully installed opcua-0.98.12 python-dateutil-2.8.2 pytz-2023.3 six-1.16.0
 ```
 
-### Solucionar el Warning
+### :warning:  Solucionar el Warning
 ```bash
 echo 'export PATH=$PATH:/home/root/.local/bin' >> /home/root/.profile
 ```
@@ -140,7 +141,7 @@ echo 'export PATH=$PATH:/home/root/.local/bin' >> /home/root/.profile
 
 
 
-## Comprobaciones
+## &#9201; Comprobaciones
 ```bash 
 root@iot2000:~# python3 -c "import opcua; print('ok')"
 cryptography is not installed, use of crypto disabled

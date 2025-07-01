@@ -1,3 +1,10 @@
+---
+title: Clases con Pyhton
+---
+
+# Clases con Python
+
+```python
 # Start Person Class
 class person:
 	# Propiedades
@@ -27,3 +34,4 @@ p2 = person("Bas",25)
 
 print(p1) # Ejemplo para ver como el método __str__ hace su trabajo
 p2.data()
+```
