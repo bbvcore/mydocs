@@ -80,7 +80,26 @@ Si se quiere una versión específica se puede usar el siguiente método
 ```bash
 pip install python-snap7==1.3
 ```
+## Librería libsnap7.so
+### Configuración de variables
+```bash
+export CFLAGS="-m32 -march=i586 -mtune=atom"
+export CXXFLAGS="-m32 -march=i586 -mtune=atom"
+export LDFLAGS="-m32"
+```
 
+### Limpieza y compilación
+```bash
+make -f i386_linux.mk clean
+make -f i386_linux.mk
+```
+
+### Preparación de paquete para transferir
+```bash
+mkdir -p snap7-iot2000/lib
+cp ../bin/i386_linux/libsnap7.so snap7-iot2000/lib/
+tar czvf snap7-iot2000.tar.gz snap7-iot2000
+```
 
 ## Caso de uso de librería Siemens 7 (v-1.3)
 Debido a la librería usada de S7 se han de tener en cuenta ciertas peculiaridades:

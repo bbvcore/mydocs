@@ -20,7 +20,7 @@ https://pypi.org
 A continuación se va a buscar las librerías *.whl precompiladas para la arquitectura requerida según el hardware del dispositivo.
 
 Las librerías descargadas se obtienen como un tarball y son necesarias para ser compatibles con Python 3.8.13 y no tener problemas las siguientes versiones:
-- python-snap7 1.0
+- python-snap7 1.3
 - opcua 0.98.12
 
 Una vez descargadas hace falta compilarlas acorde a la arquitectura del Siemenes IoT 2040, para ello hace falta preparar el host donde se van a compilar de la siguiente manera.
@@ -41,7 +41,7 @@ CFLAGS="-march=i586" python3 setup.py bdist_wheel --plat-name=linux_i586
 ```
 :::
 
-Se obtiene en /dist un fichero whl para exportar al siemens IoT.
+Se obtiene en **/dist** un fichero whl para exportar al siemens IoT.
 
 #### &#8594; OPCua
 En este caso se genera directamente una vez se está dentro del directorio descomprimido con el comando.
@@ -57,11 +57,48 @@ scp *.whl root@192.168.200.1:/home/root
 ```
 
 ### &#128202; Instalar las librerías descargadas
-#### &#9654; Python3-snap7
+#### &#9654; Python3-snap7 (v. 1.3)
 Instalación de la librería para S7.
 ```bash
-python3 -m pip install --user --no-index --find-links=/home/root python3_snap7-1.0-pyp3-none-linux_i586.whl
+python3 -m pip install --user --no-index --find-links=/home/root python3_snap7-1.3-pyp3-none-linux_i586.whl
 ```
+#### Librería lib
+cd ~/cross-compilation/libsnap/snap7-full-1.4.2/
+
+Compilación
+```bash
+g++ -m32 -march=i586 -shared -fPIC \
+-Irelease/Wrappers/c-cpp \
+-Isrc/sys \
+-Isrc/core \
+-Isrc/lib \
+-Isrc \
+src/sys/snap_msgsock.cpp \
+src/sys/snap_threads.cpp \
+src/sys/snap_tcpsrvr.cpp \
+src/sys/snap_sysutils.cpp \
+src/core/s7_peer.cpp \
+src/core/s7_server.cpp \
+src/core/s7_text.cpp \
+src/core/s7_client.cpp \
+src/core/s7_partner.cpp \
+src/core/s7_micro_client.cpp \
+src/core/s7_isotcp.cpp \
+src/lib/snap7_libmain.cpp \
+-o build/bin/i386_linux/libsnap7.so
+```
+:::tip
+-Isrc/sys: Agrega la ruta de ficheros de sistema
+-Isrc/core: Agrega la ruta de ficheros del nucleo
+-Isrc/lib: Agrega de los ficheros de librería
+-Isrc: Ruta base como respaldo adicional
+:::
+
+Comprobación
+```bash
+file build/bin/i386_linux/libsnap7.so
+```
+
 
 #### &#9654; OPCUA
 Para opcua hacen falta dependencias como pytz o python-dateutil, que se han de descargar de la siguiente forma y luego pasarlas por ssh con scp al dispositivo IoT de Siemens.
