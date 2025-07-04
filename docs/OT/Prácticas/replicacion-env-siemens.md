@@ -105,6 +105,9 @@ tar czvf snap7-iot2000.tar.gz snap7-iot2000
 Debido a la librería usada de S7 se han de tener en cuenta ciertas peculiaridades:
 - Por temas de permisos en el OS se ha usado 1102 en vez de 102 como alternativa en desarrollo(otra opción es usar sudo).
 - Usar solo el área DB que es la más estable en esta versión. 
+:::warning[Solo en entorno virtual]
+Este código funciona en PC con entorno virtual, pero no funciona en el Yocto del Siemens IoT por problemas con las librerías de C++, en el Yocto hacerlo con Python puro
+:::
 
 ### Código servidor
 ```python
