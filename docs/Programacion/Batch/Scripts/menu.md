@@ -5,7 +5,7 @@ title: Menus
 # Menus
 ## Menu con Set 
 
-```batch
+```cmd
 :menu
 cls
 echo ================
@@ -37,7 +37,7 @@ goto menu
 - **goto** *tag (sin puntos)*, **call** *tag (requiere puntos)*
 :::
 
-```batch
+```cmd
 @echo off
 title Menu con Choice
 :menu

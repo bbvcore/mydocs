@@ -1,3 +1,9 @@
+---
+title: Listas en Python
+---
+
+# Listas en Python
+```python
 lista = [1,2,3,4]
 print("Toda la lista", lista)
 lista.append(5) # como push en JS
@@ -15,3 +21,4 @@ lista.remove(40) # Eliminar la primera ocurrencia
 print(lista)
 lista.clear() # Vaciar la lista
 print(lista)
+```

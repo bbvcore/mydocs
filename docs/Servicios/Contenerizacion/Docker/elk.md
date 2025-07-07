@@ -13,7 +13,7 @@ Utilización de la herramienta **docker-compose** que requiere de un fichero **y
 Fichero Yaml para el despliegue
 </summary>
 
-```
+```bash
 version: "3.8"
 
 services:
@@ -50,7 +50,7 @@ networks:
 
 ## Opciones
 ### Comprobación de logs
-```
+```bash
 docker-compose logs -f kibana
 ```
 ### Acceso contenedores
@@ -64,7 +64,7 @@ sudo docker exec -it <name-container> /bin/bash
 Script despliegue.sh
 </summary>
 
-```
+```bash
 #!/bin/bash
 # Uso de despliege.sh:
 # <namefile.yaml o yml> [up|down|restart]

@@ -4,7 +4,7 @@ title: Cortafuegos Windows
 ---
 
 # Script control FW de Windows
-```
+```cmd
 @echo off
 title Firewall
 

@@ -36,39 +36,39 @@ Características principales
 
 ### Pasos previos instalación
 #### Actualizar el sistema operativo
-```
+```bash
 sudo apt update && sudo apt upgrade -y
 ```
 #### Dependencias necesarias
-```
+```bash
 sudo apt install -y git build-essential pkg-config automake libtool cmake python3 python3-pip \
 libssl-dev libmodbus-dev libpthread-stubs0-dev python2.7-dev python3-dev
 ```
 #### NodeJS
 Necesario para la parte de la interfaz web
-```
+```bash
 curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
 sudo apt install -y nodejs
 ```
 #### Clonar repositorio
-```
+```bash
 git clone --recursive https://github.com/thiagoralves/OpenPLC_v3.git
 ```
 ### Instalar OpenPLC
 Acceder a OpenPLC_v3
-```
+```bash
 cd OpenPLC_v3
 ```
 Lanzamiento de la instalación
-```
+```bash
 ./install.sh
 ```
 La instalación permite varias opciones depende del entorno donde vaya a operar.
-```
+```bash
 ./install.sh linux
 ```
 ### Inicializar el PLC
-```
+```bash
 ./start_openplc.sh
 ```
 #### Acceso web
@@ -76,21 +76,15 @@ El **PLC** tiene una interfaz de operativilidad accesible en el puerto **8080**.
 
 <!-- !["Interfaz web Open PLC"](../Img/open-plc/openplc-web-access.png)-->
 
-```
+```bash
 http://localhost:8080
 ```
 #### Login
 Las credenciales de acceso por defecto en OpenPLC son las siguientes.
-```
+```bash
 openplc/openplc
 ```
-### Varias imágenes en funcionamiento
 
-#### Sección Dashboard
-<!-- !["Dashboard"](../Img/open-plc/openplc-dashboard.png) -->
-
-#### Sección Programs
-<!-- !["Programs"](../Img/open-plc/open-plc-programs.png) -->
 
 
 

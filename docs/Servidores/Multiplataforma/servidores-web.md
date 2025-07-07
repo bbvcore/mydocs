@@ -64,12 +64,12 @@ Buscar el virtualhost que escucha el puerto 80 y proceder a realizar un redirecc
 
 #### Comandos básicos
 
-- **a2enmod**:
-- **a2ensite**:
-- **a2dismod**:
-- **a2dissite**:
-- **a2enconf**:
-- **a2disconf**:
+- **a2enmod**: activar módulo
+- **a2ensite**: activar sitio
+- **a2dismod**: desactivar módulo
+- **a2dissite**: desactivar sitio
+- **a2enconf**: activar configuración
+- **a2disconf**: desactivar configuración
 
 
 Los ficheros de conf se suelen solo activar o desactivar, no editar, son extras para configurar y complementar **apache2.conf**.
@@ -89,11 +89,11 @@ En los directorios comentados anteriormente para Apache, ya que los certificados
 
 ### Configuración de servidor Https
 Se ha de editar el fichero de configuración
-```
+```bash
 /etc/nginx/sites-avaliable/nameDominio
 ```
 Y dentro de se especifican las características del servicio que se desplegara en Nginx. 
-```
+```bash
 # Servidor en el puerto 80
 server{
     listen 80;
@@ -121,8 +121,8 @@ server{
 }
 ```
 
-Habilitar el servicio
-```
+### Habilitar el servicio
+```bash
 sudo ln -s /etc/nginx/sites-available/tu_dominio /etc/nginx/sites-enabled/
 sudo nginx -t # Valida el fichero de configuración sin reiniciar nginx
 ```

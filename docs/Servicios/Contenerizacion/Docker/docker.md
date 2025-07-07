@@ -8,12 +8,12 @@ Es un software que permite la creación de contenedores para el despliegue de mi
 
 ## Pasos previos
 1. Actualizar el sistema
-```
+```bash
 sudo apt update
 sudo apt upgrade -y
 ```
 2. Paquetes
-```
+```bash
 sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
 ```
 :::info[Paquetes]
@@ -36,14 +36,14 @@ sudo apt install apt-transport-https ca-certificates curl software-properties-co
 :::
 
 Se descarga la clave de docker.gpg y se almacena en un directorio temporal.
-```
+```bash
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg > /tmp/docker.gpg 
 ```
 
 :::note[apt-key]
 apt-key sirve para añadir, eliminar, explortar, listar y otras operaciones sobre claves.
 :::
-```
+```bash
 sudo apt-key add /tmp/docker.gpg
 ```
 
@@ -52,46 +52,46 @@ sudo apt-key add /tmp/docker.gpg
 
 Con el comando **add-apt-repository** se añade el repositorio como un fichero del directorio **/etc/apt/sources.list.d/**. De esta forma no se toca, como antaño, el fichero **sources.list**, sino que se genera uno específico por cada aplicación con el formato *"aplicacion.list"* y se almacena en el directorio **sources.list.d.**
 
-```
+```bash
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 ```
 :::tip[Linux Standard Base]
 - El comando lsb_release muestra información específica sobre la versión de la distribución GNU/Linux en la que se está.
-```
+```bash
 lsb_release --help
 ```
 :::
 
 5. Actualizar
-```
+```bash
 sudo apt update
 ```
 
 ## Instalación 
 1. Instalar docker
-```
+```bash
 sudo apt install docker-ce -y
 ```
 2. Comprobar el estado
-```
+```bash
 sudo systemctl status docker
 ```
 3. Habilitarlo
-```
+```bash
 sudo systemctl enable docker
 ```
 
 ### Comandos básicos de Docker
 #### Comprobar contenedores
-```
+```bash
 docker ps 
 ```
 #### Detener microservicios ejecutado en un contenedor
-```
+```bash
 docker stop apache-container mysql-container phpmyadmin-container
 ```
 #### Borrar contenedores, volumenes, imágenes y redes
-```
+```bash
 docker rm <name-container>
 docker network rm <name-network>
 docker volume rm <name-volume>
@@ -103,11 +103,11 @@ docker image rm <name-image> o docker rmi <name-image>
 
 #### Creación de una Red
 La red es necesaria para la interconexión de los diferentes microservicios asignados a cada contenedor creado.
-```
+```bash
 docker network create ot
 ```
 #### Contenedor para Apache
-```
+```bash
 docker run -d \
   - -name apache-docker \
   - -network ot \
@@ -117,7 +117,7 @@ docker run -d \
 ```
 
 #### Contenedor para MySQL
-```
+```bash
 docker run -d \
   --name mysql-docker \
   --network ot \
@@ -130,7 +130,7 @@ docker run -d \
 ```
 
 #### Contenedor para PHPmyadmin
-```
+```bash
 docker run -d \
   --name phpmyadmin-docker \
   --network ot  \
@@ -144,15 +144,15 @@ docker run -d \
 ### Desde compose
 #### Instalación de compose
 #### Descarga desde GitHub de Compose
-```
+```bash
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 ```
 #### Asignar permisos de ejecución
-````
+```bash
 sudo chmod +x /usr/local/bin/docker-compose
-````
-#### Comprobar la versión
 ```
+#### Comprobar la versión
+```bash
 docker-compose --version
 ```
 
@@ -163,7 +163,7 @@ docker-compose --version
 Contenido del fichero YAML para el caso práctico
 </summary>
 
-```
+```bash
 version: '3.7'
 
 services:
@@ -213,7 +213,7 @@ networks:
 </details>
 
 #### Lanzar y detener docker-compose
-```
+```bash
 sudo docker-compose up -d 
 sudo docker-compose down 
 ```
@@ -221,11 +221,11 @@ sudo docker-compose down
 ## Caso práctico desde la terminal
 
 ### Crear red
-```
+```bash
 sudo docker network create ot
 ```
 ### Comprobación de redes
-```
+```bash
 sudo docker network ls
 NETWORK ID     NAME      DRIVER    SCOPE
 d8dc1d547cca   bridge    bridge    local
@@ -234,7 +234,7 @@ d8dc1d547cca   bridge    bridge    local
 ef70cdc539c6   ot        bridge    local
 ```
 ### Creación y ejecución del contenedor de Apache
-```
+```bash
 sudo docker run -d --name apache-docker --network ot -p 80:80 -v $(pwd)/html:/usr/local/apache2/htdocs/ httpd:latest
 Unable to find image 'httpd:latest' locally
 latest: Pulling from library/httpd
@@ -249,7 +249,7 @@ Status: Downloaded newer image for httpd:latest
 e23a662730b32189601456c3b5ad25cf5402073f5ff4c96db995f1e4c88b6694
 ```
 ### Creación y ejecución del contenedor de MySQL
-```
+```bash
 sudo docker run -d --name mysql-docker --network ot -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=mydb -e MYSQL_USER=user -e MYSQL_PASSWORD=123456 -v mysql-data:/var/lib/mysql mysql:5.7
 Unable to find image 'mysql:5.7' locally
 5.7: Pulling from library/mysql
@@ -269,7 +269,7 @@ Status: Downloaded newer image for mysql:5.7
 323fe08f159c714f9074726b8b2428a2be7c5b1b400868bf59e645b8a4d4e013
 ```
 ### Creación y ejecución del contenedor de phpmyadmin
-```
+```bash
 sudo docker run -d --name phpmyadmin-docker --network ot -p 8080:80 -e PMA_HOST=mysql-docker -e PMA_USER=user -e PMA_PASSWORD=123456 phpmyadmin/phpmyadmin // Aquí hubo un error PMA_HOST, ya solucionado
 Unable to find image 'phpmyadmin/phpmyadmin:latest' locally
 latest: Pulling from phpmyadmin/phpmyadmin
@@ -299,7 +299,7 @@ Status: Downloaded newer image for phpmyadmin/phpmyadmin:latest
 ```
 
 ### Listado de contenedores
-```
+```bash
 sudo docker ps 
 CONTAINER ID   IMAGE                   COMMAND                  CREATED          STATUS          PORTS                                     NAMES
 906a873cdf0d   phpmyadmin/phpmyadmin   "/docker-entrypoint.…"   4 minutes ago    Up 4 minutes    0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   phpmyadmin-docker

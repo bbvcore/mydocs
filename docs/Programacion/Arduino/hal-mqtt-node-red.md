@@ -6,7 +6,7 @@ title: ESP32 + HAL adaptado a Node-red
 
 <details>
 <summary>
-Código fuente para implementar en el ESP32
+Código fuente para implementar en el ESP32 una detección de temperatura del microprocesador y enviar los datos por WiFi y MQTT a Node-red
 </summary>
 
 ```c++
@@ -24,7 +24,7 @@ Código fuente para implementar en el ESP32
 //*******************************************
 // CONFIGURACIÓN DE RED Y BROKER
 //*******************************************
-const char *ssid = "MiFibra-65F2";
+const char *ssid = "";
 const char *password = "";
 // Red teléfono móvil
 //const char *ssid = "****"

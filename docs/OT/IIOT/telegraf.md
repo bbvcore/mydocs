@@ -13,7 +13,7 @@ Para el despliegue modular se aplica una configuración minimalista en el ficher
 Fichero del agente
 </summary>
 
-```
+```bash
 [agent]
   interval = "10s"
   round_interval = true
@@ -47,7 +47,7 @@ Fichero del agente
 Fichero de configuración para el protocolo MQTT
 </summary>
 
-```
+```bash
 [[inputs.mqtt_consumer]]
   servers = ["tcp://192.168.56.106:1883"]
   topics = ["/sensores/#"]
@@ -62,7 +62,7 @@ Fichero de configuración para el protocolo MQTT
 Fichero de configuración para la salida de los datos hacía InfluxDB
 </summary>
 
-```
+```bash
 [[outputs.influxdb_v2]]
   urls = ["http://localhost:8086"]
   token = "Añadir el Token de InfluxDB"
@@ -77,7 +77,7 @@ Fichero de configuración para la salida de los datos hacía InfluxDB
 Fichero de configuración de los datos del sistema.
 </summary>
 
-```
+```bash
 [[inputs.cpu]]
   percpu = true
   totalcpu = true
@@ -97,19 +97,19 @@ En este fichero hay que tener en cuenta los permisos del usuario que ejecuta el 
 </details>
 
 ## Chuleta de comandos para Telegraf
-```
+```bash
 telegraf --config /etc/telegraf/telegraf.conf --test
 ```
-```
+```bash
 telegraf --config /etc/telegraf/telegraf.conf --debug
 ```
-```
+```bash
 sudo systemctl restart telegraf
 ```
-```
+```bash
 journalctl -u telegraf -f
 ```
-```
+```bash
 sudo systemctl status telegraf
 ```
 
@@ -125,7 +125,7 @@ Configuración de **telegraf** para almacenar en **conf.d** en compatibilidad co
 Fichero de configuración
 </summary>
 
-```
+```bash
 [agent]
   interval = "5s"
   debug = true
