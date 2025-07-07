@@ -1,3 +1,11 @@
+---
+title: Calculadora con select/case
+---
+
+# Calculadora
+Calculadora realizada con seletc/case en shellscript.
+
+```bash
 #!/bin/bash
 
 # Mostrar un menú con select
@@ -27,4 +35,5 @@ select operacion in "Sumar" "Restar" "Salir"; do
             ;;
     esac
 done
+```
 

@@ -1,3 +1,10 @@
+
+---
+title: Script para una calculadora
+---
+
+# Script para una calculadora
+```bash
 #!/bin/bash
 
 # Mostrar menú de opciones
@@ -36,4 +43,4 @@ case $operacion in
         exit 1
         ;;
 esac
-
+```

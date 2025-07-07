@@ -3,6 +3,18 @@ title: Listas en Python
 ---
 
 # Listas en Python
+Una relación de los principales métodos utilizados en las listas dentro del lenguaje de programación de proposito general Python
+
+:::Tip
+- **append**: método para añadir al final
+- **pop**: método para borrar al final
+- **pop(0)**: método para borrar al inicio
+- **insert**: método para añadir al inicio
+- **extend(list)**: método para añadir una lista al final de otra lista
+- **remove(value)**: método para eliminar el primer valor que coincida con value.
+- **clear**: método para vaciar la lista
+:::
+
 ```python
 lista = [1,2,3,4]
 print("Toda la lista", lista)

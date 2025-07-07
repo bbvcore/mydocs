@@ -1,5 +1,12 @@
-#!/bin/bash
+---
+title: Iteraciones arrays
+---
 
+# Iteraciones arrays ShellScripts
+Gestión de los argumentos y el manejo de los mismos desde la cli del OS.
+
+```bash
+#!/bin/bash
 
 files=("file1.md" "file2.md" "file3.md")  # Puedes añadir más ficheros
 
@@ -21,3 +28,4 @@ done
 # $file=document, ${file}1=document1, $file1 = error
 # Para extensión usar pattern matchin ${file##*.}, ##* elimina todo antes del punto,
 # incluido el punto
+```
