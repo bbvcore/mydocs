@@ -110,32 +110,35 @@ ldconfig # Actualizar librerías
 ldconfig -p | grep libsnap7
 ```
 
-## Caso de uso
+## Caso de uso S7
 Se va a probar con un servidor y un cliente para testear correctamente snap7.
 
 Al comprobar la librería se produce un error por la versión GCC de la compilación entonces se va a realizar estos pasos:
-# En tu dispositivo IOT2000:
+### En tu dispositivo IOT2000:
 cd /usr/lib
 mv libsnap7.so libsnap7.so.backup  # Hacer backup
 
-# Descargar versión compatible con GLIBC 2.31
+### Descargar versión compatible con GLIBC 2.31
 wget https://github.com/SCADACS/PLCinject/raw/master/snap7/release/Linux/i386/glibc_2.21/libsnap7.so
 
 
-# Verificar compatibilidad
+### Verificar compatibilidad
+````bash
 objdump -T libsnap7.so | grep GLIBC_
 
 file libsnap7.so 
 libsnap7.so: ELF 32-bit LSB shared object, Intel 80386, version 1 (SYSV), dynamically linked, BuildID[sha1]=de167e5ce2c0a447ae57d4747e49d3bcd100c763, not stripped
-
-
-# Actualizar cache
-copiar librería libsnap7.so al yocto
+````
+### Actualizar cache
+```bash
+# Copiar la librería libsnap7.so al yocto
 ldconfig
-
+```
+:::warning[Necesario Python puro]
 Ahora la librería es la correcta, con la versión de gcc correcta, pero contiene instrucciones que el Atom del IOT2040 no maneja y el mensaje del server es ilegal instruction, la librería que podía valer no se puede descargar por error 404 entonces la única forma de hacerlo funcionar es con python puro.
+:::
 
-## Servidor funcionando con Python puro
+### Servidor S7 funcionando con Python puro
 ```bash 
 import socket
 import struct
@@ -321,53 +324,226 @@ if __name__ == '__main__':
         server.stop()
         sys.exit(1)
 ```
+Este **servidor puro** realizado en **Python** posee las siguientes características:
+- Es **totalmente compatible** con Python al **100%** sin necesidad de dependencias externas.
+- Incorpora soporte completo para áreas de memoria: **DB** *(bloque de datos)*,**MD** *(memoria de marca)*, **EB** *(entradas)* y **AB** *(salidas)*
+- Compatible con clientes **Snap7**.
+
+Además aporta una seri de ventajas sobre la librería desarrollada en **C++**:
+- Elimina problemas de compatibilidad
+- No tiene dependencias con bibliotecas externas
+- Es más fácil de depurar al estar integramente en Python
+- Menor consumo de recursos en sistemas embebidos como el caso del Yocto
 
 
-## Códig cliente puro
+## Cliente s7 puro
+Este código se ejecuta en otro host diferente al Siemens IoT 2040 pero dentro de la misma LAN
+
 ```bash
+import socket
+import struct
+import sys
+import time
 
+class Snap7Client:
+    def __init__(self, ip='192.168.200.1', port=1102):
+        self.ip = ip
+        self.port = port
+        self.sock = None
+        self.connected = False
+        
+    def connect(self):
+        """Conecta al servidor con manejo detallado de errores"""
+        print(f"Conectando a {self.ip}:{self.port}...")
+        try:
+            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.sock.settimeout(5.0)
+            self.sock.connect((self.ip, self.port))
+            self.connected = True
+            print("¡Conexión TCP exitosa!")
+            return True
+        except ConnectionRefusedError:
+            print("Error: Conexión rechazada. Verifica:")
+            print("1. Que el servidor esté en ejecución")
+            print("2. Que la IP y puerto sean correctos")
+            return False
+        except socket.timeout:
+            print("Error: Tiempo de espera agotado. Verifica:")
+            print("1. Que el dispositivo esté encendido")
+            print("2. Que la IP sea correcta")
+            print("3. Que no haya problemas de red")
+            return False
+        except Exception as e:
+            print(f"Error de conexión: {str(e)}")
+            return False
+        
+    def disconnect(self):
+        """Desconecta del servidor"""
+        if self.sock:
+            self.sock.close()
+            self.connected = False
+            print("Desconectado")
+        
+    def read_db(self, db_number, start, size):
+        """Lee datos de DB con depuración mejorada"""
+        if not self.connected:
+            print("Error: No conectado al servidor")
+            return None
+            
+        try:
+            # Cabecera: función, área, db_number, tipo, start, size
+            header = struct.pack('>BBBBHH', 4, 0x84, db_number, 0, start, size)
+            print(f"[DEBUG] Enviando cabecera: {header.hex()}")
+            
+            self.sock.sendall(header)
+            
+            # Recibir datos con timeout
+            data = bytearray()
+            start_time = time.time()
+            
+            while len(data) < size:
+                remaining = size - len(data)
+                try:
+                    chunk = self.sock.recv(remaining)
+                    if not chunk:
+                        print("Error: Conexión cerrada por el servidor")
+                        return None
+                    data.extend(chunk)
+                except socket.timeout:
+                    if time.time() - start_time > 4.0:
+                        print(f"Error: Tiempo de espera agotado. Recibidos {len(data)}/{size} bytes")
+                        return None
+            
+            print(f"[DEBUG] Datos recibidos: {data.hex()}")
+            print(f"[DEBUG] Tamaño recibido: {len(data)} bytes")
+            return data
+            
+        except Exception as e:
+            print(f"Error en lectura: {str(e)}")
+            return None
+        
+    def write_db(self, db_number, start, data):
+        """Escribe datos en DB con depuración mejorada"""
+        if not self.connected:
+            print("Error: No conectado al servidor")
+            return False
+            
+        try:
+            # Cabecera de escritura
+            header = struct.pack('>BBBBHH', 5, 0x84, db_number, 0, start, len(data))
+            print(f"[DEBUG] Enviando cabecera: {header.hex()}")
+            print(f"[DEBUG] Enviando datos: {data.hex()}")
+            
+            self.sock.sendall(header + data)
+            
+            # Recibir respuesta
+            response = self.sock.recv(1)
+            print(f"[DEBUG] Respuesta del servidor: {response.hex() if response else 'None'}")
+            
+            if response == b'\x00':
+                print("Escritura exitosa (confirmación recibida)")
+                return True
+            else:
+                print(f"Error en escritura. Código de respuesta: {response.hex() if response else 'Ninguno'}")
+                return False
+                
+        except Exception as e:
+            print(f"Error en escritura: {str(e)}")
+            return False
+
+
+if __name__ == '__main__':
+    # Configuración por defecto
+    server_ip = "192.168.200.1"
+    server_port = 1102
+    
+    # Manejar argumentos de línea de comandos
+    if len(sys.argv) > 1:
+        server_ip = sys.argv[1]
+    if len(sys.argv) > 2:
+        server_port = int(sys.argv[2])
+    
+    print(f"=== Cliente Snap7 Mejorado ===")
+    print(f"Servidor: {server_ip}:{server_port}")
+    print(f"Fecha: 2025-07-04")
+    print(f"====================================\n")
+    
+    client = Snap7Client(server_ip, server_port)
+    
+    try:
+        if not client.connect():
+            print("\nSugerencias:")
+            print("1. Verifica que el servidor esté ejecutándose")
+            print("2. Comprueba la IP con 'ping 192.168.200.1'")
+            print("3. Prueba con el comando: telnet 192.168.200.1 1102")
+            sys.exit(1)
+        
+        # Primera lectura - DBW0 (2 bytes)
+        print("\n[Prueba 1] Leyendo DB1.DBW0 (2 bytes)...")
+        dbw0_data = client.read_db(1, 0, 2)
+        
+        if dbw0_data and len(dbw0_data) == 2:
+            value = struct.unpack('>h', dbw0_data)[0]
+            print(f"DB1.DBW0 = {value}")
+        else:
+            print("Error: No se pudo leer DBW0")
+            print("Posibles causas:")
+            print("a) DB1 no existe en el servidor")
+            print("b) El offset 0 no es válido")
+            print("c) Problema de protocolo")
+        
+        # Segunda lectura - DBD4 (4 bytes)
+        print("\n[Prueba 2] Leyendo DB1.DBD4 (4 bytes)...")
+        dbd4_data = client.read_db(1, 4, 4)
+        
+        if dbd4_data and len(dbd4_data) == 4:
+            value = struct.unpack('>f', dbd4_data)[0]
+            print(f"DB1.DBD4 = {value:.5f}")
+        else:
+            print("Error: No se pudo leer DBD4")
+        
+        # Escritura de prueba
+        print("\n[Prueba 3] Escribiendo nuevo valor en DB1.DBW0...")
+        new_value = struct.pack('>h', 5678)
+        
+        if client.write_db(1, 0, new_value):
+            print("Escritura confirmada por servidor")
+            
+            # Verificación
+            print("\n[Prueba 4] Verificando escritura...")
+            dbw0_data = client.read_db(1, 0, 2)
+            if dbw0_data and len(dbw0_data) == 2:
+                new_dbw0 = struct.unpack('>h', dbw0_data)[0]
+                print(f"Nuevo DB1.DBW0 = {new_dbw0}")
+                if new_dbw0 == 5678:
+                    print("¡Escritura verificada correctamente!")
+                else:
+                    print("Error: El valor no coincide")
+            else:
+                print("Error: No se pudo verificar la escritura")
+        else:
+            print("Error: La escritura no fue confirmada por el servidor")
+            print("Posibles causas:")
+            print("a) Permisos insuficientes en el servidor")
+            print("b) Dirección inválida (DB o offset)")
+            print("c) Error de protocolo")
+        
+    except KeyboardInterrupt:
+        print("\nOperación cancelada por el usuario")
+    except Exception as e:
+        print(f"\nError inesperado: {str(e)}")
+        import traceback
+        traceback.print_exc()
+    finally:
+        client.disconnect()
 ```
-Este servidor puro
-Características Clave del Servidor
-
-    Compatible 100% con Python: Sin dependencias externas
-
-    Soporte completo para áreas de memoria:
-
-        DB (Bloques de datos)
-
-        MB (Memoria de marca)
-
-        EB (Entradas)
-
-        AB (Salidas)
-
-    Protocolo compatible con clientes Snap7
-
-    Manejo eficiente de múltiples clientes con threading
-
-    Robusto manejo de errores y desconexiones
-
-    Fácil de extender para más funcionalidades
-
-Ventajas sobre la solución C++
-
-    Sin problemas de compatibilidad: Funciona en cualquier sistema con Python
-
-    Sin dependencias de bibliotecas externas
-
-    Fácil depuración: Todo el código está en Python
-
-    Modificable directamente: Puedes adaptarlo a tus necesidades específicas
-
-    Consumo de recursos optimizado para sistemas embebidos
 
 :::warning[Para S7 solo Python puro]
-Para usar el protocolo S7 sobre el sistema Yocto en un Siemens IoT2040 usar Python puro dado que las librerías de C++ dan problemas por instrucciones que no puede procesar
-el microprocesador Intel del mismo. Además la alternativa, que era usar una librería ofrecida por el fabricante el enlace esta roto (404)
+Para usar el **protocolo S7** sobre el sistema Yocto en un **Siemens IoT2040** usar Python puro dado que las librerías de **C++** dan problemas por instrucciones que no puede procesar el microprocesador **Intel** del dispositivo. Además la alternativa, que era usar una librería ofrecida por el fabricante el enlace esta roto *(404)*
 :::
 
-Se comprobo la librería desde el yocto
+Como seguía habiendo problemas se comprueba la librería desde el propio **Yocto** por si había algun problema y todo era aparentemente correcto.
+```bash
 root@iot2000:~# ldd /usr/lib/libsnap7.so
 	linux-gate.so.1 (0xb76e1000)
 	libpthread.so.0 => /lib/libpthread.so.0 (0xb7669000)
@@ -377,24 +553,37 @@ root@iot2000:~# ldd /usr/lib/libsnap7.so
 	libc.so.6 => /lib/libc.so.6 (0xb72c6000)
 	/lib/ld-linux.so.2 (0xb76e2000)
 	libm.so.6 => /lib/libm.so.6 (0xb71c7000)
-Y estaba todo perfecto, esta ya fue descargada de https://sourceforge.net/projects/snap7/files/Snap7-IoT/snap7-iot-quark/ (oficial para el iot2040)
+```
+El estado de la librería era perfecto, algo que se esperaba ya que fue descargada de https://sourceforge.net/projects/snap7/files/Snap7-IoT/snap7-iot-quark/ , siendo oficial para el dispositivo Siemens IoT 2040.
 
 
-## analisis binario
- objdump -d /usr/lib/libsnap7.so > libsnap7.asm # se obtiene fichero libsnap7.asm
+## Compatibilidad de la librería
+### Análisis binario de la librería 
+Pero como seguía dando problemas la ejecución y el error era de **instrucción ilegal** se procede a realizar un análisis binariode la misma, para ello se convierte a **asm** *(ensamblador)* mediante el comando **objdump**.
+:::tip
+- objdump permite inspeccionar el código de archivos binarios ejecutables
+- d: desensamblar el código máquina a ensamblador (más legible)
+:::
+```bash
+objdump -d /usr/lib/libsnap7.so > libsnap7.asm # se obtiene fichero libsnap7.asm
+```
+Entonces mediante el uso del comando grep se pueden buscar instrucciones incompatibles en el código con el microprocesador del Siemens Yocto.
+```bash
+grep -i -E '<instrucciones>' librería.asm
+```
 
-
-Para finalizar el análisis binario demostro:
+### Análisis hexadecimal de la librería 
+También se utiliza la herramienta **hexdump** *(con parámetro -c)* para ver el código hexadecimal del binario en formato hexadecimal y con codificación ASCII
+```bash
 root@iot2000:~# hexdump -C /usr/lib/libsnap7.so | grep '66 0f'
 
 0001c1f0  05 00 00 0f 8f 87 02 00  00 83 fa 66 0f 84 ae 05  |...........f....|
 00025170  fe ff 66 0f af 46 10 66  89 44 24 1e 0f b6 47 01  |..f..F.f.D$...G.|
+```
 
-66 0f es un prefijo común para instrucciones SSE/SSE2 (como movupd, addpd, mulpd, etc).
+Consultando se observo que **66 0f** es un prefijo habitual para la ejecución de instrucciones de tipo **SSE/SSE2** que incluyen algunas como las siguientes: movupd, addpd, mulpd...
 
-Por ejemplo, en 66 0f af el opcode af con prefijo 66 suele ser imul vectorizado o similar SSE.
-
-En procesadores muy antiguos (como tu Quark X1000 que no tiene SSE), estas instrucciones no existen y lanzan Illegal instruction.
+Este tipo de instrucciones no se pueden ejecutar en procesadores como el Quark X1000 dado que no existen en el micro y por consiguiente lanzan el mensaje recibido tras la ejecución del script de **Illegal instruction**.
 
 
 
@@ -474,7 +663,7 @@ echo 'export PATH=$PATH:/home/root/.local/bin' >> /home/root/.profile
 ```
 
 
-## &#9201; Comprobaciones
+## &#9201; Verificado
 ```bash 
 root@iot2000:~# python3 -c "import opcua; print('ok')"
 cryptography is not installed, use of crypto disabled
@@ -483,4 +672,93 @@ ok
 root@iot2000:~# python3 -c "import snap7; print('ok')"
 ok
 ```
+## Caso de uso OPCUA
+### Servidor OPCUA
+```python
+from opcua import Server
+import time
 
+try:
+    print("[DEBUG] Creando servidor OPC UA...")
+    server = Server()
+
+    print("[DEBUG] Configurando endpoint a 0.0.0.0:4840...")
+    server.set_endpoint("opc.tcp://0.0.0.0:4840/freeopcua/server/")
+
+    print("[DEBUG] Agregando espacio de nombres...")
+    uri = "http://examples.freeopcua.github.io"
+    idx = server.register_namespace(uri)
+
+    print("[DEBUG] Creando objetos...")
+    objects = server.get_objects_node()
+
+    print("[DEBUG] Agregando variable de prueba...")
+    myvar = objects.add_variable(idx, "MyVariable", 6.7)
+    myvar.set_writable()
+
+    print("[DEBUG] Iniciando servidor...")
+    server.start()
+    print("[DEBUG] Servidor iniciado correctamente.")
+
+    try:
+        while True:
+            time.sleep(1)
+            # Puedes actualizar variable aquí si quieres
+            # myvar.set_value(myvar.get_value() + 0.1)
+    except KeyboardInterrupt:
+        print("[DEBUG] Deteniendo servidor por interrupción de teclado...")
+
+    print("[DEBUG] Parando servidor...")
+    server.stop()
+    print("[DEBUG] Servidor detenido.")
+
+except Exception as e:
+    print(f"[ERROR] Excepción en servidor OPC UA: {e}")
+
+
+```
+
+### Cliente OPCUA
+```python
+from opcua import Client
+
+url = "opc.tcp://192.168.200.1:4840/freeopcua/server/"
+client = Client(url)
+
+try:
+    print("Conectando cliente OPC UA...")
+    client.connect()
+    print("Cliente conectado correctamente.")
+
+    root = client.get_root_node()
+    print("Root node es:", root)
+
+    objects = client.get_objects_node()
+    print("Navegando objetos:")
+    for child in objects.get_children():
+        print("  ->", child, child.get_display_name().Text)
+
+    print("Accediendo a variable MyVariable...")
+    myvar = objects.get_child(["2:MyVariable"])  # Usa el namespace que aparece al hacer get_children
+    val = myvar.get_value()
+    print("Valor de MyVariable:", val)
+
+except Exception as e:
+    print(f"Error al conectar o leer: {e}")
+
+finally:
+    client.disconnect()
+    print("Cliente desconectado")
+```
+
+
+
+
+## Anexo: problemas Siemens IoT20240
+Los tiempos de ejecución de scripts son algo elevados, scripts que en un entorno actual se ejecutan en segundos pueden llevar 3 minutos en el Yocto del Siemenes IoT2040, como en el caso del despliegue del servidor OPCUA incluido en esta entrega.
+
+Los motivos o causas de ese comportamiento se pueden clasificar acorde a las siguientes características:
+- Hardware limitado (microprocesador)
+- Python en sistemas embebidos va más lento.
+- Implementación de asyncio o sockets puede consumir mucho hardware en entornos limitados.
+- La librería OPCUA lleva a cabo unos procesos que son costosos en consumo de hardware.
