@@ -2,7 +2,7 @@
 title: Replica del entorno Siemens IoT2040
 ---
 
-# Replica del entorno Siemens IoT 2040
+# Replica del entorno virtual Siemens IoT2040
 
 Para poder trabajar dentro de **GNU/Linux** sin tener que estar instalado al **Yocto**  se va a crear un entorno virtual para disponer de la misma versión de Python y de las mismas liberías.
 
@@ -48,10 +48,10 @@ sudo make altinstall # Install instala pudiendo sobrescribir, altinstall sin sob
 python3.8 -m venv ./iot2040-dev
 source sourc/iot2040-dev/bin/activate
 ```
-### Ejemplo para Versión de librería 1.3
+### Ejemplo para S7 versión 1.3
 <details>
 <summary>
-Versión snap7 1.3
+Versión Snap7 1.3
 </summary>
 
 ### Comprobaciones de versiones
@@ -203,6 +203,24 @@ if __name__ == '__main__':
 ```
 </details>
 
+
+
+### Ejemplo para OPCUA 0.98.12
+<details>
+<summary>
+Versión OPCUA 0.98.12
+</summary>
+
+### Código cliente
+```python
+
+```
+
+### Código server
+```python
+
+```
+</details>
 
 
 

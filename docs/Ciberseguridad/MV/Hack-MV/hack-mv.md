@@ -125,110 +125,188 @@ Añadir al fichero de configuración de los hosts los nombres de dominio de los 
 127.0.0.1   servicioX.local
 ```
 
-
-
 ## PHP y MariaDB
+### Instalación de PHP
+```bash
+sudo dnf install php php-mysqlnd php-json php-mbstring php-common php-xml php-cli php-gd php-opcache php-pdo -y
+```
+#### Verificación de la instalación
+```bash
+php --version
+```
+### Instalación de PhpMyAdmin
+:::warning
+Esto se puede convertir en una odisea en sistemas operativos RHEL por SElinux y la gestión que
+usan estas distros de dependencias comparado a distros Debian.
+:::
+
+#### Repositorio EPEL
+```bash
+sudo dnf install epel-release -y
+```
+#### Actualizar metadatos
+```bash
+sudo dnf clean all && sudo dnf makecache
+```
+Sigue sin encontrar phpmyadmin entonces se va a descargar directamente
+```bash
+curl -L -o phpMyAdmin.tar.gz https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-all-languages.tar.gz
+sudo mkdir /usr/share/phpMyAdmin
+sudo tar xzf phpMyAdmin.tar.gz -C /usr/share/phpMyAdmin --strip-components=1
+ls /usr/share/phpMyAdmin # Comprobar que están todos los ficheros
+```
+#### Fichero de configuración de Apache
+Crear un fichero en **/etc/httpd/conf.d/phpMyAdmin**
+```bash
+Alias /phpmyadmin /usr/share/phpMyAdmin
+
+<Directory /usr/share/phpMyAdmin/>
+    Require all granted
+</Directory>
+```
+#### Fichero de configuración de phpMyAdmin
+Requiere generar uno propio usando de referencia el proporcionado como ejemplo
+```bash
+cp /usr/share/phpMyAdmin/config.sample.inc.php /usr/share/phpMyAdmin/config.inc.php
+```
+Ajustar estas lineas
+```bash
+$cfg['blowfish_secret'] = ''; // Contraseña para encriptar cookies y demás
+$cfg['Servers'][1]['host'] = '10.255.255.77';  // IP del servidor MariaDB
+$cfg['Servers'][1]['auth_type'] = 'cookie';    // Para pedir usuario y contraseña
+$cfg['Servers'][1]['AllowNoPassword'] = false; // No permitir conexión sin contraseña
 
 ```
-CREATE DATABASE labdb;
-USE labdb;
-
-CREATE TABLE users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(50),
-  password VARCHAR(50)
-);
-
-INSERT INTO users (username, password) VALUES
-('admin', 'admin123'),
-('user1', 'pass1'),
-('user2', 'pass2');
+#### Crear usuario para phpmyadmin
+```sql
+CREATE USER IF NOT EXISTS 'phpmyadmin'@'%' IDENTIFIED BY ''; -- Creación user
+GRANT ALL PRIVILEGES ON *.* TO 'phpmyadmin'@'%' WITH GRANT OPTION; -- Permisos *.* (db.table)
+FLUSH PRIVILEGES; -- Recarga permisos
+```
+Comprobar que funciona correctamente
+```bash
+mysql -u phpmyadmin -h <IP> -p
+```
 
 
+#### Configurar firewall
+```bash
+sudo firewall-cmd --permanent --add-port=3306/tcp
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --reload
+```
+#### Ajustar SELinux
+```bash
+sudo sestatus
+sudo setsebool -P httpd_can_network_connect_db 1 # Permanente
+sudo setenforce 0 # Temporal
+```
+
+
+### Instalación de MariaDB
+```bash
+sudo dnf install mariadb-server
+```
+#### Comprobación de la instalación
+```bash
+mysql --version
+```
+#### Activación y comprobación del servicio
+```bash
+systemctl enable mariadb
+systemctl start mariadb
+systemctl status mariadb
+```
+## Aplicación PHP - MariaDB
+### MariaDB
+```sql
+CREATE DATABASE hack;
+USE hack;
+
+create table users( id INT ZEROFILL AUTO_INCREMENT PRIMARY KEY, user varchar (64), password varchar (64) ) ENGINE = INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci; 
+
+INSERT INTO users (user, password) VALUES
+('admin', 'admin1234'),
+('admin', '12345678'),
+('admin', '00000000');
+```
+
+### Php
+```php
 
 <?php
-$conn = new mysqli('localhost', 'root', 'tu_password', 'labdb');
+// Creación de la sesión
+session_start();
 
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
+// Se comprueba si existe el usuario
+if (isset($_SESSION["user"])) {
+    // Si se está logueado se va al access.php	
+    header("Location: access.php");
+    exit();
 }
 
-if (isset($_POST['username']) && isset($_POST['password'])) {
-    $user = $_POST['username'];
-    $pass = $_POST['password'];
+// Si no se está logueado 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["user"])) {
+    $con = new mysqli('localhost', 'root', '', 'hack');
+    if ($con->connect_error) {
+        die("Error en la conexión a base de datos");
+    }
 
-    // ¡Vulnerable a SQL Injection!
-    $sql = "SELECT * FROM users WHERE username='$user' AND password='$pass'";
-    $result = $conn->query($sql);
+    // Guardar los datos del user 	
+    $user = $_POST["user"];     
+    $pass = $_POST["password"]; 
+
+    // Consulta SQL muy Vulnerable
+    $query = "SELECT * FROM users WHERE user = '$user' AND password = '$pass'";
+    $result = $con->query($query);
 
     if ($result->num_rows > 0) {
-        echo "Bienvenido, " . htmlspecialchars($user);
+        $_SESSION["user"] = $user; 
+        header("Location: access.php");
+        exit();
     } else {
-        echo "Credenciales incorrectas";
+        echo "Datos de acceso incorrectos";
     }
 }
 ?>
 
-<form method="post" action="">
-    Usuario: <input type="text" name="username" /><br />
-    Contraseña: <input type="password" name="password" /><br />
-    <input type="submit" value="Entrar" />
+
+<form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+    User: <input type="text" name="user" required><br>
+    Password: <input type="password" name="password" required><br>
+    <input type="submit" value="Acceder">
+
 </form>
 
 ```
 
 
-``` 
-use labdb
+inyección
+```sql
+' OR '1'='1' -- 
+SELECT * FROM users WHERE user = '' OR '1'='1' -- ' AND password = '123'
+```
 
-db.users.insertMany([
-  { username: "admin", password: "admin123" },
-  { username: "user1", password: "pass1" },
-  { username: "user2", password: "pass2" }
-])
-
-
-const http = require('http');
-const url = require('url');
-const { MongoClient } = require('mongodb');
-
-const client = new MongoClient('mongodb://localhost:27017');
-let db;
-
-async function startServer() {
-  await client.connect();
-  db = client.db('labdb');
-
-  http.createServer(async (req, res) => {
-    const query = url.parse(req.url, true).query;
-
-    if (req.url.startsWith('/login') && query.username && query.password) {
-      const { username, password } = query;
-
-      // Vulnerable: No sanitización ni validación
-      const user = await db.collection('users').findOne({ username: username, password: password });
-
-      if (user) {
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.end(`Bienvenido, ${username}`);
-      } else {
-        res.writeHead(401, {'Content-Type': 'text/plain'});
-        res.end('Credenciales incorrectas');
-      }
-    } else {
-      res.writeHead(200, {'Content-Type': 'text/html'});
-      res.end(`
-        <form method="GET" action="/login">
-          Usuario: <input name="username" /><br />
-          Contraseña: <input name="password" /><br />
-          <input type="submit" value="Entrar" />
-        </form>
-      `);
-    }
-  }).listen(3000, () => console.log('Servidor Node.js escuchando en puerto 3000'));
+```
+### Access.php
+```php
+<?php
+session_start();
+if(!isset($_SESSION["user"])){
+	header("Location: index.php");
+	exit();
 }
+echo "Bienvenido: ". $_SESSION["user"];
 
-startServer().catch(console.error);
+?>
+```
+
+
+
+
+## Aplicación NodeJS + MongoDB
+
+```javascript
 ```
 
 ### Problemas acceso
@@ -239,5 +317,4 @@ sudo firewall-cmd --reload
 sudo ss -tlnp | grep httpd
 getenforce #SElinux
 sudo setenforce 0
-
 ```
