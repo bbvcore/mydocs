@@ -433,38 +433,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["user"])) {
 #### Fichero dashboard.php
 ```bash
 <?php
-// Creación de la sesión
 session_start();
-
-// Se comprueba si existe el usuario
-if (isset($_SESSION["user"])) {
-    // Si se está logueado se va al dashboard.php	
-    header("Location: dashboard.php");
-    exit();
-}
-
-// Si no se está logueado 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["user"])) {
-    $con = new mysqli('localhost', 'root', '', 'hack');
-    if ($con->connect_error) {
-        die("Error en la conexión a base de datos");
-    }
-
-    // Guardar los datos del user 	
-    $user = $_POST["user"];     
-    $pass = $_POST["password"]; 
-
-    // Consulta SQL muy Vulnerable
-    $query = "SELECT * FROM users WHERE user = '$user' AND password = '$pass'";
-    $result = $con->query($query);
-
-    if ($result->num_rows > 0) {
-        $_SESSION["user"] = $user; 
-        header("Location: dashboard.php");
-        exit();
-    } else {
-        echo "Datos de acceso incorrectos";
-    }
+if(!isset($_SESSION["user"])){
+	header("Location: index.php");
+	exit();
 }
 ?>
 <!DOCTYPE html>
@@ -472,7 +444,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["user"])) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hack me: Index </title>
+  <title>Hack me: Dashboard </title>
   <style>
     * {
       box-sizing: border-box;
@@ -530,11 +502,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["user"])) {
       background: #fff;
       width: 68rem;
       max-width: 100%;
-      min-height: 14rem;
+      min-height: 40rem;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       padding: 2rem;
       border-radius: 8px;
-      margin-top:10rem;
     }
 
     .content-inner a {
@@ -582,27 +553,66 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["user"])) {
 <body>
 <!-- Barra Superior -->
   <header>
-    <!-- div class="hamburger" onclick="toggleMenu()">☰</div-->
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
     <h1>Hack me!</h1>
   </header>
 
 <!-- Menú Lateral, oculto/visible con toggle -->
   <nav class="menu" id="menu">
-    <a href="#">Log In</a>
-    <a href="#">Log Out</a>
+    <a href="index.php">Log In</a>
+    <a href="logout.php">Log Out</a>
   </nav>
 
 <!-- Contenido centrado -->
   <div class="content">
-<div class="content-inner" style="width: 320px; padding: 1rem;">
-  <h2 style="text-align: center;padding:.5rem 0 1.5rem 0;">Hack Me App</h2>
-  <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" style="display: flex; flex-direction: column; gap: 0.8rem;">
-      <input type="text" name="user" required style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
-      <input type="password" name="password" required style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
-      <input type="submit" value="Acceder" style="width: 100%; padding: 0.5rem; background: #333; color: #fff; border: none; border-radius: 4px; cursor: pointer;margin-bottom:1rem;">
-  </form>
-</div>
+    <div class="content-inner">
+      <h2>Hack Me: Dashboard</h2>
+      <p style="padding:1rem 0 1.5rem 0;"><?php echo "Bienvenido Sr./Sra. ".$_SESSION["user"]; ?></p>
+      <p></p>
+      <table style="border-collapse: collapse; width: 100%; text-align: center;">
+  <tr style="background-color: #555;color:white;">
+    <td style="padding: 8px; border: 1px solid #222;">User</td>
+    <td style="padding: 8px; border: 1px solid #222;">Password</td>
+    <td style="padding: 8px; border: 1px solid #222;">Description</td>
+
+  </tr>
+  <tr style="background-color: #f3f3f3;">
+    <td style="padding: 8px; border: 1px solid #222;">Spiderman</td>
+    <td style="padding: 8px; border: 1px solid #222;">********</td>
+    <td style="padding: 8px; border: 1px solid #222">The Amazing Spiderman</td>
+  </tr>
+  </tr>
+    <tr style="background-color: #c3c3c3;">
+    <td style="padding: 8px; border: 1px solid #222;">Gata Negra</td>
+    <td style="padding: 8px; border: 1px solid #222;">********</td>
+    <td style="padding: 8px; border: 1px solid #222;">Felicia Hardy</td>
+  </tr>
+  <tr style="background-color: #f3f3f3;">
+    <td style="padding: 8px; border: 1px solid #222;">Dr Doom</td>
+    <td style="padding: 8px; border: 1px solid #222;">********</td>
+    <td style="padding: 8px; border: 1px solid #222;">Victor Von Doom</td>
+  </tr>
+    <tr style="background-color: #c3c3c3;">
+    <td style="padding: 8px; border: 1px solid #222;">Jean Grey</td>
+    <td style="padding: 8px; border: 1px solid #222;">********</td>
+    <td style="padding: 8px; border: 1px solid #222;">Jean Elaine Grey Summers</td>
+  </tr>
+  </tr>
+    <tr style="background-color: #f3f3f3;">
+    <td style="padding: 8px; border: 1px solid #222;">Lobezno</td>
+    <td style="padding: 8px; border: 1px solid #222;">********</td>
+    <td style="padding: 8px; border: 1px solid #222;">James Howlet</td>
+  </tr>
+  </tr>
+    <tr style="background-color: #c3c3c3;">
+    <td style="padding: 8px; border: 1px solid #222;">Viuda Negra</td>
+    <td style="padding: 8px; border: 1px solid #222;">********</td>
+    <td style="padding: 8px; border: 1px solid #222;">Natasha Romanova</td>
+  </tr>
+</table>
+    </div>
   </div>
+
 
   <script>
     function toggleMenu() {
@@ -612,6 +622,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["user"])) {
   </script>
 </body>
 </html>
+
 
 ```
 
@@ -657,28 +668,73 @@ gpgcheck=1
 enabled=1
 gpgkey=https://www.mongodb.org/static/pgp/server-6.0.asc
 
-
-
 sudo dnf install -y mongodb-org
 sudo systemctl enable --now mongod
 
 sudo ufw allow 27017/tcp    # Debian (ufw)
 sudo firewall-cmd --permanent --add-port=27017/tcp
 sudo firewall-cmd --reload  # AlmaLinux (firewalld)
-
 ```
 :::warning[Conexiones externas]
 Editar el fichero **/etc/mongod.conf**
 ```bash
 /etc/mongod.conf
 ```
-Y usar la wildcar 0.0.0.0 en bindIp
+Y usar la **wildcard** **0.0.0.0** en **bindIp**.
 :::
 
+#### Versión Docker
+```bash
+sudo dnf update -y # actualizar dnf
+sudo dnf install -y yum-utils # herramientas necesarias
+sudo dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo # añadir repo
+sudo dnf install -y docker-ce docker-ce-cli containerd.io # instalar docker
+sudo systemctl enable --now docker # activar el servicio
+sudo usermod -aG docker $USER # añadir user al grupo
+newgrp docker # recargar permisos del grupo
+```
 
+## App NodeJS
+La aplicación desarrollada en NodeJS, es una aplicación sencilla que permite inyección No-SQL, para ello se ha usado MongoDB y dado que da problemas las ultimas versiones por instrucciones ilegales en lo sistemas de virtualización de virtual box y las versiones más viejas por determinadas librerías, tomo la decición de usar docker y crear un contenedor para el servicio docker.
 
-## App Nodej
+El contenedor requería de un volumen para la persistencia de datos, por ello se generará un directorio para ello.
+```bash
+mkdir /opt/mongodb/
+```
+Una vez creado el volumen se crea el contendor con la imagen de mongodb, mapeando el puerto del host 27017 al 27017 del contenedor, de esta forma no habrá problemas para poder usar el servidor de nodejs del host con MongoDB, eso sí, también hay que usar una imagen vieja. Anterior a la 5.0 que usa instrucciones AVX.
+```bash
+docker run -d \
+  --name mongodb \
+  -p 27017:27017 \
+  -v /opt/mongodb:/data/db \
+  mongo:4.4
+```
+:::tip[Repaso comandos docker]
+Los comandos **docker** pueden liar porque ha evolcionado la sintaxis y a veces se pueden mezclar sintaxis antigua y moderna.
+| Comando antiguo   | Comando actual        |
+| ----------------- | --------------------- |
+| `docker rm`       | `docker container rm` |
+| `docker rmi`      | `docker image rm`     |
+| `No existía`      | `docker volume rm`    |
+| `No existía`      | `docker network rm`   |
 
+Además es importante asegurarse de que mongodb sea propietarios del directorio, tanto el user como el group, por ello en vez de usar **mongodb** se usara el **id** de user y group.
+```bash
+chown 999:999 /opt/mongodb/
+```
+:::
+
+### Instalación de NodeJS
+```bash
+curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
+dnf install -y nodejs
+```
+
+### Creación del proyecto
+```bash
+mkdir /opt/app-node/
+npm init -y
+```
 
 ```javascript
 const express = require('express');
@@ -687,11 +743,10 @@ const { MongoClient } = require('mongodb');
 const app = express();
 const port = 3000;
 
-// Middleware para parsear x-www-form-urlencoded (formulario HTML)
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-const uri = 'mongodb://localhost:27017'; // Cambia si tu Mongo no está local
+const uri = 'mongodb://localhost:27017';
 const dbName = 'testdb';
 let db;
 
@@ -700,53 +755,305 @@ MongoClient.connect(uri, { useUnifiedTopology: true })
     db = client.db(dbName);
     console.log('✅ Conectado a MongoDB');
 
-    app.listen(port, () => {
+    app.listen(port, '0.0.0.0', () => {
       console.log(`🚀 Servidor en http://localhost:${port}`);
     });
   })
   .catch(err => console.error('❌ Error al conectar con MongoDB', err));
 
-// Endpoint GET para mostrar un formulario simple de login
 app.get('/login', (req, res) => {
-  res.send(`
-    <form method="POST" action="/login">
-      <input name="email" placeholder="email" /><br>
-      <input name="password" placeholder="password" /><br>
+  res.send(`<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      display: grid;
+      grid-template-rows: 4rem auto;
+      height: 100vh;
+    }
+    header {
+      background-color: #333;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    main {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-box {
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      background: #f9f9f9;
+      min-width: 250px;
+      width: fit-content;
+      display: grid;
+      gap: 1rem;
+    }
+    input {
+      padding: 0.5rem;
+      font-size: 1rem;
+      width: 100%;
+    }
+    button {
+      padding: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      background-color: #333;
+      color: white;
+      border: none;
+    }
+    @media (max-width: 600px) {
+      .login-box {
+        width: 100%;
+        max-width: 90vw;
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>Login App</header>
+  <main>
+    <form method="POST" action="/login" class="login-box">
+      <input name="email" placeholder="email" required />
+      <input name="password" placeholder="password" required />
       <button type="submit">Login</button>
     </form>
-  `);
+  </main>
+</body>
+</html>`);
 });
 
-// Endpoint POST para procesar login vulnerable
 app.post('/login', async (req, res) => {
-//  const { email, password } = req.body;
-let { email, password } = req.body;
+  let { email, password } = req.body;
 
-try {
-  // Intentar parsear el campo de password como JSON (esto lo hace vulnerable)
-  password = JSON.parse(password);
-} catch (e) {
-  // Si no es JSON válido, lo deja como string
-}
-
-
-  // ❌ ¡Sin sanitización! (vulnerable a inyección)
   try {
-    const user = await db.collection('users').findOne({ email: email, password: password });
+    password = JSON.parse(password);
+  } catch (e) {
+    // si no es JSON válido, se queda como string
+  }
+
+  try {
+    const user = await db.collection('users').findOne({ email, password });
 
     if (user) {
-      res.send(`<pre>✅ Usuario encontrado:\n${JSON.stringify(user, null, 2)}</pre>`);
+      res.send(`<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Login exitoso</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      display: grid;
+      grid-template-rows: 4rem auto;
+      height: 100vh;
+    }
+    header {
+      background-color: #333;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    main {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .result-box {
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      background: #e7ffe7;
+      min-width: 250px;
+      width: fit-content;
+      display: grid;
+      gap: 1rem;
+    }
+    pre {
+      margin: 0;
+      font-size: 1rem;
+      background: #fff;
+      padding: 1rem;
+      border: 1px solid #ccc;
+    }
+    @media (max-width: 600px) {
+      .result-box {
+        width: 100%;
+        max-width: 90vw;
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>Login App</header>
+  <main>
+    <div class="result-box">
+      <pre>✅ Usuario encontrado:\n${JSON.stringify(user, null, 2)}</pre>
+    </div>
+  </main>
+</body>
+</html>`);
     } else {
-      res.send('❌ Usuario no encontrado.');
+      res.send(`<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Login fallido</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      display: grid;
+      grid-template-rows: 4rem auto;
+      height: 100vh;
+    }
+    header {
+      background-color: #333;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    main {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .result-box {
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      background: #ffecec;
+      min-width: 250px;
+      width: fit-content;
+      display: grid;
+      gap: 1rem;
+    }
+    p {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #b00;
+      font-weight: bold;
+      text-align: center;
+    }
+    @media (max-width: 600px) {
+      .result-box {
+        width: 100%;
+        max-width: 90vw;
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>Login App</header>
+  <main>
+    <div class="result-box">
+      <p>❌ Usuario no encontrado.</p>
+    </div>
+  </main>
+</body>
+</html>`);
     }
   } catch (err) {
-    res.status(500).send('💥 Error en la consulta.');
+   res.status(500).send(`<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Error en la consulta</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      display: grid;
+      grid-template-rows: 4rem auto;
+      height: 100vh;
+    }
+    header {
+      background-color: #333;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    main {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .result-box {
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      background: #fff4e5;
+      min-width: 250px;
+      width: fit-content;
+      display: grid;
+      gap: 1rem;
+    }
+    p {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #a60;
+      font-weight: bold;
+      text-align: center;
+    }
+    @media (max-width: 600px) {
+      .result-box {
+        width: 100%;
+        max-width: 90vw;
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>Login App</header>
+  <main>
+    <div class="result-box">
+      <p>💥 Error interno en la consulta. Intenta más tarde.</p>
+    </div>
+  </main>
+</body>
+</html>`);
+
   }
 });
 
 ```
 
-### Inyección en MongoDB
+### Ejecución
+#### MongoDB en funcionamiento
+Lanzar el contenedor de mongodb
+```bash
+docker run -d \
+  --name mongodb \
+  -p 27017:27017 \
+  -v /opt/mongodb:/data/db \
+  mongo:4.4.18
+```
+#### NodeJS en funcionamiento
+```bash
+node server.js #/opt/app-node
+```
+
+#### Introducir datos en database
 ```bash
 use testdb
 
@@ -754,13 +1061,78 @@ db.users.insertOne({
   email: "victima@example.com",
   password: "123456"
 })
-
-
-## hack en web
-{ "$ne": null }
-
 ```
 
+#### Inyección en NodeJS
+Inyección para acceder al servidor
+```bash
+{"$ne": null }
+```
+
+
+#### Crear un servicio para NodeJS
+Creo un servicio para el inicio a systemd del servidor de NodeJS.
+sudo nano /etc/systemd/system/nodeapp.service
+
+```bash
+[Unit] # Cuando arranca, después de que servicio
+Description=Servidor Node.js vulnerable
+After=network.target
+
+[Service] # Cuando se ejecuta
+Type=simple
+User=nobody
+WorkingDirectory=/opt/app-nodejs
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+Environment=PORT=3000
+
+[Install]
+WantedBy=multi-user.target
+```
+Reiniciar systemd, activar servicio y lanzar
+#### Crear servicio para Docker
+```bash
+sudo nano /etc/systemd/system/mongodb-container.service
+[Unit]
+Description=Contenedor MongoDB para laboratorio
+After=network.target docker.service
+Requires=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker run --name mongodb -p 27017:27017 mongo:4.4.18
+ExecStop=/usr/bin/docker stop mongodb
+
+[Install]
+WantedBy=multi-user.target
+```
+
+
+
+
+## Nginx
+```bash
+sudo dnf install nginx -y
+sudo systemctl start nginx
+sudo systemctl enable nginx
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-service=https
+sudo firewall-cmd --reload
+```
+### Configuración
+```bash
+/etc/nginx/nginx.conf
+/etc/nginx/conf.d/
+nginx -t # validar la configuración
+```
+#### Problemas acceso en AlmaLinux
+```bash
+sudo dnf install policycoreutils-python-utils -y
+sudo semanage port -a -t http_port_t -p tcp 8080
+sudo semanage port -a -t http_port_t -p tcp 6969
+sudo cat /var/log/nginx/error.log
+```
 
 ## Problemas acceso 
 ````bash
