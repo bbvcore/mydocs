@@ -1048,6 +1048,10 @@ docker run -d \
   -v /opt/mongodb:/data/db \
   mongo:4.4.18
 ```
+Se puede configurar para que siempre se reinicie el contenedor automáticamente con el proceso de **docker**, debería de funcionar siempre, pero me gusta más tener un script incorporado en el  **systemd** y activarlo como servicio, de todas formas la opción del comando es la siguiente.
+```bash
+docker update --restart=always mongodb
+```
 #### NodeJS en funcionamiento
 ```bash
 node server.js #/opt/app-node
@@ -1075,40 +1079,58 @@ Creo un servicio para el inicio a systemd del servidor de NodeJS.
 sudo nano /etc/systemd/system/nodeapp.service
 
 ```bash
-[Unit] # Cuando arranca, después de que servicio
-Description=Servidor Node.js vulnerable
-After=network.target
-
-[Service] # Cuando se ejecuta
-Type=simple
-User=nobody
-WorkingDirectory=/opt/app-nodejs
-ExecStart=/usr/bin/node server.js
-Restart=on-failure
-Environment=PORT=3000
-
-[Install]
-WantedBy=multi-user.target
-```
-Reiniciar systemd, activar servicio y lanzar
-#### Crear servicio para Docker
-```bash
-sudo nano /etc/systemd/system/mongodb-container.service
-[Unit]
-Description=Contenedor MongoDB para laboratorio
+[Unit] # Unidad, descripción y relación con otras
+Description=Servidor web App con NodeJS
 After=network.target docker.service
 Requires=docker.service
 
+[Service] # Configuración del servicio
+ExecStart=/usr/bin/node /opt/app-node/server.js
+WorkingDirectory=/opt/app-node
+Restart=always
+User=nobody
+Environment=NODE_ENV=production
+
+[Install] # Conexión con el sistema de arranque, nivel de target
+WantedBy=multi-user.target
+
+```
+Reiniciar systemd, activar servicio y lanzar
+#### Activar Docker como servicio
+```bash
+sudo systemctl enable --now docker
+```
+#### Crear servicio para MongoDB
+```bash
+/etc/systemd/system/mongodb-container.service
+```
+```bash
+[Unit]
+Description=Contenedor MongoDB
+Requires=docker.service
+After=docker.service
+
 [Service]
 Restart=always
-ExecStart=/usr/bin/docker run --name mongodb -p 27017:27017 mongo:4.4.18
+ExecStart=/usr/bin/docker start -a mongodb
 ExecStop=/usr/bin/docker stop mongodb
 
 [Install]
 WantedBy=multi-user.target
 ```
+```bash
+sudo systemctl d-reexec
+sudo systemctl enable mongodb-container
+sudo systemctl start mongodb-container
 
+```
 
+:::warning
+Comando **systemd-analyze** para verificar el servicio
+```bash
+systemd-analyze verify file.service
+```
+:::
 
 
 ## Nginx
