@@ -96,3 +96,4 @@ void loop() {
     delay(30000);  // Esperar 30 segundos antes de enviar la siguiente lectura
 }
 ```
+</details>
