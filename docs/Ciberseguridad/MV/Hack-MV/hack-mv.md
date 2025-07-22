@@ -737,304 +737,7 @@ npm init -y
 ```
 
 ```javascript
-const express = require('express');
-const { MongoClient } = require('mongodb');
 
-const app = express();
-const port = 3000;
-
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
-const uri = 'mongodb://localhost:27017';
-const dbName = 'testdb';
-let db;
-
-MongoClient.connect(uri, { useUnifiedTopology: true })
-  .then(client => {
-    db = client.db(dbName);
-    console.log('✅ Conectado a MongoDB');
-
-    app.listen(port, '0.0.0.0', () => {
-      console.log(`🚀 Servidor en http://localhost:${port}`);
-    });
-  })
-  .catch(err => console.error('❌ Error al conectar con MongoDB', err));
-
-app.get('/login', (req, res) => {
-  res.send(`<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Login</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      display: grid;
-      grid-template-rows: 4rem auto;
-      height: 100vh;
-    }
-    header {
-      background-color: #333;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-    }
-    main {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .login-box {
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      background: #f9f9f9;
-      min-width: 250px;
-      width: fit-content;
-      display: grid;
-      gap: 1rem;
-    }
-    input {
-      padding: 0.5rem;
-      font-size: 1rem;
-      width: 100%;
-    }
-    button {
-      padding: 0.5rem;
-      font-size: 1rem;
-      cursor: pointer;
-      background-color: #333;
-      color: white;
-      border: none;
-    }
-    @media (max-width: 600px) {
-      .login-box {
-        width: 100%;
-        max-width: 90vw;
-        padding: 1rem;
-      }
-    }
-  </style>
-</head>
-<body>
-  <header>Login App</header>
-  <main>
-    <form method="POST" action="/login" class="login-box">
-      <input name="email" placeholder="email" required />
-      <input name="password" placeholder="password" required />
-      <button type="submit">Login</button>
-    </form>
-  </main>
-</body>
-</html>`);
-});
-
-app.post('/login', async (req, res) => {
-  let { email, password } = req.body;
-
-  try {
-    password = JSON.parse(password);
-  } catch (e) {
-    // si no es JSON válido, se queda como string
-  }
-
-  try {
-    const user = await db.collection('users').findOne({ email, password });
-
-    if (user) {
-      res.send(`<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Login exitoso</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      display: grid;
-      grid-template-rows: 4rem auto;
-      height: 100vh;
-    }
-    header {
-      background-color: #333;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-    }
-    main {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .result-box {
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      background: #e7ffe7;
-      min-width: 250px;
-      width: fit-content;
-      display: grid;
-      gap: 1rem;
-    }
-    pre {
-      margin: 0;
-      font-size: 1rem;
-      background: #fff;
-      padding: 1rem;
-      border: 1px solid #ccc;
-    }
-    @media (max-width: 600px) {
-      .result-box {
-        width: 100%;
-        max-width: 90vw;
-        padding: 1rem;
-      }
-    }
-  </style>
-</head>
-<body>
-  <header>Login App</header>
-  <main>
-    <div class="result-box">
-      <pre>✅ Usuario encontrado:\n${JSON.stringify(user, null, 2)}</pre>
-    </div>
-  </main>
-</body>
-</html>`);
-    } else {
-      res.send(`<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Login fallido</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      display: grid;
-      grid-template-rows: 4rem auto;
-      height: 100vh;
-    }
-    header {
-      background-color: #333;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-    }
-    main {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .result-box {
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      background: #ffecec;
-      min-width: 250px;
-      width: fit-content;
-      display: grid;
-      gap: 1rem;
-    }
-    p {
-      margin: 0;
-      font-size: 1.1rem;
-      color: #b00;
-      font-weight: bold;
-      text-align: center;
-    }
-    @media (max-width: 600px) {
-      .result-box {
-        width: 100%;
-        max-width: 90vw;
-        padding: 1rem;
-      }
-    }
-  </style>
-</head>
-<body>
-  <header>Login App</header>
-  <main>
-    <div class="result-box">
-      <p>❌ Usuario no encontrado.</p>
-    </div>
-  </main>
-</body>
-</html>`);
-    }
-  } catch (err) {
-   res.status(500).send(`<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Error en la consulta</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      display: grid;
-      grid-template-rows: 4rem auto;
-      height: 100vh;
-    }
-    header {
-      background-color: #333;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-    }
-    main {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .result-box {
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      background: #fff4e5;
-      min-width: 250px;
-      width: fit-content;
-      display: grid;
-      gap: 1rem;
-    }
-    p {
-      margin: 0;
-      font-size: 1.1rem;
-      color: #a60;
-      font-weight: bold;
-      text-align: center;
-    }
-    @media (max-width: 600px) {
-      .result-box {
-        width: 100%;
-        max-width: 90vw;
-        padding: 1rem;
-      }
-    }
-  </style>
-</head>
-<body>
-  <header>Login App</header>
-  <main>
-    <div class="result-box">
-      <p>💥 Error interno en la consulta. Intenta más tarde.</p>
-    </div>
-  </main>
-</body>
-</html>`);
-
-  }
-});
 
 ```
 
@@ -1043,6 +746,7 @@ app.post('/login', async (req, res) => {
 Lanzar el contenedor de mongodb
 ```bash
 docker run -d \
+  --restart=always \ 
   --name mongodb \
   -p 27017:27017 \
   -v /opt/mongodb:/data/db \
@@ -1124,13 +828,34 @@ sudo systemctl enable mongodb-container
 sudo systemctl start mongodb-container
 
 ```
+#### Permisos a mongo
+```bash
+sudo chown -R 999:999 /opt/mongodb
+sudo chmod -R 755 /opt/mongodb
+```
 
-:::warning
-Comando **systemd-analyze** para verificar el servicio
+:::warning[Tips]
+Comando **systemd-analyze** para verificar el servicio creado en SystemD
 ```bash
 systemd-analyze verify file.service
 ```
+Comprobar imágen correcta
+```bash
+docker inspect -f '{{ .Config.Image }}' mongodb
+```
+Inspeccionar imágenes de MongoDB
+```bash
+docker inspect mongodb | grep Image
+```
+Siempre reiniciar un contenedor con cada inicio
+```bash
+docker update --restart=always mongodb
+````
 :::
+
+
+#### Comprobar política reinicio
+docker inspect -f '{{ .HostConfig.RestartPolicy.Name }}' mongodb
 
 
 ## Nginx
