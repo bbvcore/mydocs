@@ -8,17 +8,20 @@ title: Clases con Pyhton
 # Start Person Class
 class person:
 	# Propiedades
+	# _protected (_)
+	# __private(__)
+	# propiedad_vacia = None
 	nation = "Spain"
 
 	# Constructor
-	def __init__(self, name, edad):
-		self.name = name
+	def __init__(self, name, edad): # Método mágico constructor
+		self.name = name # self, similar a this
 		self.edad = edad
 
 	def data(self):
 		print(f"Nombre: {self.name}, Edad: {self.edad} y nacionalidad: {self.nation}")
 
-	def __str__(self):
+	def __str__(self): # Método mágico toString
 		# Con este método, al imprimir la instancia de la clase sin métodos
 		# o sin propiedades así no devuelve la dirección memoria del objeto
 		# sino que devuelve lo que le indico
