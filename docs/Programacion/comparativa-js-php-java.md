@@ -1,6 +1,7 @@
 ---
 title: Comparativa POO
 ---
+# Comparativas POO
 | Concepto                           | PHP                                                                                                     | JavaScript                                                                         | Java                                                                       | Python                                                                   |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | **Herencia**                       | - Clase hija extiende padre con `extends`.<br>- Herencia simple (una clase padre).                      | - Herencia con `extends` (ES6).<br>- Prototipos para herencia dinámica.            | - Herencia simple con `extends`.<br>- Clases tipadas.                      | - Herencia simple con `(ClasePadre)`.<br>- Soporta herencia múltiple.    |
