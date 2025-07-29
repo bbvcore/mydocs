@@ -47,5 +47,4 @@ Set-ExecutionPolicy Unrestricted
 write-verbose "ejecutando script" # Solo si se ejecuta con verbose -verbose
 write-host "soy el puto amo" # escribir en el host
 write-output "saliendo" # stdout (pipeline)
-
 ```
