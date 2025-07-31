@@ -8,6 +8,22 @@ Mediante una interfaz web se trabaja con las trazas PCAP estándar obtenidas, ad
 
 Mientras otras herramientas de analisis de tráfico como **Wireshark** se centran más en análisis locales en **Arkime** los análisis son de una dimensión más amplia y usados también 
 
+## Componentes
+Arkime posee **tres componentes** base en su arquitectura:
+- **init**: se ejecuta solo cuando se configuras Arkime o se realizan modificaciones importantes.
+```bash
+sudo /opt/arkime/db/db.pl http://localhost:9200 init
+```
+- **capture**: realiza la captura de los datos a través de la interfaz específicada.
+```bash
+sudo /opt/arkime/bin/capture -c /opt/arkime/etc/config.ini
+```
+- **viewer**: permite la visualización de los datos.
+```bash
+sudo node /opt/arkime/viewer/viewer.js -c /opt/arkime/etc/config.ini
+```
+
+
 ## Instalación
 ### Pasos previos
 #### Actualización
@@ -156,7 +172,7 @@ make config
 
 echo "OK, se ha instalado Arkime correctamente. Fichero de configuración en /opt/arkime/etc/config.ini"
 echo " Comandos de inicialización, captura y visualización "
-echo "   sudo /opt/arkime/db/db.pl http://localhost:9200 init"
+echo "   sudo /opt/arkime/db/db.pl http://localhost:9200 init"  # Igual hace falta https
 echo "   sudo /opt/arkime/bin/capture -c /opt/arkime/etc/config.ini"
 echo "   sudo /opt/arkime/bin/viewer -c /opt/arkime/etc/config.ini"
 
@@ -182,8 +198,32 @@ Aquí se especifica una clave secreta usada para encriptar, la interfaz de red a
 
 
 ### Capture (bin/capture)
+La instalación realizada dió muchos problemas entonces no tiene habilitada la captura activa, pero si pasiva, mediante la opción **offline**.
 
-
+Entonces de esta forma se puede analizar el tráfico pasándole los ficheros **PCAP** directamente
+```bash
+sudo /opt/arkime/bin/capture -c /opt/arkime/etc/config.ini -r <fileName.pcap> # Fichero individual
+sudo /opt/arkime/bin/capture -c /opt/arkime/etc/config.ini -R </DirectoryCaps> # Directorio de capturas
+```
+#### Captura en tiempo real
+Hay problemas con permisos para escribir en el directorio raw, solucionados con el siguiente comando
+```bash
+sudo setcap cap_net_raw,cap_net_admin=eip /opt/arkime/bin/capture
+```
+Lanzamiento de la captura
+```bash
+admin@admin-cross:/opt/arkime/viewer$ /opt/arkime/bin/capture -c /opt/arkime/etc/config.ini
+```
+**Funcionando la captura**
+```bash
+root@admin-cross:/opt/arkime/viewer# sudo /opt/arkime/bin/capture -c /opt/arkime/etc/config.ini
+Jul 31 10:14:08 main.c:263 parse_args(): WARNING: gethostname doesn't return a fully qualified name and getdomainname failed, this may cause issues when viewing pcaps, use the --host option - admin-cross
+Jul 31 10:14:08 http.c:1114 arkime_http_create_server(): WARNING - Using insecure mode for https://localhost:9200
+Jul 31 10:14:08 http.c:318 arkime_http_send_sync(): 1/1 SYNC 200 https://localhost:9200/_template/arkime_sessions3_template?filter_path=**._meta 0/96 0ms 13ms
+Jul 31 10:14:08 http.c:318 arkime_http_send_sync(): 1/1 SYNC 200 https://localhost:9200/arkime_sequence/_doc/fn-admin-cross 0/114 0ms 3ms
+Jul 31 10:14:08 http.c:318 arkime_http_send_sync(): 1/1 SYNC 200 https://localhost:9200/arkime_sequence/_doc/fn-admin-cross 2/168 0ms 7ms
+Jul 31 10:14:08 http.c:318 arkime_http_send_sync(): 1/1 SYNC 200 https://localhost:9200/arkime_stats/_doc/admin-cross 0/913 0ms 2ms
+```
 
 
 
@@ -213,6 +253,16 @@ authMode=basic
 basicAuthPasswordMethod=sha256
 ```
 #### Inicializar el viewer
+**Path absoluto**
+```bash
+sudo node /opt/arkime/viewer/viewer.js -c /opt/arkime/etc/config.ini
+```
+:::[Path ejecución del Viewer]
+**The viewer app MUST be run from inside the viewer directory**
+:::
+
+
+**Path relativo**
 ```bash
 admin@admin-cross:/opt/arkime/arkime/viewer$ sudo node viewer.js -c /opt/arkime/etc/config.ini
 WARNING - Using authMode=digest since not set, add to config file to silence this warning.
@@ -239,3 +289,49 @@ Es necesario sí o sí que al menos un nodo tenga la opción para que Arkime fun
 Arrancar sin cronQueries=true hace que el nodo no esté completamente funcional y puede provocar comportamientos extraños en la aplicación, incluyendo el login.
 :::
 
+
+## Tests
+### Comprobación Elastic
+Se ejecuta el siguiente comando pasando las credenciales del usuario de elastic y aplicando el parámetro -k para evitar problemas por seguridad y encriptación.
+```bash
+$ curl -u elastic:E7lVN*nXOYUbRQ**skyu -X GET https://localhost:9200/_cluster/health -k
+```
+Resultado del comando
+```bash
+{"cluster_name":"elasticsearch","status":"green","timed_out":false,"number_of_nodes":1,"number_of_data_nodes":1,"active_primary_shards":19,"active_shards":19,"relocating_shards":0,"initializing_shards":0,"unassigned_shards":0,"unassigned_primary_shards":0,"delayed_unassigned_shards":0,"number_of_pending_tasks":0,"number_of_in_flight_fetch":0,"task_max_waiting_in_queue_millis":0,"active_shards_percent_as_number":100.0}
+```
+Comprobación de todos los usuarios
+```bash
+curl -u elastic:E7lVN*nXOYUbRQ**skyu -X GET https://localhost:9200/arkime_users/_search -k | jq
+```
+
+### Resetar users
+#### Borrar admin viejo
+curl -X DELETE 'http://localhost:9200/arkime_users/_doc/admin'
+#### Añadir nuevo
+Importante crearlo con el **script** de **Arkime** para que sea creado correctamente el **passStore** que genera una contraseña cifrada con su propio algoritmo y no con bcrypt o sha256.
+```bash
+sudo /opt/arkime/bin/arkime_add_user.sh admin "Admin User" admin
+```
+#### Comprobar
+```bash
+curl -X POST 'http://localhost:9200/_aliases' -H 'Content-Type: application/json' -d '
+{
+  "actions": [
+    {
+      "add": {
+        "index": "arkime_users_v30",
+        "alias": "arkime_users"
+      }
+    }
+  ]
+}'
+```
+#### Añadir seguridad
+/opt/arkime/bin/arkime_add_user.sh admin "Admin User" nuevaPassword
+:::warning[Problemas Pass]
+- Campos importantes:
+```
+userId: <NameUser> y enabled: true.
+```
+:::
