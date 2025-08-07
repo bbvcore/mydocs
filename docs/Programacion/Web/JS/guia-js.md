@@ -68,6 +68,12 @@ Dentro de las características, que van todas en un solo bloque entrecomillado, 
 </details>
 
 ### Objeto Document
+Del objeto Document cuelgan las tags y elementos HTML que se manipulan en las páginas web para la muestra de contenido o la interacción con el usuario, de ahí que surja el modelo **DOM**.
+
+:::tip[DOM]
+El **DOM** *(Document Object Model) es el modelo de objetos del documento
+:::
+
 #### Principales propiedades del Objeto Document
 <details>
 <summary>
@@ -258,5 +264,76 @@ Listado de los principales métodos del objeto <b>Screen</b>
 - **orientation.unlock**: *desbloquear la pantalla*
 
 </details>
+
+## Asíncronia
+La ejecución habitual de un código de JS es sincrona, pero hay veces que la funcionalidad implementada requiere realizar acciones que consumen un determinado tiempo, como pueden ser la consulta a una base de datos o a una API, en estos casos se utiliza la asíncronia.
+
+### Herramientas asíncronas
+#### Callbacks
+Los callbacks son funciones que se pasan como argumento de otra función para su posterior ejecución.
+```javascript
+// Se define una función llamada welcome que utiliza 2 parámetros, los argumentos de estos parámetros son el valor del name y la funcionalidad de la función callback
+const welcome = (name, callback) => {
+    alert("Bienvenido ", name)
+    callback()
+}
+
+// Se realiza la ejecución de la función previamente declarada y se le pasan los argumentos adecuados a los parámetros definidos, es decir el valor de name y el código de la función, en este caso se usa una función anomina con notación arrow
+welcome("Borja", ()=>{
+    console.log("Código a ejecutar desde la función callback pasada como argumento")
+})
+```
+## Promesas
+```javascript
+const p = new Promise((resolve, reject)=>{
+    let status_ok = true
+    if (status_ok){
+        resolve()  
+    }else{
+        reject()
+    }
+})
+p
+.then(r=> console.log(r))
+.catch(e=> console.log(e))
+```
+
+## Async/Await
+```javascript
+const waiting = (ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const start = async () => {
+  console.log("Iniciar");
+  await waiting(5000);
+  console.log("Temporizador de 5 segundos");
+}
+
+ejecutar();
+
+```
+
+## Event Loop
+El sistema de gestión de asincronía en JS se llama Event Loop, el cual va ejecutando el código sincrono mientras gestiona la pila de código asíncrono, para gestionar las tareas asíncronas cuando las sincronas finalicen.
+```javascript
+const getUsers => async() {
+  try {
+    const answer = await fetch("https://jsonplaceholder.typicode.com/users");
+
+        if (!answer.ok) {
+            throw new Error("Error al obtener los datos");
+        }
+
+        const data = await answer.json();
+        console.log("Usuarios:", data);
+  } catch (error) {
+        console.error("Error:", error.message);
+  }
+}
+
+getUsers();
+```
+
 
 
