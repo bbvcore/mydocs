@@ -22,7 +22,107 @@ git remote -v
 ## Subir los ficheros 
 git push -u origin main # A veces es necesario usar --force
 ```
+## Comandos básicos
+### Configurar cuenta
+:::warning
+Si no se especifica un nivel se configura por defecto como local.
+:::
+```bash
+git config --global user.name
+git config --global user.email
+```
+:::info[]
+- **git.local** afecta solo al directorio del proyecto en el equipo
+- **git.global** afecta a todos los repositorios en el equipo
+- **git.system** afecta a todos los usuarios y a todos los repositorios en el equipo
+:::
+Para eliminar una configuración se utiliza el parámetro **unset**.
+```bash
+git config --global --unset user.email
+```
+### Mergear
+```bash
+git checkout <nameBranch> # cambia de rama
+git pull origin <nameBranch> # actualiza la rama
+git merge <nameBranch> # hace merge
+git push origin <nameBranch> # sube al repositorio
+```
+Cuando se hace merge pueden haber cambios que merge no notifica como conflicto de versiones, y suele pasar cuando los cambios se producen en el mismo fichero, es decir existe el mismo fichero pero tiene cambios que git entiende menores, aunque igual no son tan menores.
 
+En sintesis merge actua por defecto de la siguiente forma:
+- Si son distintos los ficheros mergea sin preguntar
+- Si son iguales y tienen el mismo contenido también mergea sin problemas
+- Si son iguales y tienen distinto contenido se establece un conflicto y toca comprobar las diferencias
+
+#### Soluciones a merges problemáticos
+```bash
+git status # indica conflictos
+git status -s 
+git show # info de objetos
+```
+:::tip
+- untracked (work directory): fichero creado
+- modified (add): staged
+- commited (commit)
+- Simbolos:
+1. ?: no tracked
+2. A: add
+3. AM: add y modified
+- Colores:
+1. Rojo: modificado
+2. Verde: sin modificar
+:::
+
+
+### Ramas
+
+### Cambiar de ramas
+```bash
+git branch
+git checkout -b
+git switch -c
+```
+
+#### Borrar ramas
+```bash
+git branch -d <nameBranch>
+git push origin --delete <nameBranch>
+```
+
+#### Comparar
+```bash
+git diff # compara cambios
+git diff rama1..rama2
+git diff rama1..rama2 --fichero
+```
+:::tip
+Si un fichero NO existe en una rama, git sabe que NO existe, pero NO sabe si es que no existió o que fue borrado
+:::
+
+#### Listar ficheros de la rama
+```bash
+git ls-tre --name-only "<branch>"
+```
+### Clonar repositorio
+```bash
+git clone <PathRepository>
+```
+
+## Rebase
+El método rebase en git sirve para posicionar 2 ramas en una sola posicionando una sobre otra, de ahí el concepto rebasar, es como poner 2 ramas en una misma línea partiendo la segunda rama desde un determinado commit de la primera rama. El método rebase del comando git permite abrir una shell interactiva con el parámetro -i para poder editar el commit escogido.
+
+Con esta fusión de ramas se obtiene un historial limpio, esta forma es ideal para trabajar en solitario pero en proyectos es más recomendado usar merge ya que conserva todos los commits tal cual. El historial de commits con rebase de la rama 2 sobre la 1 se inicializa desde el punto que hace de Head en la rama 1, entonces los commits de la rama 2 se reescriben con nuevos hashes al haber cambiado el commit número 1 de la rama2 al ser actualmente el commit número 1 el punto de la rama 1 donde se ubico el Head antes del rebase.
+
+## Detached HEAD
+Es cuando un HEADapunta directamente a un commit y no a una rama, esta acción pasa cuando se hace el uso de git checkout con un hash.
+
+Si se hace un cambio en esta caso, el commit no pertenece a  ninguna rama, por ello se suele almacenar estos cambios en una nueva rama con git checkout -b, aunque se puede volver a la rama existente y si no hay conflicto en los cambios ni se hace commit no debería de haber problemas, por ello si se hacen cambios, esos commit quedan en un limbo y lo mejor es crear una rama nueva para guardar los cambios.
+
+Para evitar estos problemas, si se necesita editar un commit lo mejor es usar rebase -i.
+
+## Git stash
+Permite editar y guardar los cambios no modificados en una pila especial donde nunca se perderán salvo que se borren y además se pueden aplicar en una rama si interesa mediante git apply, además se puede consultar la pila con git stash list. Con git stash pop se puede aplicar el stash y borrarlo del stack, al contrario que apply que lo aplica pero sigue en el stack.
+Si se quiere borrar un elemento de la pila de stash determinado se puede hacer uso de git stash drop stash@{n}. Los procesos de git stash quedan en el directorio de trabajo, una vez aplicados hace falta un commit también. Para aplicar un determinado cambio de la pila, se busca en la lista y luego se usa git stash apply stash@{indice númerico}
 
 ## &#127760; Métodos de subida (Push)
 ### Uso de Key SSH

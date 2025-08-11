@@ -4,9 +4,9 @@ title: Documentación
 ---
 
 # Documentación
-En este **docusaurus** se muestran una gran cantidad de entradas **técnicas** en tono a varios aspectos informáticos y tecnológicos de diversa índole, los cuales generan una documentación que nace fruto de estudios, experiencias, aprendizajes, y sobre todo diferentes problemáticas que enfrentar, de hecho esas problemáticas son un motor constante para la generación de esta documentación.
+En este **docusaurus** se muestran una gran cantidad de entradas **técnicas** que giran en torno a varios aspectos informáticos y tecnológicos, las cuales generan una documentación que nace fruto de estudios, experiencias, aprendizajes, y sobre todo a diferentes problemáticas que enfrentar, de hecho esas problemáticas son el motor constante para la generación de esta documentación.
 
-El contenido del mismo se agrupa en varios **bloques** resultando de ello los siguientes:
+El contenido se agrupa en los siguientes **bloques** de contenido:
 
 | Categoría       | Descripción             |
 |-----------------|-------------------------|
