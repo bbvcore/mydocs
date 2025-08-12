@@ -8,7 +8,8 @@ Mediante una interfaz web se trabaja con las trazas PCAP estándar obtenidas, ad
 
 Mientras otras herramientas de analisis de tráfico como **Wireshark** se centran más en análisis locales en **Arkime** los análisis son de una dimensión más amplia y usados también 
 
-## Componentes
+## &#x1F9E9; Componentes 
+
 Arkime posee **tres componentes** base en su arquitectura:
 - **init**: se ejecuta solo cuando se configuras Arkime o se realizan modificaciones importantes.
 ```bash
@@ -24,23 +25,25 @@ sudo node /opt/arkime/viewer/viewer.js -c /opt/arkime/etc/config.ini
 ```
 
 
-## Instalación
-### Pasos previos
-#### Actualización
+## &#x1F4E5; Instalación 
+
+###  Pasos previos
+#### &#x1F501;  Actualización
 ```bash
 sudo apt update 
 sudo apt upgrade -y
 ```
 
-#### Dependencias
+#### &#x1F4E6; Dependencias
 ```bash
 sudo apt install -y wget curl libpcap-dev libglib2.0-dev \
 libmagic-dev uuid-dev cmake build-essential pkg-config \
 libcurl4-openssl-dev zlib1g-dev python3 python3-pip \
 apt-transport-https gnupg lsb-release
 ```
-### Instalación de elastic search 8.x
-#### Repositorio y claves GPG
+### &#x1F517; Instalación de elastic search 8.x 
+
+#### &#x27A1; Repositorio y claves GPG
 ```bash
 curl -fsSL https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elastic-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/elastic-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main" | \
@@ -89,7 +92,8 @@ Generate an enrollment token for Elasticsearch nodes with
 ```
 </details>
 
-### Deshabilitar TLS
+### &#x1F512; Deshabilitar TLS 
+
 Para deshabilidar la seguridad **TLS** si hay problemas de acceso, en **elasticsearch** es necesario editar el siguiente fichero
 ```bash
 sudo nano /etc/elasticsearch/elasticsearch.yml
@@ -103,14 +107,14 @@ curl http://localhost:9200
 ```
 :::
 
-### Instalación de Arkime
+### &#x1F4E5; Instalación de Arkime
 #### Descarga de Arkime
 ```bash
 wget https://github.com/arkime/arkime/releases/download/v5.6.4/arkime_5.6.4-1.ubuntu2204_amd64.deb
 sudo apt install ./arkime_5.6.4-1.ubuntu2204_amd64.deb
 ```
 
-#### Script de instalación
+#### &#x27A1; Script de instalación
 ```bash
 #!/bin/bash
 set -e
@@ -177,7 +181,7 @@ echo "   sudo /opt/arkime/bin/capture -c /opt/arkime/etc/config.ini"
 echo "   sudo /opt/arkime/bin/viewer -c /opt/arkime/etc/config.ini"
 
 ```
-#### Configuración previa a su lanzamiento (init)
+#### &#x2699; Configuración previa a su lanzamiento (init)
 ```bash
  sudo /opt/arkime/db/db.pl http://localhost:9200 init"
  sudo -E /opt/arkime/db/db.pl https://localhost:9200 init
@@ -197,7 +201,8 @@ Aquí se especifica una clave secreta usada para encriptar, la interfaz de red a
 ```
 
 
-### Capture (bin/capture)
+### &#x1F4F8; Capture (bin/capture) 
+
 La instalación realizada dió muchos problemas entonces no tiene habilitada la captura activa, pero si pasiva, mediante la opción **offline**.
 
 Entonces de esta forma se puede analizar el tráfico pasándole los ficheros **PCAP** directamente
@@ -205,16 +210,16 @@ Entonces de esta forma se puede analizar el tráfico pasándole los ficheros **P
 sudo /opt/arkime/bin/capture -c /opt/arkime/etc/config.ini -r <fileName.pcap> # Fichero individual
 sudo /opt/arkime/bin/capture -c /opt/arkime/etc/config.ini -R </DirectoryCaps> # Directorio de capturas
 ```
-#### Captura en tiempo real
+#### &#x1F4F8; &#x23F0;Captura en tiempo real
 Hay problemas con permisos para escribir en el directorio raw, solucionados con el siguiente comando
 ```bash
 sudo setcap cap_net_raw,cap_net_admin=eip /opt/arkime/bin/capture
 ```
-Lanzamiento de la captura
+&#x27A1; **Lanzamiento de la captura**
 ```bash
 admin@admin-cross:/opt/arkime/viewer$ /opt/arkime/bin/capture -c /opt/arkime/etc/config.ini
 ```
-**Funcionando la captura**
+&#x27A1; **Funcionando la captura**
 ```bash
 root@admin-cross:/opt/arkime/viewer# sudo /opt/arkime/bin/capture -c /opt/arkime/etc/config.ini
 Jul 31 10:14:08 main.c:263 parse_args(): WARNING: gethostname doesn't return a fully qualified name and getdomainname failed, this may cause issues when viewing pcaps, use the --host option - admin-cross
@@ -227,24 +232,24 @@ Jul 31 10:14:08 http.c:318 arkime_http_send_sync(): 1/1 SYNC 200 https://localho
 
 
 
-### Viewer (bin/view)
+### &#x1F441; Viewer (bin/view)
 
-#### Crear usuario para el **viewer**
+#### &#x2795;&#x1F464; Crear usuario para el **viewer**
 ```bash
 sudo /opt/arkime/bin/arkime_add_user.sh admin Admin123 --admin
 ```
-#### Comprobar usuario del **viewer**
+#### &#x2705; &#x1F464;Comprobar usuario del **viewer**
 ```bash
 curl -u elastic:'E7lVN*nXOYUbRQ**skyu' -k https://localhost:9200/arkime_users/_search?q=_id:admin
 {"took":26,"timed_out":false,"_shards":{"total":1,"successful":1,"skipped":0,"failed":0},"hits":{"total":{"value":1,"relation":"eq"},"max_score":1.0,"hits":[{"_index":"arkime_users_v30","_id":"admin","_score":1.0,"_source":{"userId":"admin","userName":"Admin123","passStore":"0302aafa27923a0c09cc39e0fd9b5c10.08513b24be7cbaf0d9fd73323e48330fc8f057fd3f690a9292c92dda2c7b5fc5c0d07ed2c9177691a99cebe31a7ef3ce","enabled":true,"webEnabled":true,"headerAuthEnabled":false,"emailSearch":false,"removeEnabled":false,"packetSearch":false,"welcomeMsgNum":0,"settings":{},"roles":["arkimeUser","cont3xtUser","parliamentUser","wiseUser"],"createEnabled":false,"lastUsed":1753874813351}}]}}
 ```
-#### Eliminar usuario
+#### &#x1F5D1; &#x1F464;Eliminar usuario
 ```bash
 curl -X DELETE -u elastic:'E7lVN*nXOYUbRQ**skyu' -k "https://localhost:9200/arkime_users_v30/_doc/admin"
 {"_index":"arkime_users_v30","_id":"admin","_version":3,"result":"deleted","_shards":{"total":1,"successful":1,"failed":0},"_seq_no":2,"_primary_term":1}
 ```
 
-#### Datos del fichero de configuración /opt/arkime/etc/config.ini
+#### &#x1F4CB; Datos del fichero de configuración /opt/arkime/etc/config.ini
 ```bash
 elasticsearchTrustCert=true
 elasticsearch=https://localhost:9200
@@ -252,8 +257,8 @@ elasticsearchBasicAuth=elastic:E7lVN*nXOYUbRQ**skyu
 authMode=basic
 basicAuthPasswordMethod=sha256
 ```
-#### Inicializar el viewer
-**Path absoluto**
+#### &#x23FB; Inicializar el viewer
+&#x27A1; **Path absoluto**
 ```bash
 sudo node /opt/arkime/viewer/viewer.js -c /opt/arkime/etc/config.ini
 ```
@@ -262,7 +267,7 @@ sudo node /opt/arkime/viewer/viewer.js -c /opt/arkime/etc/config.ini
 :::
 
 
-**Path relativo**
+&#x27A1; **Path relativo**
 ```bash
 admin@admin-cross:/opt/arkime/arkime/viewer$ sudo node viewer.js -c /opt/arkime/etc/config.ini
 WARNING - Using authMode=digest since not set, add to config file to silence this warning.
@@ -281,7 +286,7 @@ AUTH: User elastic doesn't exist
 Wed, 30 Jul 2025 11:24:59 GMT - GET / 401 - bytes 4.310 ms
 ```
 
-#### Acceso web 
+#### &#x1F310; Acceso web 
 Se produce mediante la siguiente URL: http://localhost:8005/sessions?date=1
 
 :::danger[descomentar]
@@ -290,7 +295,7 @@ Arrancar sin cronQueries=true hace que el nodo no esté completamente funcional 
 :::
 
 
-## Tests
+## &#x1F9EA; Tests
 ### Comprobación Elastic
 Se ejecuta el siguiente comando pasando las credenciales del usuario de elastic y aplicando el parámetro -k para evitar problemas por seguridad y encriptación.
 ```bash
@@ -305,15 +310,16 @@ Comprobación de todos los usuarios
 curl -u elastic:E7lVN*nXOYUbRQ**skyu -X GET https://localhost:9200/arkime_users/_search -k | jq
 ```
 
-### Resetar users
-#### Borrar admin viejo
+### &#x1F464; Resetar users 
+
+#### &#x1F5D1; &#x1F464; Borrar admin viejo
 curl -X DELETE 'http://localhost:9200/arkime_users/_doc/admin'
-#### Añadir nuevo
+#### &#x2795;&#x1F464;Añadir nuevo
 Importante crearlo con el **script** de **Arkime** para que sea creado correctamente el **passStore** que genera una contraseña cifrada con su propio algoritmo y no con bcrypt o sha256.
 ```bash
 sudo /opt/arkime/bin/arkime_add_user.sh admin "Admin User" admin
 ```
-#### Comprobar
+#### &#x2705; &#x1F464; Comprobar
 ```bash
 curl -X POST 'http://localhost:9200/_aliases' -H 'Content-Type: application/json' -d '
 {
@@ -327,7 +333,7 @@ curl -X POST 'http://localhost:9200/_aliases' -H 'Content-Type: application/json
   ]
 }'
 ```
-#### Añadir seguridad
+#### &#x2795;&#x1F512; Añadir seguridad
 /opt/arkime/bin/arkime_add_user.sh admin "Admin User" nuevaPassword
 :::warning[Problemas Pass]
 - Campos importantes:

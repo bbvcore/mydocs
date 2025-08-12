@@ -315,7 +315,7 @@ ejecutar();
 ```
 
 ## Event Loop
-El sistema de gestión de asincronía en JS se llama Event Loop, el cual va ejecutando el código sincrono mientras gestiona la pila de código asíncrono, para gestionar las tareas asíncronas cuando las sincronas finalicen.
+El sistema de gestión de asincronía en **JS** se llama **Event Loop**, el cual va ejecutando el código sincrono mientras gestiona la pila de código asíncrono, para gestionar las tareas asíncronas cuando las sincronas finalicen.
 ```javascript
 const getUsers => async() {
   try {

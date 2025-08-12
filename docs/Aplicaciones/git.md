@@ -7,23 +7,11 @@ title: Git
 Git es un software open source que realiza las funciones de controlador de versiones.
 
 
-## &#128189; Creación de un repositorio local de un repositorio remoto
-```bash
-git init
-git branch -m main
-git add .
-git commit -m "Primer commit"
-# Haciendo uso de HTTPS
-git remote add origin <URL_DEL_REPO>
-# Haciendo uso de SSH
-git remote add origin git@github.com:<repo_name>.git
-# Comprobar el repositorio remoto
-git remote -v
-## Subir los ficheros 
-git push -u origin main # A veces es necesario usar --force
-```
-## Comandos básicos
-### Configurar cuenta
+
+## Comandos básicos &#x1F3B2;
+
+### Configurar cuenta &#x2699;
+
 :::warning
 Si no se especifica un nivel se configura por defecto como local.
 :::
@@ -40,7 +28,8 @@ Para eliminar una configuración se utiliza el parámetro **unset**.
 ```bash
 git config --global --unset user.email
 ```
-### Mergear
+### Mergear &#x27BF;
+
 ```bash
 git checkout <nameBranch> # cambia de rama
 git pull origin <nameBranch> # actualiza la rama
@@ -74,22 +63,25 @@ git show # info de objetos
 :::
 
 
-### Ramas
+### Ramas &#x1F333;
 
-### Cambiar de ramas
+### Cambiar de ramas &#x1F4DA;
+
 ```bash
 git branch
 git checkout -b
 git switch -c
 ```
 
-#### Borrar ramas
+#### Borrar ramas &#x270F;
+
 ```bash
 git branch -d <nameBranch>
 git push origin --delete <nameBranch>
 ```
 
-#### Comparar
+#### Comparar &#x2696;
+
 ```bash
 git diff # compara cambios
 git diff rama1..rama2
@@ -99,30 +91,53 @@ git diff rama1..rama2 --fichero
 Si un fichero NO existe en una rama, git sabe que NO existe, pero NO sabe si es que no existió o que fue borrado
 :::
 
-#### Listar ficheros de la rama
+#### Listar ficheros de la rama &#x1F4CB;
+
 ```bash
 git ls-tre --name-only "<branch>"
 ```
-### Clonar repositorio
+### Clonar repositorio &#x1F4C1; &#x1F4C1;
+
+
 ```bash
 git clone <PathRepository>
 ```
 
-## Rebase
+## Rebase &#x1F916;
+
 El método rebase en git sirve para posicionar 2 ramas en una sola posicionando una sobre otra, de ahí el concepto rebasar, es como poner 2 ramas en una misma línea partiendo la segunda rama desde un determinado commit de la primera rama. El método rebase del comando git permite abrir una shell interactiva con el parámetro -i para poder editar el commit escogido.
 
 Con esta fusión de ramas se obtiene un historial limpio, esta forma es ideal para trabajar en solitario pero en proyectos es más recomendado usar merge ya que conserva todos los commits tal cual. El historial de commits con rebase de la rama 2 sobre la 1 se inicializa desde el punto que hace de Head en la rama 1, entonces los commits de la rama 2 se reescriben con nuevos hashes al haber cambiado el commit número 1 de la rama2 al ser actualmente el commit número 1 el punto de la rama 1 donde se ubico el Head antes del rebase.
 
-## Detached HEAD
+## Detached HEAD &#x1F449;
+
 Es cuando un HEADapunta directamente a un commit y no a una rama, esta acción pasa cuando se hace el uso de git checkout con un hash.
 
 Si se hace un cambio en esta caso, el commit no pertenece a  ninguna rama, por ello se suele almacenar estos cambios en una nueva rama con git checkout -b, aunque se puede volver a la rama existente y si no hay conflicto en los cambios ni se hace commit no debería de haber problemas, por ello si se hacen cambios, esos commit quedan en un limbo y lo mejor es crear una rama nueva para guardar los cambios.
 
 Para evitar estos problemas, si se necesita editar un commit lo mejor es usar rebase -i.
 
-## Git stash
+## Git stash &#x2328;
+
 Permite editar y guardar los cambios no modificados en una pila especial donde nunca se perderán salvo que se borren y además se pueden aplicar en una rama si interesa mediante git apply, además se puede consultar la pila con git stash list. Con git stash pop se puede aplicar el stash y borrarlo del stack, al contrario que apply que lo aplica pero sigue en el stack.
 Si se quiere borrar un elemento de la pila de stash determinado se puede hacer uso de git stash drop stash@{n}. Los procesos de git stash quedan en el directorio de trabajo, una vez aplicados hace falta un commit también. Para aplicar un determinado cambio de la pila, se busca en la lista y luego se usa git stash apply stash@{indice númerico}
+
+
+## &#128189; Creación de un repositorio local de un repositorio remoto
+```bash
+git init
+git branch -m main
+git add .
+git commit -m "Primer commit"
+# Haciendo uso de HTTPS
+git remote add origin <URL_DEL_REPO>
+# Haciendo uso de SSH
+git remote add origin git@github.com:<repo_name>.git
+# Comprobar el repositorio remoto
+git remote -v
+## Subir los ficheros 
+git push -u origin main # A veces es necesario usar --force
+```
 
 ## &#127760; Métodos de subida (Push)
 ### Uso de Key SSH
