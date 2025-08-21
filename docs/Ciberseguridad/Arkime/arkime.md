@@ -53,6 +53,7 @@ sudo apt update
 ```bash
 sudo apt install elasticsearch
 systemctl enable elasticsearch
+systemctl start elasticsearch
 systemctl status elasticsearch
 ```
 
@@ -114,6 +115,16 @@ wget https://github.com/arkime/arkime/releases/download/v5.6.4/arkime_5.6.4-1.ub
 sudo apt install ./arkime_5.6.4-1.ubuntu2204_amd64.deb
 ```
 
+#### Paquetes necesarios
+En el Script están añadidos, pero si se hace a mano hacen falta añadir los siguientes paquetes.
+```bash
+sudo apt update
+sudo apt install -y meson ninja-build build-essential \
+    libpcap-dev libmagic-dev zlib1g-dev libssl-dev \
+    pkg-config
+
+```
+
 #### &#x27A1; Script de instalación
 ```bash
 #!/bin/bash
@@ -140,7 +151,8 @@ apt install -y \
   libidn2-0-dev liblua5.3-dev \
   libcap-dev libnetfilter-queue-dev \
   brotli libbrotli-dev libnghttp2-dev \
-  libpcre3-dev liblz4-dev
+  libpcre3-dev liblz4-dev \
+   meson ninja-build
 
 # 2. Clonando Arkime del repositorio
 echo "Comenzando la clonación de Arkime..."
