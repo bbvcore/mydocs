@@ -16,7 +16,7 @@ title: Personalización de la shell
 #!/bin/bash
 AZUL='\033[0;34m'
 NC='\033[0m' # Sin color (reset)
-echo -e "${AZUL}Este texto es azul${NC}"
+echo -e "${AZUL}Este texto es azul${NC}. A partir de aquí el color es el habitual de la terminal"
 ```
 
 :::tip[Evitar ambiguedades]
