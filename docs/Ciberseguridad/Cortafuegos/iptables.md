@@ -4,6 +4,7 @@ title: Iptables
 ---
 
 # &#127760; Iptables
+Es una herramienta incorporada en los sistemas operativos GNU/Linux que permite la administración de reglas para la gestión del firewall.
 
 ## &#128221; Principales parámetros
 -**L**: lista de todas las reglas de las cadenas

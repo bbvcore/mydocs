@@ -105,6 +105,7 @@ xpack.security.transport.ssl.enabled: false
 Para comprobar que funciona correctamente se ha de acceder la siguiente URL
 ```bash
 curl http://localhost:9200
+curl -s http://127.0.0.1:9200/_cluster/health?pretty
 ```
 :::
 
@@ -122,13 +123,12 @@ sudo apt update
 sudo apt install -y meson ninja-build build-essential \
     libpcap-dev libmagic-dev zlib1g-dev libssl-dev \
     pkg-config
-
 ```
 
 #### &#x27A1; Script de instalación
 ```bash
 #!/bin/bash
-set -e
+set -e # Si hay un error el script se detiene
 
 # Configuración de variables
 ARKIME_DIR="/opt/arkime"
@@ -325,7 +325,9 @@ curl -u elastic:E7lVN*nXOYUbRQ**skyu -X GET https://localhost:9200/arkime_users/
 ### &#x1F464; Resetar users 
 
 #### &#x1F5D1; &#x1F464; Borrar admin viejo
+```bash
 curl -X DELETE 'http://localhost:9200/arkime_users/_doc/admin'
+```
 #### &#x2795;&#x1F464;Añadir nuevo
 Importante crearlo con el **script** de **Arkime** para que sea creado correctamente el **passStore** que genera una contraseña cifrada con su propio algoritmo y no con bcrypt o sha256.
 ```bash

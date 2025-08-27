@@ -7,7 +7,6 @@ title: Docusaurus
 Docusaurus es una aplicación para la creación de sitios web estáticos para la generación de documentación usando markdown y también es compatible con HTML. Creado por Facebook y basado en React.
 
 
-
 ## Pasos previos
 Es necesario contar con **nodejs** y con su gestor de dependencias **npm**
 ```bash 

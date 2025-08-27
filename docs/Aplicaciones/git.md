@@ -7,10 +7,9 @@ title: Git
 Git es un software open source que realiza las funciones de controlador de versiones.
 
 
+## &#x1F3B2; Comandos básicos 
 
-## Comandos básicos &#x1F3B2;
-
-### Configurar cuenta &#x2699;
+### &#x2699; Configurar cuenta 
 
 :::warning
 Si no se especifica un nivel se configura por defecto como local.
@@ -28,7 +27,7 @@ Para eliminar una configuración se utiliza el parámetro **unset**.
 ```bash
 git config --global --unset user.email
 ```
-### Mergear &#x27BF;
+### &#x27BF; Mergear 
 
 ```bash
 git checkout <nameBranch> # cambia de rama
@@ -43,7 +42,7 @@ En sintesis merge actua por defecto de la siguiente forma:
 - Si son iguales y tienen el mismo contenido también mergea sin problemas
 - Si son iguales y tienen distinto contenido se establece un conflicto y toca comprobar las diferencias
 
-#### Soluciones a merges problemáticos
+#### :warning: Soluciones a merges problemáticos
 ```bash
 git status # indica conflictos
 git status -s 
@@ -63,9 +62,9 @@ git show # info de objetos
 :::
 
 
-### Ramas &#x1F333;
+### &#x1F333; Ramas 
 
-### Cambiar de ramas &#x1F4DA;
+### &#x1F4DA; Cambiar de ramas 
 
 ```bash
 git branch
@@ -73,14 +72,14 @@ git checkout -b
 git switch -c
 ```
 
-#### Borrar ramas &#x270F;
+#### &#x270F; Borrar ramas 
 
 ```bash
 git branch -d <nameBranch>
 git push origin --delete <nameBranch>
 ```
 
-#### Comparar &#x2696;
+#### &#x2696; Comparar 
 
 ```bash
 git diff # compara cambios
@@ -91,25 +90,25 @@ git diff rama1..rama2 --fichero
 Si un fichero NO existe en una rama, git sabe que NO existe, pero NO sabe si es que no existió o que fue borrado
 :::
 
-#### Listar ficheros de la rama &#x1F4CB;
+#### &#x1F4CB; Listar ficheros de la rama 
 
 ```bash
 git ls-tre --name-only "<branch>"
 ```
-### Clonar repositorio &#x1F4C1; &#x1F4C1;
+### &#x1F4C1; &#x1F4C1; Clonar repositorio 
 
 
 ```bash
 git clone <PathRepository>
 ```
 
-## Rebase &#x1F916;
+## &#x1F916; Rebase 
 
 El método rebase en git sirve para posicionar 2 ramas en una sola posicionando una sobre otra, de ahí el concepto rebasar, es como poner 2 ramas en una misma línea partiendo la segunda rama desde un determinado commit de la primera rama. El método rebase del comando git permite abrir una shell interactiva con el parámetro -i para poder editar el commit escogido.
 
 Con esta fusión de ramas se obtiene un historial limpio, esta forma es ideal para trabajar en solitario pero en proyectos es más recomendado usar merge ya que conserva todos los commits tal cual. El historial de commits con rebase de la rama 2 sobre la 1 se inicializa desde el punto que hace de Head en la rama 1, entonces los commits de la rama 2 se reescriben con nuevos hashes al haber cambiado el commit número 1 de la rama2 al ser actualmente el commit número 1 el punto de la rama 1 donde se ubico el Head antes del rebase.
 
-## Detached HEAD &#x1F449;
+## &#x1F449; Detached HEAD 
 
 Es cuando un HEADapunta directamente a un commit y no a una rama, esta acción pasa cuando se hace el uso de git checkout con un hash.
 
@@ -117,7 +116,7 @@ Si se hace un cambio en esta caso, el commit no pertenece a  ninguna rama, por e
 
 Para evitar estos problemas, si se necesita editar un commit lo mejor es usar rebase -i.
 
-## Git stash &#x2328;
+## &#x2328; Git stash 
 
 Permite editar y guardar los cambios no modificados en una pila especial donde nunca se perderán salvo que se borren y además se pueden aplicar en una rama si interesa mediante git apply, además se puede consultar la pila con git stash list. Con git stash pop se puede aplicar el stash y borrarlo del stack, al contrario que apply que lo aplica pero sigue en el stack.
 Si se quiere borrar un elemento de la pila de stash determinado se puede hacer uso de git stash drop stash@{n}. Los procesos de git stash quedan en el directorio de trabajo, una vez aplicados hace falta un commit también. Para aplicar un determinado cambio de la pila, se busca en la lista y luego se usa git stash apply stash@{indice númerico}
