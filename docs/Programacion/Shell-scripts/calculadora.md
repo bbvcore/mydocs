@@ -1,4 +1,3 @@
-
 ---
 title: Script para una calculadora
 ---
