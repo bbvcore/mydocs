@@ -4,6 +4,34 @@ title: Telegraf
 ---
 
 # Telegraf 
+## Instalación
+```bash
+sudo apt update && sudo apt upgrade -y # Actualización
+
+wget -qO- https://repos.influxdata.com/influxdata-archive.key | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/influxdata.gpg # Descargar clave GPG
+
+echo "deb [signed-by=/etc/apt/trusted.gpg.d/influxdata.gpg] https://repos.influxdata.com/debian bookworm stable" | sudo tee /etc/apt/sources.list.d/influxdata.list  # Añadir clave GPG
+
+
+sudo apt install telegraf # Instalar telegraf
+
+sudo systemctl enable telegraf # 
+sudo systemctl start telegraf # 
+
+systemctl status telegraf # Comprobar estado del servicio
+```
+## Comprobar los ficheros de configuración
+Telegraf se puede configurar en el fichero /etc/telegraf.conf, pero también existe
+un directorio telegraf.d para una funcionalidad modular. 
+:::tip[Comprobación de ambas rutas en el servicio]
+Para realizar la comprobación se usa el siguiente comando.
+```bash
+cat /lib/systemd/system/telegraf.service
+```
+:::
+
+
+
 ## Despliegue modular
 Para el despliegue modular se aplica una configuración minimalista en el fichero **telegraf.conf** y dentro del directorio **conf.d** se alojarán ficheros de configuracón para la recepción de los datos de los sistemas mediante el uso de **agentes**.
 

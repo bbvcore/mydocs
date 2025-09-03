@@ -101,9 +101,9 @@ Examples
 #### Lanzamiento de InfluxDB y creación de Nodo
 Se crea un nodo y un sistema de almacenamiento de los datos
 ```cmd
-C:\Users\BorjaBasVentín\Downloads\influxdb3-core-3.4.1-windows_amd64>.\influxdb3.exe serve --object-store file --node-id node1
-2025-09-02T10:26:05.479827Z  INFO influxdb3_lib::commands::serve: InfluxDB 3 Core server starting node_id=node1 git_hash=7617104990a8e2ca4944571cb1dc75bf3e229eba version=3.4.1 uuid=4a97e880-b8a0-42bd-a3a7-4061d79f9d04 num_cpus=20
-Serve command failed: Cannot parse object store config: Specified File for the object store, required configuration missing for data-dir
+C:\Users\BorjaBasVentín\Downloads\influxdb3-core-3.4.1-windows_amd64>.\influxdb3.exe serve --object-store file --node-id node1 --data-dir "C:\influxdb3\data"
+2025-09-03T07:17:03.304520Z  INFO influxdb3_lib::commands::serve: InfluxDB 3 Core server starting node_id=node1 git_hash=7617104990a8e2ca4944571cb1dc75bf3e229eba version=3.4.1 uuid=bab9a93c-e4fc-49db-ac18-7fd10f7eccfc num_cpus=20
+2025-09-03T07:17:03.304796Z  INFO influxdb3_clap_blocks::object_store: Object Store db_dir="C:\\influxdb3\\data" object_store_type="Directory"
 ```
 #### Generación de Token en CMD
 ```bash
