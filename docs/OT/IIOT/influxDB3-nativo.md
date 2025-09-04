@@ -47,9 +47,10 @@ influxdb3 serve
 
     Other object store parameters depending on the selected object-store type. For example, if you use s3, you must provide the bucket name and credentials.
 :::
-
+```bash
 └──╼ $sudo ./influxdb3 serve --node-id host01 --object-store file --data-dir ~/.influxdb3 --cluster-id cluster01
 Catalog initialized with uuid: '2b1a2431-64e1-4bf9-94ae-ade37a5eef3f' and storage hash: 'sha256:aTbmcdXYBe-wT-Fo8N_iRg9mQPA_zJnYQR1gQBKDd-Q'
+```
 
 ## Ayuda
 ```bash
