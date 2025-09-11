@@ -1,8 +1,8 @@
 ---
-title: Aplicación IoT
+title: Influx, Telegraf y Grafana en GNU/Linux
 ---
 
-# Aplicación IoT
+# Práctica Influxdb3 en GNU/Linux
 Esta es una aplicación que utilizará InfluxDB3, telegraf y grafana.
 
 ## InfluxDB
