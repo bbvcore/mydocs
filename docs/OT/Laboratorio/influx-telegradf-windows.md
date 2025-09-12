@@ -124,7 +124,7 @@ disk,device=C:,fstype=NTFS,host=DESKTOP-8LR0L2R,mode=rw,path=\C: inodes_used_per
 disk,device=D:,fstype=CDFS,host=DESKTOP-8LR0L2R,mode=ro,path=\D: free=0i,used=60225536i,used_percent=100,inodes_total=0i,inodes_free=0i,inodes_used=0i,inodes_used_percent=0,total=60225536i 1757588370000000000
 ```
 
-## Grafana
+
 
 
 

@@ -305,3 +305,30 @@ show → listar recursos (como bases de datos y tablas)
 
 ## Conceptos
 La base de datos se corresponde con el bucket y la tabla al measurement
+
+## Conexión a Grafana
+InfluxDB3 maneja el acceso de datos a través de **FlightSQL** *(gRPC)* o a través de la **API** de InfluxDB Cloud, 
+entonces Grafana usa el **gRPC** pero a través de **TLS/SSL**, con lo cual requiere un handshake **TLS**.
+
+InfluxDB3 *(FlightSQL)* usa por defecto el puerto **8082**, este conector en el plugin de InfluxDB está llamado como **SQL** *(hay que comprobar que pone que es válido para influx 3.0)*
+
+:::warning[Arrancar con soporte grpc]
+ ```powershell
+  .\influxdb3.exe serve --object-store file --node-id node1 --data-dir ".\data-influxdb-storage" --cluster-id cluster-01 --grpc-bind 127.0.0.1:8082
+```
+Pero en este caso no admite influxdb el parámetro **grpc-bind** entonces se sustituye con **http-bind**.
+  :::
+
+Aunque con **Grafana** y **Windows** no funciona **fligtSQL** *(queda pendiente de probar en GNU/Linux)* como debería al rechazarse la conexión, queda la opción de leer directamente desde el fichero .pl, para ello hace falta convertirlo a CSV o **JSON**.
+
+### Puertos
+Los puertos principales utilizados en Grafana con InfluxDB:
+- 8181 → HTTP (API REST, consulta de datos)
+- 8082 → FlightSQL (gRPC), consultar datos SQL.
+
+:::tip
+- --grpc-bind (sin TLS) 
+- --grpc-tls-bind (con TLS)
+:::
+
+Se usa grpc pero en grafana por encima pide HTTP en la interfaz web al introducir la URL.
