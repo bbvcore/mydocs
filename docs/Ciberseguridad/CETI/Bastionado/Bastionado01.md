@@ -17,7 +17,10 @@ Subtipos de malware
 
 - **Ransomware**: malware capaz de secuestrar un dispositivo mediante cifrado de archivos principalmente.
 - **Spyware**: programa espia dedicado a recopilar datos. Que o bien intenta acceder a nuestros datos privados o recapitular datos sobre nuestros habitos. Por ejemplo el software **Pegasus**.
-- **Troyanos**: malware disfrazado de software dañino
+- **Troyanos**: malware disfrazado de software legitimo.
+- **Gusanos**: software malicioso que no depende de archivos portadores para poder infectar otros sistemas.
+- **Bots**: es software controlado por ordenes remotas que permiten controla un equipo victima convirtiéndolo en un zombi, y de esta forma generar redes zombis llamadas botnets que pueden utilizarse para diversos fines.
+- **Keylogger**: roba información registrando las acciones de
 
 
 
