@@ -3,7 +3,7 @@ sidebar_position: 1
 title: IDS/IPS
 ---
 
-# :globe_with_meridians:IDS/IPS 
+# :globe_with_meridians: IDS/IPS 
 En un intento de **disminuir** las **vulnerabilidades** a las que se enfrenta un sistema **IT** surgen los sistemas **IDS** para detectar anomalías y usos indebidos.
 
 Debido a la dificultad de disminuir dichas vulnerabildiades surgen los **IPS**, hoy en día se usan indistintamente **IDS/IPS**, dado que los equipamientos son idénticos, y las diferencias solo se aprecian en el despliegue y en algunos de los parámetros de configuración.

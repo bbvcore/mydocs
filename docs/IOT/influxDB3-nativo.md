@@ -33,6 +33,7 @@ Requiere del siguiente comando
 influxdb3 serve
 ```
 :::tip[Atributos comando influxdb3]
+```bash
     --node-id: A string identifier that distinguishes individual server instances within the cluster. This forms the final part of the storage path: <CONFIGURED_PATH>/<CLUSTER_ID>/<NODE_ID>. In a multi-node setup, this ID is used to reference specific nodes.
 
     --cluster-id: A string identifier that determines part of the storage path hierarchy. All nodes within the same cluster share this identifier. The storage path follows the pattern <CONFIGURED_PATH>/<CLUSTER_ID>/<NODE_ID>. In a multi-node setup, this ID is used to reference the entire cluster.
@@ -46,6 +47,7 @@ influxdb3 serve
         azure: Azure Blob Storage
 
     Other object store parameters depending on the selected object-store type. For example, if you use s3, you must provide the bucket name and credentials.
+```
 :::
 ```bash
 └──╼ $sudo ./influxdb3 serve --node-id host01 --object-store file --data-dir ~/.influxdb3 --cluster-id cluster01

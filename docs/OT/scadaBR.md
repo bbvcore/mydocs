@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-title: scada BR
+title: Scada BR
 ---
 
 # ScadaBR

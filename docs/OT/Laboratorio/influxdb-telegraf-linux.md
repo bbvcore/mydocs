@@ -138,6 +138,5 @@ Para proceder a insertar los valores en InfluxDB se procede a realizar la inserc
 success
 ```
 
-## Grafana
 
 

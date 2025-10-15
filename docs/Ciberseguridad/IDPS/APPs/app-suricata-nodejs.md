@@ -109,8 +109,6 @@ app.listen(PORT, () => {
   console.log(`La API de consulta de Suricata está disponible desde http://localhost:${PORT}`);
 });
 
-
-
 ```
 
 

@@ -7,7 +7,7 @@ title: DOM
 Ejemplo de manipulación del DOM en JS, donde se crea de forma dinámica un contenedor, un titulo y un texto, se monta todo y se añade al flujo del DOM en la sección del body.
 </summary>
 
-```javascript
+```html
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,3 +39,5 @@ Ejemplo de manipulación del DOM en JS, donde se crea de forma dinámica un cont
 </html>
 
 ```
+
+</details>

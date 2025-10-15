@@ -34,7 +34,7 @@ move-item file1.txt /tmp/
 
 ## Ayuda
 - **get-command**: lista de comandos
-- **get-help <name command>**: ayuda sobre un comando
+- **get-help (name command)**: ayuda sobre un comando
 
 ## Permisos de ejecución de ficheros .ps1
 Para evitar restricciones de seguridad y poder probar scripts se puede usar

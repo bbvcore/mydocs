@@ -48,13 +48,16 @@ target="_blank" rel="noopener"
 Relación de los principales métodos del Objeto <b>Window</b>
 </summary>
 
+
 - **window.alert()**
 - **window.prompt()**
 - **window.confirm()**
-- **window.open(<url>, <name>, <características>)**
+- **window.open(url, name, características)**
+
 :::tip[Características]
 Dentro de las características, que van todas en un solo bloque entrecomillado, destacan algunas como son: width, height, left, top, scrollbars, resizable, toolbar, menubar, status, location
 :::
+
 - **window.close()**
 - **window.scroll(x,y): desplaza a esas coordenadas**
 - **window.scrollTo(x, y)**

@@ -9,7 +9,7 @@ Acceso rápido a las propiedades avanzadas del sistema a través del siguiente c
 SystemPropertiesAdvanced
 ```
 
-## Conseguir SIDç
+## Conseguir SID
 Hay varias opciones, las más comunes son whoami o wmic
 ### Whoami
 ```batch

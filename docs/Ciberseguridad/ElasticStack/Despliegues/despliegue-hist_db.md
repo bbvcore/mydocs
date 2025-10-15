@@ -51,9 +51,9 @@ Dentro de telegraf se ha de establecer una configuración para el protocolo MQTT
 
 Se puede configurar de varias formas:
 - Desde el fichero de configuración
-```
+```bash
 /etc/telegraf/telegraf.conf
-``
+```
 Accediendo a las secciones **inputs.mqtt_consumer** y **outputs.influxdb_v2** del fichero de configuración donde se ajustarán valores como: servers, topic, qos en la primera sección y en la segunda sección se configuran valores como: servers, token, organization y bucket. Como opcional, según las necesidades, se puede dejar sin utilizar los valores de las credenciales username/password.
 
 - Desde la interfaz web de InfluxDB en la sección **Load Data**.

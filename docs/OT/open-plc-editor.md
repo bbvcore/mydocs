@@ -1,6 +1,6 @@
 ---
 sidebar_position: 2
-title: openPLC editor
+title: OpenPLC editor
 ---
 
 # OpenPLC Editor

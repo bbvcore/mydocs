@@ -20,6 +20,10 @@ Configuración del laboratorio de pruebas
 - **Monitorización**: 1 adaptador de red.
 </details>
 
+:::tip[interfaces]
+- enp0s3: WAN
+- enp0s8: LAN
+:::
 
 ### &#128421; Máquina Router
 #### &#8594; Habilitar el Ip Forwarding
@@ -153,7 +157,7 @@ sudo modprobe xt_TEE
 ### &#8594; Cambiar IP de origen de los paquetes de salida
 Para que los paquetes salgan con la IP del Router
 ```bash
-sudo iptables -t nat -A POSTROUTING -o enp0s8 (wan) -p tcp --sport 80  -j SNAT --to-source <IP WAN / IP pública router ".77"> 
+sudo iptables -t nat -A POSTROUTING -o enp0s3 (wan) -p tcp --sport 80  -j SNAT --to-source <IP WAN / IP pública router ".77"> 
 ```
 
 ## Resumen Final

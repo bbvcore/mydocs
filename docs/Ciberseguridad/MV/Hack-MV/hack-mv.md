@@ -736,10 +736,7 @@ mkdir /opt/app-node/
 npm init -y
 ```
 
-```javascript
 
-
-```
 
 ### Ejecución
 #### MongoDB en funcionamiento
@@ -855,8 +852,9 @@ docker update --restart=always mongodb
 
 
 #### Comprobar política reinicio
+```bash
 docker inspect -f '{{ .HostConfig.RestartPolicy.Name }}' mongodb
-
+```
 
 ## Nginx
 ```bash

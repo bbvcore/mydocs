@@ -104,23 +104,51 @@ git clone <PathRepository>
 
 ## &#x1F916; Rebase 
 
-El método rebase en git sirve para posicionar 2 ramas en una sola posicionando una sobre otra, de ahí el concepto rebasar, es como poner 2 ramas en una misma línea partiendo la segunda rama desde un determinado commit de la primera rama. El método rebase del comando git permite abrir una shell interactiva con el parámetro -i para poder editar el commit escogido.
+El método **rebase**  sirve para **posicionar 2 ramas en una sola rama**,  *ubicando una sobre otra*, sería como situar **2 ramas** en **una** misma **línea** partiendo la segunda rama desde un determinado commit de la primera rama. 
 
-Con esta fusión de ramas se obtiene un historial limpio, esta forma es ideal para trabajar en solitario pero en proyectos es más recomendado usar merge ya que conserva todos los commits tal cual. El historial de commits con rebase de la rama 2 sobre la 1 se inicializa desde el punto que hace de Head en la rama 1, entonces los commits de la rama 2 se reescriben con nuevos hashes al haber cambiado el commit número 1 de la rama2 al ser actualmente el commit número 1 el punto de la rama 1 donde se ubico el Head antes del rebase.
+El método rebase del comando git permite abrir una **shell interactiva** con el **parámetro -i** para poder editar el commit escogido.
+
+Con esta fusión de ramas se obtiene un historial limpio, esta forma es ideal para trabajar en solitario pero en proyectos colaborativos es mejor utilizar el comando **merge** ya que permite la conservación de todos los commits.
+
+El historial de commits con **rebase** inicializa desde el punto que hace de **Head** en la rama 1, entonces los commits de la rama 2 se reescriben con nuevos **hashes** al haber cambiado el commit número 1 de la rama2 al ser actualmente el commit número 1 el punto de la rama 1 donde se ubico el **Head** antes del rebase.
 
 ## &#x1F449; Detached HEAD 
 
-Es cuando un HEADapunta directamente a un commit y no a una rama, esta acción pasa cuando se hace el uso de git checkout con un hash.
+Es cuando un **HEAD** apunta directamente a un commit y no a una rama, esta acción pasa cuando se hace el uso de **git checkout** con un **hash**.
 
-Si se hace un cambio en esta caso, el commit no pertenece a  ninguna rama, por ello se suele almacenar estos cambios en una nueva rama con git checkout -b, aunque se puede volver a la rama existente y si no hay conflicto en los cambios ni se hace commit no debería de haber problemas, por ello si se hacen cambios, esos commit quedan en un limbo y lo mejor es crear una rama nueva para guardar los cambios.
+Si se hace un cambio en esta caso, el commit no pertenece a  ninguna rama, por ello se suele almacenar estos cambios en una nueva rama con el comando.
+```bash
+git checkout -b
+```
+Aunque es posible retornar a la rama existente, si no hay conflicto en los cambios y tampoco se hizo ningún commit no debería de haber problemas. En cambio si se hicieron cambios, esos commit quedan en un limbo y lo mejor es crear una rama nueva para guardar los cambios.
 
-Para evitar estos problemas, si se necesita editar un commit lo mejor es usar rebase -i.
+Para evitar estos problemas, si se necesita editar un commit lo mejor es usar **rebase -i**.
 
 ## &#x2328; Git stash 
 
-Permite editar y guardar los cambios no modificados en una pila especial donde nunca se perderán salvo que se borren y además se pueden aplicar en una rama si interesa mediante git apply, además se puede consultar la pila con git stash list. Con git stash pop se puede aplicar el stash y borrarlo del stack, al contrario que apply que lo aplica pero sigue en el stack.
-Si se quiere borrar un elemento de la pila de stash determinado se puede hacer uso de git stash drop stash@{n}. Los procesos de git stash quedan en el directorio de trabajo, una vez aplicados hace falta un commit también. Para aplicar un determinado cambio de la pila, se busca en la lista y luego se usa git stash apply stash@{indice númerico}
+Permite editar y guardar los cambios no modificados en una pila especial donde nunca se perderán salvo que se borren y además se pueden aplicar en una rama si interesa mediante el comando
+```bash
+git apply
+```
+Además también permite consulta la pila actual con el comando
+```bash
+git stash list
+```
 
+Si se quiere aplicar un stash y borrarlo del stack se puede usar este otro comando
+```bash
+git stash pop 
+```
+
+Si se quiere borrar un elemento de la pila de stash determinado se puede hacer uso del siguiente comando.
+
+```bash
+ git stash drop stash@{n}
+ ```
+Los procesos de git stash quedan en el directorio de trabajo, una vez aplicados hace falta un commit también. Para aplicar un determinado cambio de la pila, se busca en la lista y luego se usa 
+```bash
+  git stash apply stash@{indice númerico}
+```
 
 ## &#128189; Creación de un repositorio local de un repositorio remoto
 ```bash
