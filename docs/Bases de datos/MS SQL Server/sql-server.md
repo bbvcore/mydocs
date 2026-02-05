@@ -1,4 +1,4 @@
----
+crea---
 title: SLQ Server
 sidebar_id: 1
 ---
@@ -32,6 +32,7 @@ insert into measurements (ts,tag,value) values (dateadd(minute, -10, sysdatetime
 ```sql
 SELECT
   ts AS time,
+  
   value
 FROM measurements
 WHERE

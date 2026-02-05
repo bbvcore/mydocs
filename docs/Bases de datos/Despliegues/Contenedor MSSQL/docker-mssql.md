@@ -9,7 +9,6 @@ sidebar_id: 1
 <summary>
 Fichero docker-compose.yml para despliegue de contenedor SQL Server y Grafana
 </summary>
-<details>
 
 ```bash
 version: "3.9"
@@ -72,17 +71,20 @@ docker network inspect <name red>
 ### Acceso grafana
 <details>
 <summary>
+Acceso a Grafana
+</summary>
 
 ```bash
 - URL: http://localhost:3000
 - user/password: admin/admin **se ha de cambiar el password en el primer acceso**
 ```
-</summary>
+
 </details>
 
 <details>
 <summary>
 Configuración del plugin MSSQL
+</summary>
 
 ```
 | Campo    | Valor                |
@@ -94,12 +96,44 @@ Configuración del plugin MSSQL
 | Encrypt  | `disable`  |
 
 ```
-</summary>
+
 </details>
+
+
+### Consulta canónica para Grafana
+```sql
+SELECT
+  ts AS time,
+  value
+FROM measurements
+WHERE
+  tag = 'Pump1.Pressure'
+  AND $__timeFilter(ts)
+ORDER BY ts;
+```
+#### Reglas
+- La columna debe llamarse **time**
+- **__$timeFilter()** es de Grafana, no de SQL Server
+- **ORDER BY ts** es recomendable para time series
+
+### Comprobaciones rápidas en Grafana
+#### Valores
+```sql
+SELECT COUNT(*) AS value
+FROM dbo.measurements;
+```
+#### Tags
+```sql
+SELECT COUNT(*) AS value
+FROM dbo.measurements;
+ORDER BY tag;
+```
 
 ### Acceso MS SQL Server
 <details>
 <summary>
+Datos acceso a MS SQL Server
+</summary>
 
 ```bash
 - Host: sqlserver-control
@@ -107,19 +141,20 @@ Configuración del plugin MSSQL
 - User: sa
 - Password: 
 ```
-</summary>
+
 </details>
 
 <details>
 <summary>
 Tipo de autenticaciones que maneja el plugin
+</summary>
 
 ```
-- **Windows Authentication Windows Integrated Security** - single sign on for users who are already logged onto Windows and have enabled this option for MS SQL Server.
-- **Windows AD: Username + password Windows Active Directory** - Sign on for domain user via username/password.
-- **Windows AD: Keytab Windows Active Directory** - Sign on for domain user via keytab file.
-- **Windows AD: Credential cache Windows Active Directory** - Sign on for domain user via credential cache.
-- **Windows AD: Credential cache file Windows Active Directory** - Sign on for domain user via credential cache file.
+- <b>Windows Authentication Windows Integrated Security</b> - single sign on for users who are already logged onto Windows and have enabled this option for MS SQL Server.
+- <b>Windows AD: Username + password Windows Active Directory</b> - Sign on for domain user via username/password.
+- <b>Windows AD: Keytab Windows Active Directory</b> - Sign on for domain user via keytab file.
+- <b>Windows AD: Credential cache Windows Active Directory</b> - Sign on for domain user via credential cache.
+- <b>Windows AD: Credential cache file Windows Active Directory</b> - Sign on for domain user via credential cache file.
 
 ```
 </details>
