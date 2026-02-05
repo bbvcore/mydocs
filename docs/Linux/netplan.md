@@ -12,8 +12,7 @@ title: Netplan
 ## Networkd NetworkManager
 Networkd, es del systemd para red a bajo nivel (para servidores, contenedores o cloud), la gw esta fuera de la subred
 hace falta añadir on-link: true. No actua con wifi o redes dinámicas. Muy estricto.
-NetworManager, es un gestor de red completo para escritorio (gnome, kde...). Actua bien con wifi y redes dinámicas (VPNs, redes móviles), ideal
-para pcs de escritorio y portátiles. Más flexible.
+NetworManager, es un gestor de red completo para escritorio (gnome, kde...). Actua bien con wifi y redes dinámicas (VPNs, redes móviles), ideal para pcs de escritorio y portátiles. Más flexible.
 
 Elemento	networkd	NetworkManager
 gateway4	Se aplica tal cual	Puede añadir rutas adicionales
@@ -41,7 +40,7 @@ network:
           - 8.8.4.4
 
 ## Ejemplo para varias Gw
-#routes: - to: 0.0.0.0/0 via: 192.168.1.1 metric: 100 - to: 0.0.0.0/0 via: 192.168.1.254 metric: 200
+# routes: - to: 0.0.0.0/0 via: 192.168.1.1 metric: 100 - to: 0.0.0.0/0 via: 192.168.1.254 metric: 200
 
 
 ## Uso gateway
