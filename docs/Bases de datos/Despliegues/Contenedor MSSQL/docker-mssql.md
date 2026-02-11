@@ -74,7 +74,8 @@ docker network inspect <name red>
 Acceso a Grafana
 </summary>
 
-```bash
+```bash 
+
 - URL: http://localhost:3000
 - user/password: admin/admin **se ha de cambiar el password en el primer acceso**
 ```
