@@ -45,7 +45,7 @@ Código <b>JS</b> para calculo de posicionamiento de elementos en el documento.
 
 <div id="padre"></div>
 <div id="hijo">
-    <btn id="btn">Acción</btn>
+    <button id="btn">Acción</button>
 </div>
 
 <script type="text/javascript">
