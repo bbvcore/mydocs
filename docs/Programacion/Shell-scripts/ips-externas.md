@@ -13,6 +13,9 @@ Scripts compatibles con sistemas antiguos
 ```bash
 #!/bin/bash
 # Array con las IPs de las conexiones establecidas
+# () general es para crear un array y almacenarlo en ips, también se puede usar sin almacenar para ejecutar en una subshell algo, no es aquí el caso
+# $() almacena en una variable, como comillaras invertidas
+# $(()) evaluar aritméticamente, aquí no es necesario realmente, pq no se evalua nada, valdía con $()
 ips=($((ss -tuln | grep ESTAB | awk '{print $5}'  | cut -d':' -f1 )))
 
 # Visualización de IPs
