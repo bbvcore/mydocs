@@ -1,8 +1,8 @@
 ---
-title: Conceptos PHP
+title: Guía resumen de PHP
 ---
-# Conceptos PHP
-
+# Guía de conceptos PHP
+Guía resumen básica de los principales conceptos a manejar en PHP orientado a objetos.
 
 ## Visualización datos
 ### Con print_r
@@ -149,8 +149,6 @@ fn (argumentos) => expresion;
 $mensaje = fn($texto) => "El mensaje es: $texto";
 ```
 
-
-
 ### Asignación de argumentos en la declaración de variables
 ```php
 declare(strict_types=1); // Activar el modo estricto
@@ -160,3 +158,4 @@ function suma (int $a, int $b, int $c = 18) :int {
 }
 echo suma(5,13);
 ```
+
