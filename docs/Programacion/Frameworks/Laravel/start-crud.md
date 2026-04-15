@@ -65,5 +65,4 @@ APP_KEY=base64:giukhkG+DuWOOc26aOXBxbz89c4...=
 
 
 
-## Crud
 
