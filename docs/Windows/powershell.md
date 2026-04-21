@@ -48,3 +48,15 @@ write-verbose "ejecutando script" # Solo si se ejecuta con verbose -verbose
 write-host "soy el puto amo" # escribir en el host
 write-output "saliendo" # stdout (pipeline)
 ```
+
+## Uso de SSH desde PS
+```ps
+Get-WindowsCapability -Online | Where-Object Name -like 'OpenSSH*' # Comprobar servicio SSH
+Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0 # Instalar cliente SSH
+Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0 # Instalar servidor SSH
+```
+### Activar SSH
+```ps
+Start-Service sshd # Inicializar el servicio
+Set-Service -Name sshd -StartupType Automatic # Inicialización automática
+```
