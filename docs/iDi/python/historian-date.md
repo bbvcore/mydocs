@@ -21,11 +21,11 @@ import pyodbc
 import psycopg2
 from psycopg2.extras import execute_batch
 
-# ==========================================
-# 1. CONEXIONES (ZONA OT -> DMZ)
-# ==========================================
+# ==============================================
+# Conexiones
+# ==============================================
 
-# SQL SERVER (Zona OT - Aveva Historian Runtime)
+# SQL SERVER (Aveva Historian)
 sql_conn = pyodbc.connect(
     "DRIVER={ODBC Driver 18 for SQL Server};"
     "SERVER=192.168.10.200;"
@@ -35,7 +35,7 @@ sql_conn = pyodbc.connect(
     "TrustServerCertificate=yes;"
 )
 
-# POSTGRESQL (Zona DMZ)
+# POSTGRESQL (DMZ)
 pg_conn = psycopg2.connect(
     host="192.168.10.201",
     database="idi",
@@ -46,17 +46,17 @@ pg_conn = psycopg2.connect(
 sql_cursor = sql_conn.cursor()
 pg_cursor = pg_conn.cursor()
 
-# Configuración de nombres de tablas nuevas
+# Configuración de tablas
 PROCESO = 'analoglive'
 TABLA_SQL = 'Runtime.dbo.AnalogLive'
 TABLA_PG_DATOS = 'analog_live_time'
 TABLA_PG_CONTROL = 'sync_control_time'
 
-# ==========================================
-# 2. CONTROL DE EXTRACTORES (TIMESTAMP)
-# ==========================================
+# ==============================================
+# Comrpobación extracción de datos
+# ==============================================
 
-# Asegurar la existencia de la NUEVA tabla de control
+# Comprobar existencia de tabla
 pg_cursor.execute(f"""
 CREATE TABLE IF NOT EXISTS {TABLA_PG_CONTROL} (
     process_name TEXT PRIMARY KEY,
@@ -65,18 +65,18 @@ CREATE TABLE IF NOT EXISTS {TABLA_PG_CONTROL} (
 """)
 pg_conn.commit()
 
-# Buscar la fecha de la última transferencia exitosa en la tabla _time
+# Fecha de la última extracción
 pg_cursor.execute(f"""
 SELECT last_datetime FROM {TABLA_PG_CONTROL} WHERE process_name = %s
 """, (PROCESO,))
 row = pg_cursor.fetchone()
 
-# Si es la primera ejecución, iniciamos en el año 2000
+# Inicialización si es la primera extracción
 last_datetime = row[0] if row else '2000-01-01 00:00:00'
 
-# ==========================================
-# 3. EXTRACCIÓN DESDE SQL SERVER (AVEVA)
-# ==========================================
+# ==============================================
+# Extracción de los datos
+# ==============================================
 
 # Extraemos filtrando por DateTime (sin ID)
 sql_cursor.execute(f"""
@@ -97,10 +97,10 @@ ORDER BY DateTime ASC
 rows = sql_cursor.fetchall()
 
 # ==========================================
-# 4. TRANSFORMAR & CARGAR EN POSTGRESQL
+# Transformación de los datos e insercción
 # ==========================================
 if rows:
-    # Mapeo de datos (omitiendo la columna ID)
+    # Mapeo de datos (se omite el ID)
     data = [
         (
             r.DateTime,
@@ -115,7 +115,7 @@ if rows:
         for r in rows
     ]
 
-    # Inserción en la NUEVA tabla de datos analógicos
+    # Inserción en la NUEVA tabla
     execute_batch(pg_cursor, f"""
     INSERT INTO {TABLA_PG_DATOS} (
         datetime, tagname, value, quality, qualitydetail, opcquality, wwversion, wwretrievalmode
@@ -124,10 +124,10 @@ if rows:
     ON CONFLICT (datetime, tagname) DO NOTHING
     """, data)
 
-    # El último registro de la lista contiene la fecha más reciente extraída
+    # El último registro contiene la última fecha extraída
     new_last_datetime = rows[-1].DateTime
 
-    # Guardamos la marca de tiempo en la NUEVA tabla de control
+    # Almacenamiento de la última Timestamp
     pg_cursor.execute(f"""
     INSERT INTO {TABLA_PG_CONTROL}(process_name, last_datetime)
     VALUES (%s, %s)
@@ -140,7 +140,7 @@ if rows:
 else:
     print("Sin datos nuevos en el Historian para la tabla de tiempo.")
 
-# Cierre de conexiones
+# Cerrar conexiones
 sql_cursor.close()
 pg_cursor.close()
 sql_conn.close()
