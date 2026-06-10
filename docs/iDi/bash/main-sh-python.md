@@ -83,8 +83,8 @@ while true;do
 	case "$opc" in
 		1) insertdata;;
 		2) inserthistorian;;
-	        3) postgree;;
-	        4) sqlserver;;
+	    3) postgree;;
+	    4) sqlserver;;
 		5) clear
 		break;;
 		*) echo "Opción no válida";;
